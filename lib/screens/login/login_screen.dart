@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../signup/signup_screen.dart';
+import '../../custom_widgets/custom_logo_text.dart';
+import '../../custom_widgets/custom_social_icon.dart';
+import '../../custom_widgets/custom_text.dart';
+import '../../custom_widgets/custom_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -101,12 +104,37 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: 25),
 
               // Username field
-              CustomTextField(usernameController: _usernameController),
+              // CustomTextField(usernameController: _usernameController),
+              CustomTextFiled(
+                controller: _usernameController,
+                obscureText: false,
+                hintText: 'Username',
+                hintStyle: TextStyle(color: Colors.grey[600], fontSize: 15),
+                prefixIcon: Image.asset(
+                  'assets/images/user.png',
+                  width: 22,
+                  height: 22,
+                ),
+                color: Color(0xFFF0F0F0),
+                textInputType: TextInputType.text,
+              ),
 
               SizedBox(height: 15),
 
               // Password field
-              CustomTextFiledPassword(passwordController: _passwordController),
+              CustomTextFiled(
+                controller: _passwordController,
+                obscureText: true,
+                hintText: 'Password',
+                hintStyle: TextStyle(color: Colors.grey[600], fontSize: 15),
+                prefixIcon: Image.asset(
+                  'assets/images/lock.png',
+                  width: 22,
+                  height: 22,
+                ),
+                color: Color(0xFFF0F0F0),
+                textInputType: TextInputType.visiblePassword,
+              ),
               SizedBox(height: 3),
 
               Padding(
@@ -205,190 +233,38 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class CustomText extends StatelessWidget {
-  final String text;
-  final double fontSize;
-  final FontWeight fontWeight;
-  final Color? color;
-  final TextAlign? textAlign;
-  const CustomText({
-    super.key,
-    required this.text,
-    required this.fontSize,
-    required this.fontWeight,
-    required this.color,
-    this.textAlign,
-  });
+// class CustomTextField extends StatelessWidget {
+//   const CustomTextField({
+//     super.key,
+//     required TextEditingController usernameController,
+//   }) : _usernameController = usernameController;
 
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: fontSize,
-        color: color,
-        fontWeight: fontWeight,
-      ),
-    );
-  }
-}
+//   final TextEditingController _usernameController;
 
-class CustomLogoText extends StatelessWidget {
-  const CustomLogoText({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      'LOGO',
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        fontSize: 80,
-        fontWeight: FontWeight.w300,
-        fontFamily: 'Prime',
-        color: Color(0xFF8CD6F7),
-        letterSpacing: 4,
-      ),
-    );
-  }
-}
-
-class CustomSocialIcon extends StatelessWidget {
-  final void Function()? onTap;
-  final String iconPath;
-  const CustomSocialIcon({
-    super.key,
-    required this.iconPath,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Image.asset(iconPath, width: 40, height: 40, fit: BoxFit.contain),
-    );
-  }
-}
-
-class CustomButton extends StatelessWidget {
-  const CustomButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 36.0),
-      child: Container(
-        width: 200,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Color(0xFF769DAD),
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Color(0xFF769DAD).withOpacity(0.4),
-              blurRadius: 12,
-              offset: Offset(0, 6),
-            ),
-          ],
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () {
-              // Handle login
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SignUpScreen()),
-              );
-            },
-            borderRadius: BorderRadius.circular(8),
-            child: Center(
-              child: Text(
-                'LOG IN',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.5,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class CustomTextFiledPassword extends StatelessWidget {
-  const CustomTextFiledPassword({
-    super.key,
-    required TextEditingController passwordController,
-  }) : _passwordController = passwordController;
-
-  final TextEditingController _passwordController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 36.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Color(0xFFF0F0F0),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: TextField(
-          controller: _passwordController,
-          obscureText: true,
-          decoration: InputDecoration(
-            hintText: 'Password',
-            hintStyle: TextStyle(color: Colors.grey[600], fontSize: 16),
-            prefixIcon: Icon(
-              Icons.lock_outline,
-              color: Colors.grey[700],
-              size: 22,
-            ),
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class CustomTextField extends StatelessWidget {
-  const CustomTextField({
-    super.key,
-    required TextEditingController usernameController,
-  }) : _usernameController = usernameController;
-
-  final TextEditingController _usernameController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 36.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Color(0xFFF0F0F0),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: TextField(
-          controller: _usernameController,
-          decoration: InputDecoration(
-            hintText: 'Username',
-            hintStyle: TextStyle(color: Colors.grey[600], fontSize: 16),
-            prefixIcon: Icon(
-              Icons.person_outline,
-              color: Colors.grey[700],
-              size: 22,
-            ),
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 36.0),
+//       child: Container(
+//         decoration: BoxDecoration(
+//           color: Color(0xFFF0F0F0),
+//           borderRadius: BorderRadius.circular(8),
+//         ),
+//         child: TextField(
+//           controller: _usernameController,
+//           decoration: InputDecoration(
+//             hintText: 'Username',
+//             hintStyle: TextStyle(color: Colors.grey[600], fontSize: 16),
+//             prefixIcon: Icon(
+//               Icons.person_outline,
+//               color: Colors.grey[700],
+//               size: 22,
+//             ),
+//             border: InputBorder.none,
+//             contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
