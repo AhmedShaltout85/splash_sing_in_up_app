@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:splash_sing_in_up_app/custom_widgets/custom_button.dart';
+import 'package:splash_sing_in_up_app/custom_widgets/custom_text.dart';
+import 'package:splash_sing_in_up_app/resuable_widgets/resuable_widgets.dart';
+import '../../custom_widgets/custom_textfield_signup.dart';
 import '../login/login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -44,28 +48,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // Title
-                  Text(
-                    'Let\'s Get Started!',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+                  CustomText(
+                    text: 'Let\'s Get Started!',
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
 
                   SizedBox(height: 8),
 
                   // Subtitle
-                  Text(
-                    'Create an account on MNZL to get all features',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                  CustomText(
+                    text: 'Create an account on MNZL to get all features',
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.grey[600],
                   ),
 
                   SizedBox(height: 35),
 
                   // First Name field
-                  _buildInputField(
+                  buildInputField(
                     controller: _firstNameController,
                     hintText: 'First Name',
                     icon: Image.asset('assets/images/user.png', width: 24),
@@ -74,7 +77,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: 18),
 
                   // Last Name field
-                  _buildInputField(
+                  buildInputField(
                     controller: _lastNameController,
                     hintText: 'Last Name',
                     icon: Image.asset('assets/images/user.png', width: 24),
@@ -83,7 +86,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: 18),
 
                   // User Name field
-                  _buildInputField(
+                  buildInputField(
                     controller: _userNameController,
                     hintText: 'User Name',
                     icon: Image.asset('assets/images/user.png', width: 24),
@@ -92,7 +95,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: 18),
 
                   // Email field
-                  _buildInputField(
+                  buildInputField(
                     controller: _emailController,
                     hintText: 'Email',
                     icon: Image.asset(
@@ -104,7 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: 18),
 
                   // Password field
-                  _buildInputField(
+                  buildInputField(
                     controller: _passwordController,
                     hintText: 'Password',
                     icon: Image.asset('assets/images/lock.png', width: 24),
@@ -114,7 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: 18),
 
                   // Confirm Password field
-                  _buildInputField(
+                  buildInputField(
                     controller: _confirmPasswordController,
                     hintText: 'Confirm Password',
                     icon: Image.asset('assets/images/lock.png', width: 24),
@@ -124,44 +127,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: 35),
 
                   // Create button
-                  Container(
-                    width: 200,
+                  CustomElevatedButton(
+                    text: 'CREATE',
+                    color: Color(0xFF8CD6F7),
+                    textColor: Colors.white,
+                    fontSize: 16,
                     height: 50,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Color(0xFF8CD6F7), Color(0xFF6BB8E3)],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0xFF8CD6F7).withOpacity(0.4),
-                          blurRadius: 12,
-                          offset: Offset(0, 6),
-                        ),
-                      ],
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {
-                          // Handle create account
-                        },
-                        borderRadius: BorderRadius.circular(10),
-                        child: Center(
-                          child: Text(
-                            'CREATE',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.2,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    width: 200,
+                    onTap: () {
+                      // Handle create account
+                      navigateTo(context, LoginScreen());
+                    },
                   ),
 
                   SizedBox(height: 25),
@@ -170,26 +146,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Already have an account? ',
-                        style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                      CustomText(
+                        text: 'Already have an account? ',
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.grey[700],
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginScreen(),
-                            ),
-                          );
+                          // Handle login
+                          navigateTo(context, LoginScreen());
                         },
-                        child: Text(
-                          'Login here',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: CustomText(
+                          text: 'Login here',
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
                       ),
                     ],
@@ -198,31 +170,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInputField({
-    required TextEditingController controller,
-    required String hintText,
-    required Image icon,
-    bool obscureText = false,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Color(0xFFF0F0F0),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: TextField(
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: TextStyle(color: Colors.grey[600], fontSize: 15),
-          prefixIcon: icon,
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
         ),
       ),
     );

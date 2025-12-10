@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../screens/signup/signup_screen.dart';
+import '../utils/app_colors.dart';
 
 class CustomSocialIcon extends StatelessWidget {
   final void Function()? onTap;
@@ -31,11 +32,11 @@ class CustomButton extends StatelessWidget {
         width: 200,
         height: 50,
         decoration: BoxDecoration(
-          color: Color(0xFF769DAD),
+          color: AppColors.primaryColor,
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: Color(0xFF769DAD).withOpacity(0.4),
+              color: AppColors.primaryColor.withOpacity(0.4),
               blurRadius: 12,
               offset: Offset(0, 6),
             ),
@@ -56,7 +57,7 @@ class CustomButton extends StatelessWidget {
               child: Text(
                 'LOG IN',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: AppColors.whiteColor,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.5,

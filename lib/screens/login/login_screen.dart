@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:splash_sing_in_up_app/custom_widgets/custom_button.dart';
+import 'package:splash_sing_in_up_app/utils/app_colors.dart';
 
 import '../../custom_widgets/custom_logo_text.dart';
 import '../../custom_widgets/custom_social_icon.dart';
 import '../../custom_widgets/custom_text.dart';
 import '../../custom_widgets/custom_text_field.dart';
+import '../../resuable_widgets/resuable_widgets.dart';
+import '../signup/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -26,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.whiteColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -48,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 172,
                           width: 286,
                           decoration: BoxDecoration(
-                            color: Color(0xFF7A9EAE),
+                            color: AppColors.primaryColor,
                             borderRadius: BorderRadius.circular(26),
                           ),
                         ),
@@ -64,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 171,
                           width: 307,
                           decoration: BoxDecoration(
-                            color: Color(0xFF8CD6F7),
+                            color: AppColors.secondaryColor,
                             borderRadius: BorderRadius.circular(26),
                           ),
                         ),
@@ -87,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 textAlign: TextAlign.center,
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: AppColors.blackColor,
               ),
 
               SizedBox(height: 8),
@@ -104,7 +108,6 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: 25),
 
               // Username field
-              // CustomTextField(usernameController: _usernameController),
               CustomTextFiled(
                 controller: _usernameController,
                 obscureText: false,
@@ -156,7 +159,19 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: 30),
 
               // Login button
-              CustomButton(),
+              CustomElevatedButton(
+                text: 'LOGIN',
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                textColor: AppColors.whiteColor,
+                onTap: () {
+                  // Handle login
+                  // navigateTo(context, SignUpScreen());
+                },
+                color: AppColors.primaryColor,
+                height: 50,
+                width: 200,
+              ),
 
               SizedBox(height: 30),
 
@@ -213,12 +228,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   GestureDetector(
                     onTap: () {
                       // Navigate to sign up screen
+                      navigateTo(context, SignUpScreen());
                     },
                     child: CustomText(
                       text: 'Sign Up',
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: AppColors.blackColor,
                     ),
                   ),
                 ],
@@ -232,39 +248,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
-// class CustomTextField extends StatelessWidget {
-//   const CustomTextField({
-//     super.key,
-//     required TextEditingController usernameController,
-//   }) : _usernameController = usernameController;
-
-//   final TextEditingController _usernameController;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(horizontal: 36.0),
-//       child: Container(
-//         decoration: BoxDecoration(
-//           color: Color(0xFFF0F0F0),
-//           borderRadius: BorderRadius.circular(8),
-//         ),
-//         child: TextField(
-//           controller: _usernameController,
-//           decoration: InputDecoration(
-//             hintText: 'Username',
-//             hintStyle: TextStyle(color: Colors.grey[600], fontSize: 16),
-//             prefixIcon: Icon(
-//               Icons.person_outline,
-//               color: Colors.grey[700],
-//               size: 22,
-//             ),
-//             border: InputBorder.none,
-//             contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

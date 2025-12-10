@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:splash_sing_in_up_app/screens/login/login_screen.dart';
+// import 'package:splash_sing_in_up_app/screens/login/login_screen.dart';
+import 'package:splash_sing_in_up_app/screens/splash/splash_screen.dart';
 // import 'package:splash_sing_in_up_app/screens/splash/splash_screen.dart';
 
 void main() {
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'UI Kit App',
-      home: LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }
