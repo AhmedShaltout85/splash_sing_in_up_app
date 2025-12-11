@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:splash_sing_in_up_app/utils/app_assets.dart';
 
 import '../login/login_screen.dart';
 
@@ -33,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Column(
         children: [
           Image.asset(
-            'assets/images/splash-logo.png',
+            AppAssets.splashLogo,
             height: kHeight * 0.8,
             width: kWidth * 0.8,
           ),

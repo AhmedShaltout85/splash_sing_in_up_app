@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:splash_sing_in_up_app/custom_widgets/custom_button.dart';
+import 'package:splash_sing_in_up_app/utils/app_assets.dart';
 import 'package:splash_sing_in_up_app/utils/app_colors.dart';
 
 import '../../custom_widgets/custom_logo_text.dart';
@@ -29,6 +30,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
+    final height = size.height;
+    final double iconWH=22;
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       body: SafeArea(
@@ -105,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: Colors.grey[600],
               ),
 
-              SizedBox(height: 25),
+              gap(height: 25),
 
               // Username field
               CustomTextFiled(
@@ -114,15 +119,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: 'Username',
                 hintStyle: TextStyle(color: Colors.grey[600], fontSize: 15),
                 prefixIcon: Image.asset(
-                  'assets/images/user.png',
-                  width: 22,
-                  height: 22,
+                  AppAssets.user,
+                  width: iconWH,
+                  height: iconWH,
                 ),
                 color: Color(0xFFF0F0F0),
                 textInputType: TextInputType.text,
               ),
 
-              SizedBox(height: 15),
+              gap(height: 15),
 
               // Password field
               CustomTextFiled(
@@ -131,14 +136,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: 'Password',
                 hintStyle: TextStyle(color: Colors.grey[600], fontSize: 15),
                 prefixIcon: Image.asset(
-                  'assets/images/lock.png',
-                  width: 22,
-                  height: 22,
+                  AppAssets.lock,
+                  width: iconWH,
+                  height: iconWH,
                 ),
                 color: Color(0xFFF0F0F0),
                 textInputType: TextInputType.visiblePassword,
               ),
-              SizedBox(height: 3),
+              gap(height: 3),
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -156,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
 
-              SizedBox(height: 30),
+              gap(height: 30),
 
               // Login button
               CustomElevatedButton(
@@ -191,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   // Facebook button
                   CustomSocialIcon(
-                    iconPath: 'assets/images/facebook.png',
+                    iconPath: AppAssets.facebook,
                     onTap: () {},
                   ),
 
@@ -199,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   // Google button
                   CustomSocialIcon(
-                    iconPath: 'assets/images/google.png',
+                    iconPath: AppAssets.google,
                     onTap: () {},
                   ),
 
@@ -207,7 +212,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   // Apple button
                   CustomSocialIcon(
-                    iconPath: 'assets/images/apple.png',
+                    iconPath: AppAssets.apple,
                     onTap: () {},
                   ),
                 ],

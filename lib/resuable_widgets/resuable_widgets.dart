@@ -18,3 +18,5 @@ void navigateToReplacement(BuildContext context, Widget widget) =>
 //navigation function using pushNamed
 void navigateToReplacementNamed(BuildContext context, String routeName) =>
     Navigator.pushNamed(context, routeName);
+
+Widget gap({double? height, double? width}) => SizedBox(height: height, width: width);

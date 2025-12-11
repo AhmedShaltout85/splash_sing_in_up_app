@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:splash_sing_in_up_app/custom_widgets/custom_button.dart';
 import 'package:splash_sing_in_up_app/custom_widgets/custom_text.dart';
 import 'package:splash_sing_in_up_app/resuable_widgets/resuable_widgets.dart';
+import 'package:splash_sing_in_up_app/utils/app_assets.dart';
 import '../../custom_widgets/custom_textfield_signup.dart';
 import '../login/login_screen.dart';
 
@@ -71,7 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   buildInputField(
                     controller: _firstNameController,
                     hintText: 'First Name',
-                    icon: Image.asset('assets/images/user.png', width: 24),
+                    icon: Image.asset(AppAssets.user, width: 24),
                   ),
 
                   SizedBox(height: 18),
@@ -80,7 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   buildInputField(
                     controller: _lastNameController,
                     hintText: 'Last Name',
-                    icon: Image.asset('assets/images/user.png', width: 24),
+                    icon: Image.asset(AppAssets.user, width: 24),
                   ),
 
                   SizedBox(height: 18),
@@ -89,7 +90,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   buildInputField(
                     controller: _userNameController,
                     hintText: 'User Name',
-                    icon: Image.asset('assets/images/user.png', width: 24),
+                    icon: Image.asset(AppAssets.user, width: 24),
                   ),
 
                   SizedBox(height: 18),
@@ -98,19 +99,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   buildInputField(
                     controller: _emailController,
                     hintText: 'Email',
-                    icon: Image.asset(
-                      'assets/images/iconfinder_Mail_728953 1.png',
-                      width: 24,
-                    ),
+                    icon: Image.asset(AppAssets.mail, width: 24),
                   ),
 
-                  SizedBox(height: 18),
+                  gap(height: 18),
 
                   // Password field
                   buildInputField(
                     controller: _passwordController,
                     hintText: 'Password',
-                    icon: Image.asset('assets/images/lock.png', width: 24),
+                    icon: Image.asset(AppAssets.lock, width: 24),
                     obscureText: true,
                   ),
 
@@ -120,7 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   buildInputField(
                     controller: _confirmPasswordController,
                     hintText: 'Confirm Password',
-                    icon: Image.asset('assets/images/lock.png', width: 24),
+                    icon: Image.asset(AppAssets.lock, width: 24),
                     obscureText: true,
                   ),
 
