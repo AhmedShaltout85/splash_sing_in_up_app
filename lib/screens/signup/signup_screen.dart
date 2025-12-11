@@ -3,6 +3,7 @@ import 'package:splash_sing_in_up_app/custom_widgets/custom_button.dart';
 import 'package:splash_sing_in_up_app/custom_widgets/custom_text.dart';
 import 'package:splash_sing_in_up_app/resuable_widgets/resuable_widgets.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
+
 import '../../custom_widgets/custom_textfield_signup.dart';
 import '../login/login_screen.dart';
 
@@ -56,7 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     color: Colors.black,
                   ),
 
-                  SizedBox(height: 8),
+                  gap(height: 8),
 
                   // Subtitle
                   CustomText(
@@ -66,7 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     color: Colors.grey[600],
                   ),
 
-                  SizedBox(height: 35),
+                  gap(height: 35),
 
                   // First Name field
                   buildInputField(
@@ -75,7 +76,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     icon: Image.asset(AppAssets.user, width: 24),
                   ),
 
-                  SizedBox(height: 18),
+                  gap(height: 18),
 
                   // Last Name field
                   buildInputField(
@@ -84,7 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     icon: Image.asset(AppAssets.user, width: 24),
                   ),
 
-                  SizedBox(height: 18),
+                  gap(height: 18),
 
                   // User Name field
                   buildInputField(
@@ -93,7 +94,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     icon: Image.asset(AppAssets.user, width: 24),
                   ),
 
-                  SizedBox(height: 18),
+                  gap(height: 18),
 
                   // Email field
                   buildInputField(
@@ -112,7 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     obscureText: true,
                   ),
 
-                  SizedBox(height: 18),
+                  gap(height: 18),
 
                   // Confirm Password field
                   buildInputField(
@@ -122,7 +123,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     obscureText: true,
                   ),
 
-                  SizedBox(height: 35),
+                  gap(height: 35),
 
                   // Create button
                   CustomElevatedButton(
@@ -138,7 +139,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   ),
 
-                  SizedBox(height: 25),
+                  gap(height: 25),
 
                   // Login link
                   Row(

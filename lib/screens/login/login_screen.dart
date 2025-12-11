@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final size = MediaQuery.of(context).size;
     final width = size.width;
     final height = size.height;
-    final double iconWH=22;
+    final double iconWH = 22;
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       body: SafeArea(
@@ -83,12 +83,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
 
-              SizedBox(height: 20),
+              gap(height: 20),
 
               // Logo
               CustomLogoText(),
 
-              SizedBox(height: 15),
+              gap(height: 15),
 
               // Welcome back text
               CustomText(
@@ -195,26 +195,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Facebook button
-                  CustomSocialIcon(
-                    iconPath: AppAssets.facebook,
-                    onTap: () {},
-                  ),
+                  CustomSocialIcon(iconPath: AppAssets.facebook, onTap: () {}),
 
                   SizedBox(width: 24),
 
                   // Google button
-                  CustomSocialIcon(
-                    iconPath: AppAssets.google,
-                    onTap: () {},
-                  ),
+                  CustomSocialIcon(iconPath: AppAssets.google, onTap: () {}),
 
                   SizedBox(width: 24),
 
                   // Apple button
-                  CustomSocialIcon(
-                    iconPath: AppAssets.apple,
-                    onTap: () {},
-                  ),
+                  CustomSocialIcon(iconPath: AppAssets.apple, onTap: () {}),
                 ],
               ),
 

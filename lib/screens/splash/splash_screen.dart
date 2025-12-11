@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:splash_sing_in_up_app/custom_widgets/custom_text.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
 
 import '../login/login_screen.dart';
@@ -38,14 +39,19 @@ class _SplashScreenState extends State<SplashScreen> {
             height: kHeight * 0.8,
             width: kWidth * 0.8,
           ),
-          Text(
-            'Lorem Ipsum',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+
+          CustomText(
+            text: 'Lorem Ipsum',
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
           ),
-          Text(
-            textAlign: TextAlign.center,
-            'Lorem Ipsum is a dummy text used as placeholder',
-            style: TextStyle(fontSize: 20),
+
+          CustomText(
+            text: 'Lorem Ipsum is a dummy text used as placeholder',
+            fontSize: 20,
+            fontWeight: FontWeight.normal,
+            color: Colors.grey[600],
           ),
         ],
       ),
