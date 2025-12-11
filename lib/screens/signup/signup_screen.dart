@@ -3,6 +3,7 @@ import 'package:splash_sing_in_up_app/custom_widgets/custom_button.dart';
 import 'package:splash_sing_in_up_app/custom_widgets/custom_text.dart';
 import 'package:splash_sing_in_up_app/resuable_widgets/resuable_widgets.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
+import 'package:splash_sing_in_up_app/utils/app_colors.dart';
 
 import '../../custom_widgets/custom_textfield_signup.dart';
 import '../login/login_screen.dart';
@@ -36,6 +37,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double iconWH = 24;
+    final double fontSize = 14;
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: SafeArea(
@@ -52,9 +55,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   // Title
                   CustomText(
                     text: 'Let\'s Get Started!',
-                    fontSize: 28,
+                    fontSize: fontSize * 2,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: AppColors.blackColor,
                   ),
 
                   gap(height: 8),
@@ -62,9 +65,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   // Subtitle
                   CustomText(
                     text: 'Create an account on MNZL to get all features',
-                    fontSize: 14,
+                    fontSize: fontSize,
                     fontWeight: FontWeight.normal,
-                    color: Colors.grey[600],
+                    color: AppColors.grayColor,
                   ),
 
                   gap(height: 35),
@@ -73,7 +76,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   buildInputField(
                     controller: _firstNameController,
                     hintText: 'First Name',
-                    icon: Image.asset(AppAssets.user, width: 24),
+                    icon: Image.asset(AppAssets.user, width: iconWH),
                   ),
 
                   gap(height: 18),
@@ -82,7 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   buildInputField(
                     controller: _lastNameController,
                     hintText: 'Last Name',
-                    icon: Image.asset(AppAssets.user, width: 24),
+                    icon: Image.asset(AppAssets.user, width: iconWH),
                   ),
 
                   gap(height: 18),
@@ -91,7 +94,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   buildInputField(
                     controller: _userNameController,
                     hintText: 'User Name',
-                    icon: Image.asset(AppAssets.user, width: 24),
+                    icon: Image.asset(AppAssets.user, width: iconWH),
                   ),
 
                   gap(height: 18),
@@ -100,7 +103,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   buildInputField(
                     controller: _emailController,
                     hintText: 'Email',
-                    icon: Image.asset(AppAssets.mail, width: 24),
+                    icon: Image.asset(AppAssets.mail, width: iconWH),
                   ),
 
                   gap(height: 18),
@@ -109,7 +112,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   buildInputField(
                     controller: _passwordController,
                     hintText: 'Password',
-                    icon: Image.asset(AppAssets.lock, width: 24),
+                    icon: Image.asset(AppAssets.lock, width: iconWH),
                     obscureText: true,
                   ),
 
@@ -119,7 +122,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   buildInputField(
                     controller: _confirmPasswordController,
                     hintText: 'Confirm Password',
-                    icon: Image.asset(AppAssets.lock, width: 24),
+                    icon: Image.asset(AppAssets.lock, width: iconWH),
                     obscureText: true,
                   ),
 
@@ -128,9 +131,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   // Create button
                   CustomElevatedButton(
                     text: 'CREATE',
-                    color: Color(0xFF8CD6F7),
-                    textColor: Colors.white,
-                    fontSize: 16,
+                    color: AppColors.primaryColor,
+                    textColor: AppColors.whiteColor,
+                    fontSize: fontSize + 2,
                     height: 50,
                     width: 200,
                     onTap: () {
@@ -147,9 +150,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: [
                       CustomText(
                         text: 'Already have an account? ',
-                        fontSize: 14,
+                        fontSize: fontSize,
                         fontWeight: FontWeight.normal,
-                        color: Colors.grey[700],
+                        color: AppColors.grayColor,
                       ),
                       GestureDetector(
                         onTap: () {
@@ -158,9 +161,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         },
                         child: CustomText(
                           text: 'Login here',
-                          fontSize: 14,
+                          fontSize: fontSize,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: AppColors.blackColor,
                         ),
                       ),
                     ],
