@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../screens/signup/signup_screen.dart';
-import '../utils/app_colors.dart';
+import '../../screens/signup/signup_screen.dart';
+import '../../utils/app_colors.dart';
 
 class CustomSocialIcon extends StatelessWidget {
   final void Function()? onTap;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:splash_sing_in_up_app/custom_widgets/custom_text.dart';
+import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_text.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
 import 'package:splash_sing_in_up_app/utils/app_colors.dart';
 

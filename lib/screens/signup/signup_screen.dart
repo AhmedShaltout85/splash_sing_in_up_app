@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:splash_sing_in_up_app/custom_widgets/custom_button.dart';
-import 'package:splash_sing_in_up_app/custom_widgets/custom_text.dart';
-import 'package:splash_sing_in_up_app/resuable_widgets/resuable_widgets.dart';
+import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_button.dart';
+import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_text.dart';
+import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/resuable_widgets.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
 import 'package:splash_sing_in_up_app/utils/app_colors.dart';
 
-import '../../custom_widgets/custom_textfield_signup.dart';
+import '../../common_widgets/custom_widgets/custom_textfield_signup.dart';
 import '../login/login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
