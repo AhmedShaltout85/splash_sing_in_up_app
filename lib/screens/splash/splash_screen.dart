@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Positioned(
             top: kHeight * 0.65,
             child: CustomText(
-              text: 'Lorem Ipsum',
+              text: 'LOREM IPSUM',
               fontSize: fontSize + 4,
               fontWeight: FontWeight.bold,
               color: AppColors.blackColor,
