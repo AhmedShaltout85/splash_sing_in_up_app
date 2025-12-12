@@ -30,9 +30,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final width = size.width;
-    final height = size.height;
     final double iconWH = 22;
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
