@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:splash_sing_in_up_app/utils/app_colors.dart';
 
 Widget buildInputField({
   required TextEditingController controller,
@@ -8,7 +9,7 @@ Widget buildInputField({
 }) {
   return Container(
     decoration: BoxDecoration(
-      color: Color(0xFFF0F0F0),
+      color: AppColors.lightGrayColor,
       borderRadius: BorderRadius.circular(10),
     ),
     child: TextField(
@@ -16,7 +17,7 @@ Widget buildInputField({
       obscureText: obscureText,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.grey[600], fontSize: 15),
+        hintStyle: TextStyle(color: AppColors.grayColor, fontSize: 15),
         prefixIcon: icon,
         border: InputBorder.none,
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),

@@ -96,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: AppColors.blackColor,
               ),
 
-              SizedBox(height: 8),
+              gap(height: 8),
 
               // Subtitle
               CustomText(
@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 textAlign: TextAlign.center,
                 fontSize: 14,
                 fontWeight: FontWeight.normal,
-                color: Colors.grey[600],
+                color: AppColors.grayColor,
               ),
 
               gap(height: 25),
@@ -114,13 +114,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _usernameController,
                 obscureText: false,
                 hintText: 'Username',
-                hintStyle: TextStyle(color: Colors.grey[600], fontSize: 15),
+                hintStyle: TextStyle(color: AppColors.grayColor, fontSize: 15),
                 prefixIcon: Image.asset(
                   AppAssets.user,
                   width: iconWH,
                   height: iconWH,
                 ),
-                color: Color(0xFFF0F0F0),
+                color: AppColors.lightGrayColor,
                 textInputType: TextInputType.text,
               ),
 
@@ -137,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: iconWH,
                   height: iconWH,
                 ),
-                color: Color(0xFFF0F0F0),
+                color: AppColors.lightGrayColor,
                 textInputType: TextInputType.visiblePassword,
               ),
               gap(height: 3),
@@ -152,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       text: 'Forgot Password?',
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: Colors.grey[700],
+                      color: AppColors.grayColor,
                     ),
                   ),
                 ),
@@ -162,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               // Login button
               CustomElevatedButton(
-                text: 'LOGIN',
+                text: 'LOG IN',
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 textColor: AppColors.whiteColor,
@@ -175,17 +175,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: 200,
               ),
 
-              SizedBox(height: 30),
+              gap(height: 30),
 
               // Or sign up using text
               CustomText(
                 text: 'Or sign up using',
                 fontSize: 15,
                 fontWeight: FontWeight.normal,
-                color: Colors.grey[600],
+                color: AppColors.grayColor,
               ),
 
-              SizedBox(height: 20),
+              gap(height: 20),
 
               // Social login buttons
               Row(
@@ -194,19 +194,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   // Facebook button
                   CustomSocialIcon(iconPath: AppAssets.facebook, onTap: () {}),
 
-                  SizedBox(width: 24),
+                  gap(width: 24),
 
                   // Google button
                   CustomSocialIcon(iconPath: AppAssets.google, onTap: () {}),
 
-                  SizedBox(width: 24),
+                  gap(width: 24),
 
                   // Apple button
                   CustomSocialIcon(iconPath: AppAssets.apple, onTap: () {}),
                 ],
               ),
 
-              SizedBox(height: 20),
+              gap(height: 20),
 
               // Sign up link
               Row(
@@ -216,7 +216,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: 'Don\'t have an account? ',
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
-                    color: Colors.grey[700],
+                    color: AppColors.grayColor,
                   ),
                   GestureDetector(
                     onTap: () {
@@ -233,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
 
-              SizedBox(height: 20),
+              gap(height: 20),
             ],
           ),
         ),
