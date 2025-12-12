@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:splash_sing_in_up_app/custom_widgets/custom_text.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
+import 'package:splash_sing_in_up_app/utils/app_colors.dart';
 
 import '../login/login_screen.dart';
 
@@ -30,28 +31,45 @@ class _SplashScreenState extends State<SplashScreen> {
     final size = MediaQuery.of(context).size;
     final kHeight = size.height;
     final kWidth = size.width;
+    final double fontSize = 20;
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
+      backgroundColor: AppColors.whiteColor,
+      body: Stack(
+        alignment: Alignment.center,
         children: [
-          Image.asset(
-            AppAssets.splashLogo,
-            height: kHeight * 0.8,
-            width: kWidth * 0.8,
+          Positioned(
+            top: kHeight * 0.0,
+            child: Image.asset(
+              AppAssets.splashLogo,
+              height: kHeight * 0.8,
+              width: kWidth * 0.8,
+              fit: BoxFit.fill,
+            ),
           ),
 
-          CustomText(
-            text: 'Lorem Ipsum',
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+          Positioned(
+            top: kHeight * 0.65,
+            child: CustomText(
+              text: 'Lorem Ipsum',
+              fontSize: fontSize + 4,
+              fontWeight: FontWeight.bold,
+              color: AppColors.blackColor,
+            ),
           ),
 
-          CustomText(
-            text: 'Lorem Ipsum is a dummy text used as placeholder',
-            fontSize: 20,
-            fontWeight: FontWeight.normal,
-            color: Colors.grey[600],
+          Positioned(
+            top: kHeight * 0.7,
+            left: kWidth * 0.1,
+            right: kWidth * 0.1,
+            child: CustomText(
+              text: 'Lorem Ipsum is a dummy text used as placeholder',
+              fontSize: fontSize,
+              textAlign: TextAlign.center,
+              fontWeight: FontWeight.normal,
+              color: AppColors.grayColor,
+              maxLines: 2,
+              softWrap: true,
+            ),
           ),
         ],
       ),
