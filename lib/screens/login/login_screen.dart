@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_button.dart';
+import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
+import 'package:splash_sing_in_up_app/newtorkl_repos/remote_repo/facebook_auth_service.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
 import 'package:splash_sing_in_up_app/utils/app_colors.dart';
 
@@ -8,6 +10,8 @@ import '../../common_widgets/custom_widgets/custom_social_icon.dart';
 import '../../common_widgets/custom_widgets/custom_text.dart';
 import '../../common_widgets/custom_widgets/custom_text_field.dart';
 import '../../common_widgets/resuable_widgets/resuable_widgets.dart';
+import '../../newtorkl_repos/remote_repo/google_auth_service.dart';
+import '../home/home_screen.dart';
 import '../signup/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -197,7 +201,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   gap(width: 24),
 
                   // Google button
-                  CustomSocialIcon(iconPath: AppAssets.google, onTap: () {}),
+                  CustomSocialIcon(
+                    iconPath: AppAssets.google,
+                    onTap: () {
+                      //googleSignIn
+                      // GoogleAuthService.instance.signIn();
+                      GoogleSignInService.signInWithGoogle();
+                      ReusableToast.showToast(
+                        message: 'Login successful',
+                        bgColor: AppColors.primaryColor,
+                        textColor: AppColors.whiteColor,
+                        fontSize: 16,
+                      );
+                      // Navigate to home screen
+                      navigateTo(context, HomeScreen());
+                    },
+                  ),
 
                   gap(width: 24),
 
