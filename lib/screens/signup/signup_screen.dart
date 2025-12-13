@@ -140,7 +140,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     width: 200,
                     onTap: () {
                       //create account on firebase by email and password
-                      FirebaseApiServices.createUserWithEmailAndPassword(
+                      FirebaseApiSAuthServices.createUserWithEmailAndPassword(
                         emailAddress: _emailController.text.trim(),
                         password: _passwordController.text.trim(),
                       );

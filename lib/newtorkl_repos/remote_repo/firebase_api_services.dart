@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-class FirebaseApiServices {
-  static FirebaseApiServices instance = FirebaseApiServices();
+class FirebaseApiSAuthServices {
+  static FirebaseApiSAuthServices instance = FirebaseApiSAuthServices();
 
   static Future<void> createUserWithEmailAndPassword({
     required String emailAddress,
