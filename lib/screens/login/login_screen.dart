@@ -13,7 +13,6 @@ import '../../common_widgets/custom_widgets/custom_text_field.dart';
 import '../../common_widgets/resuable_widgets/resuable_widgets.dart';
 import '../../newtorkl_repos/remote_repo/google_auth_service.dart';
 import '../../utils/app_route.dart';
-import '../home/home_screen.dart';
 import '../signup/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
