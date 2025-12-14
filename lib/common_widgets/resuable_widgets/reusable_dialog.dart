@@ -15,12 +15,8 @@ class ReusableDialog {
       animType: AnimType.rightSlide,
       title: title,
       desc: description,
-      btnCancelOnPress: () {
-        onCancel!();
-      },
-      btnOkOnPress: () {
-        onConfirm!();
-      },
+      btnCancelOnPress: () => onCancel!(),
+      btnOkOnPress: () => onConfirm!(),
     )..show();
   }
 }

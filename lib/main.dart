@@ -28,7 +28,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'UI Kit App',
-      // home: const SplashScreen(),
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case AppRoute.splashRouteName:
@@ -49,13 +48,6 @@ class MyApp extends StatelessWidget {
             );
         }
       },
-      // initialRoute: AppRoute.splashRouteName,
-      // routes: {
-      //   AppRoute.splashRouteName: (context) => const SplashScreen(),
-      //   AppRoute.loginRouteName: (context) => const LoginScreen(),
-      //   AppRoute.homeRouteName: (context) => const HomeScreen(),
-      //   AppRoute.signupRouteName: (context) => const SignUpScreen(),
-      // },
     );
   }
 }
