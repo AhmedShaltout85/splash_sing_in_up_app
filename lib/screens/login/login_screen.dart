@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_button.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
+import 'package:splash_sing_in_up_app/newtorkl_repos/remote_repo/firebase_api_services.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
 import 'package:splash_sing_in_up_app/utils/app_colors.dart';
 
@@ -151,7 +152,97 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: MaterialButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      //reset password
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: CustomText(
+                              text: 'Reset Password',
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.blackColor,
+                            ),
+                            content: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.17,
+                              child: Column(
+                                children: [
+                                  CustomTextFiled(
+                                    controller: _usernameController,
+                                    obscureText: false,
+                                    hintText: 'Username',
+                                    padding: 5,
+                                    hintStyle: TextStyle(
+                                      color: AppColors.grayColor,
+                                      fontSize: 11,
+                                    ),
+                                    prefixIcon: Image.asset(
+                                      AppAssets.user,
+                                      width: iconWH,
+                                      height: iconWH,
+                                    ),
+                                    color: AppColors.lightGrayColor,
+                                    textInputType: TextInputType.text,
+                                  ),
+                                  gap(height: 5),
+                                  CustomTextFiled(
+                                    controller: _passwordController,
+                                    obscureText: true,
+                                    hintText: 'Password',
+                                    padding: 5,
+                                    hintStyle: TextStyle(
+                                      color: AppColors.grayColor,
+                                      fontSize: 11,
+                                    ),
+                                    prefixIcon: Image.asset(
+                                      AppAssets.lock,
+                                      width: iconWH,
+                                      height: iconWH,
+                                    ),
+                                    color: AppColors.lightGrayColor,
+                                    textInputType:
+                                        TextInputType.visiblePassword,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  if (_usernameController.text.isNotEmpty &&
+                                      _passwordController.text.isNotEmpty &&
+                                      FirebaseAuth
+                                              .instance
+                                              .currentUser
+                                              ?.email ==
+                                          _usernameController.text) {
+                                            
+                                    FirebaseApiSAuthServices.resetPassword(
+                                      emailAddress: _usernameController.text,
+                                    );
+                                    ReusableToast.showToast(
+                                      message: 'Password reset successfully',
+                                      bgColor: Colors.green,
+                                      textColor: Colors.white,
+                                      fontSize: 16,
+                                    );
+                                  }
+                                },
+                                child: const Text('Reset'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                     child: CustomText(
                       text: 'Forgot Password?',
                       fontSize: 14,
@@ -172,7 +263,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 textColor: AppColors.whiteColor,
                 onTap: () {
                   // Handle login
-                  // navigateTo(context, SignUpScreen());
+                  if (_usernameController.text.isNotEmpty &&
+                      _passwordController.text.isNotEmpty) {
+                    FirebaseAuth.instance.signInWithEmailAndPassword(
+                      email: _usernameController.text,
+                      password: _passwordController.text,
+                    );
+                    ReusableToast.showToast(
+                      message: 'Login successful',
+                      bgColor: Colors.green,
+                      textColor: Colors.white,
+                      fontSize: 16,
+                    );
+                    navigateToReplacementNamed(context, AppRoute.homeRouteName);
+                  }
                 },
                 color: AppColors.primaryColor,
                 height: 50,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:splash_sing_in_up_app/utils/app_colors.dart';
 
 // ignore: must_be_immutable
 class CustomTextFiled extends StatelessWidget {
@@ -10,6 +11,7 @@ class CustomTextFiled extends StatelessWidget {
   final Widget prefixIcon;
   final TextInputType? textInputType;
   final TextStyle? hintStyle;
+  final double? padding;
   CustomTextFiled({
     super.key,
     required this.hintText,
@@ -20,15 +22,16 @@ class CustomTextFiled extends StatelessWidget {
     this.textInputType,
     this.hintStyle,
     this.obscureText,
+    this.padding,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 36.0),
+      padding: EdgeInsets.symmetric(horizontal: padding ?? 36.0),
       child: Container(
         decoration: BoxDecoration(
-          color: color ?? Color(0xFFF0F0F0),
+          color: color ?? AppColors.lightGrayColor,
           borderRadius: BorderRadius.circular(8),
         ),
         child: TextField(
@@ -37,7 +40,8 @@ class CustomTextFiled extends StatelessWidget {
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle:
-                hintStyle ?? TextStyle(color: Colors.grey[600], fontSize: 16),
+                hintStyle ??
+                TextStyle(color: AppColors.grayColor, fontSize: 16),
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon,
             border: InputBorder.none,

@@ -73,5 +73,4 @@ class FirebaseApiSAuthServices {
     await FirebaseAuth.instance.currentUser!.updatePassword(newPassword);
   }
 
-  //google sign in
 }
