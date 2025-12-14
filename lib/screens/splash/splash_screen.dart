@@ -1,9 +1,15 @@
+import 'dart:developer';
+
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_text.dart';
+import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_dialog.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
 import 'package:splash_sing_in_up_app/utils/app_colors.dart';
+import 'package:splash_sing_in_up_app/utils/app_route.dart';
 
-import '../login/login_screen.dart';
+import '../../common_widgets/resuable_widgets/resuable_widgets.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,14 +22,43 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-        );
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        log('User is currently signed out!');
+        if (mounted) {
+          // ReusableDialog.showAwesomeDialog(
+          //   context,
+          //   title: 'User is signed out!',
+          //   description: 'User is signed out!',
+          // );
+          AwesomeDialog(
+            context: context,
+            title: 'User is signed out!',
+            body: const Text('User is signed out!'),
+          ).show();
+          navigateToReplacementNamed(context, AppRoute.loginRouteName);
+        }
+      } else {
+        log('User is signed in!');
+        if (mounted) {
+          ReusableDialog.showAwesomeDialog(
+            context,
+            title: 'User is signed in!',
+            description: 'User is signed in!',
+          );
+          navigateToReplacementNamed(context, AppRoute.homeRouteName);
+        }
       }
     });
+    // Future.delayed(const Duration(seconds: 2), () {
+    //   if (mounted) {
+    //     navigateToReplacementNamed(context, AppRoute.loginRouteName);
+    //     // //check if user is already logged in
+    // FirebaseAuth.instance.currentUser != null
+    //     ? navigateToReplacementNamed(context, '/home')
+    //     : navigateToReplacementNamed(context, '/login');
+    //   }
+    // });
   }
 
   @override

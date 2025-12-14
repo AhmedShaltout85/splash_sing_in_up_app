@@ -1,8 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:splash_sing_in_up_app/screens/home/home_screen.dart';
+import 'package:splash_sing_in_up_app/screens/login/login_screen.dart';
+import 'package:splash_sing_in_up_app/screens/signup/signup_screen.dart';
 // import 'package:splash_sing_in_up_app/screens/login/login_screen.dart';
 import 'package:splash_sing_in_up_app/screens/splash/splash_screen.dart';
+import 'package:splash_sing_in_up_app/utils/app_route.dart';
 
 import 'firebase_options.dart';
 // import 'package:splash_sing_in_up_app/screens/splash/splash_screen.dart';
@@ -24,7 +28,34 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'UI Kit App',
-      home: const SplashScreen(),
+      // home: const SplashScreen(),
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case AppRoute.splashRouteName:
+            return MaterialPageRoute(
+              builder: (context) => const SplashScreen(),
+            );
+          case AppRoute.loginRouteName:
+            return MaterialPageRoute(builder: (context) => const LoginScreen());
+          case AppRoute.homeRouteName:
+            return MaterialPageRoute(builder: (context) => const HomeScreen());
+          case AppRoute.signupRouteName:
+            return MaterialPageRoute(
+              builder: (context) => const SignUpScreen(),
+            );
+          default:
+            return MaterialPageRoute(
+              builder: (context) => const SplashScreen(),
+            );
+        }
+      },
+      // initialRoute: AppRoute.splashRouteName,
+      // routes: {
+      //   AppRoute.splashRouteName: (context) => const SplashScreen(),
+      //   AppRoute.loginRouteName: (context) => const LoginScreen(),
+      //   AppRoute.homeRouteName: (context) => const HomeScreen(),
+      //   AppRoute.signupRouteName: (context) => const SignUpScreen(),
+      // },
     );
   }
 }
