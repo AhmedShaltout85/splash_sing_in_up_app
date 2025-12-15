@@ -1,6 +1,10 @@
+import 'dart:developer';
+
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_button.dart';
+import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_dialog.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
 import 'package:splash_sing_in_up_app/newtorkl_repos/remote_repo/firebase_api_services.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
@@ -177,7 +181,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 onTap: () {
                   // Handle login
                   if (_usernameController.text.isNotEmpty &&
-                      _passwordController.text.isNotEmpty) {
+                      _passwordController.text.isNotEmpty &&
+                      FirebaseAuth.instance.currentUser!.emailVerified) {
                     FirebaseAuth.instance.signInWithEmailAndPassword(
                       email: _usernameController.text,
                       password: _passwordController.text,
@@ -189,6 +194,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontSize: 16,
                     );
                     navigateToReplacementNamed(context, AppRoute.homeRouteName);
+                  } else {
+                    ReusableDialog.showAwesomeDialog(
+                      context,
+                      title: 'Error',
+                      description: 'Please enter valid credentials',
+                      dialogType: DialogType.error,
+                    );
+                    log('Please enter valid credentials');
                   }
                 },
                 color: AppColors.primaryColor,

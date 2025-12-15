@@ -6,12 +6,13 @@ class ReusableDialog {
     BuildContext context, {
     required String title,
     required String description,
+    required DialogType dialogType,
     Function? onCancel,
     Function? onConfirm,
   }) {
     return AwesomeDialog(
       context: context,
-      dialogType: DialogType.info,
+      dialogType: dialogType,
       animType: AnimType.rightSlide,
       title: title,
       desc: description,

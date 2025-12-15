@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_button.dart';
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_text.dart';
@@ -150,6 +151,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         textColor: Colors.white,
                         fontSize: fontSize,
                       );
+                      FirebaseAuth.instance.currentUser!
+                          .sendEmailVerification();
                       // Handle create account
                       navigateTo(context, LoginScreen());
                     },
