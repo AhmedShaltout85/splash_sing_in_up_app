@@ -20,7 +20,30 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(child: Text('Home Screen Body')),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Add your widgets here
+          Center(
+            child: Text(
+              'Home Screen Body',
+              style: TextStyle(fontSize: 24),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Center(
+            child: MaterialButton(
+              color: AppColors.primaryColor,
+              textColor: AppColors.whiteColor,
+              child: Text('Verify Email'),
+              onPressed: () {
+                //logout from firebase
+                FirebaseApiSAuthServices.verifyEmail();
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

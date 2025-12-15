@@ -7,8 +7,8 @@ class ReusableDialog {
     required String title,
     required String description,
     required DialogType dialogType,
-    Function? onCancel,
-    Function? onConfirm,
+    void Function()? onCancel,
+    void Function()? onConfirm,
   }) {
     return AwesomeDialog(
       context: context,
@@ -16,8 +16,8 @@ class ReusableDialog {
       animType: AnimType.rightSlide,
       title: title,
       desc: description,
-      btnCancelOnPress: () => onCancel!(),
-      btnOkOnPress: () => onConfirm!(),
+      btnCancelOnPress: onCancel,
+      btnOkOnPress: onConfirm,
     )..show();
   }
 }

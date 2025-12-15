@@ -61,6 +61,27 @@ class FirebaseApiSAuthServices {
     await FirebaseAuth.instance.sendPasswordResetEmail(email: emailAddress);
   }
 
+  //send verification email
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email.trim());
+      // Show success message to user
+    } on FirebaseAuthException catch (e) {
+      // Handle specific errors
+      log('Firebase Auth Error: ${e.code} - ${e.message}');
+      // Show a user-friendly message based on e.code
+      if (e.code == 'invalid-email') {
+        // Handle invalid email
+      } else if (e.code == 'user-not-found') {
+        // It's often safer to show a generic success message even for this case
+      }
+      // Add other error codes as needed
+    } catch (e) {
+      // Handle any other unexpected errors
+      log('General Error: $e');
+    }
+  }
+
   //verify email
 
   static Future<void> verifyEmail() async {
@@ -72,5 +93,4 @@ class FirebaseApiSAuthServices {
   static Future<void> updatePassword({required String newPassword}) async {
     await FirebaseAuth.instance.currentUser!.updatePassword(newPassword);
   }
-
 }

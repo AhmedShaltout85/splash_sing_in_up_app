@@ -1,8 +1,10 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_button.dart';
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_text.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/resuable_widgets.dart';
+import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_dialog.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
 import 'package:splash_sing_in_up_app/newtorkl_repos/remote_repo/firebase_api_services.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
@@ -145,16 +147,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         emailAddress: _emailController.text.trim(),
                         password: _passwordController.text.trim(),
                       );
-                      ReusableToast.showToast(
-                        message: 'Account created successfully',
-                        bgColor: Colors.green,
-                        textColor: Colors.white,
-                        fontSize: fontSize,
+                      FirebaseApiSAuthServices.verifyEmail();
+                      // ReusableToast.showToast(
+                      //   message: 'Account created successfully',
+                      //   bgColor: Colors.green,
+                      //   textColor: Colors.white,
+                      //   fontSize: fontSize,
+                      // );
+                      ReusableDialog.showAwesomeDialog(
+                        context,
+                        title: 'Account created successfully',
+                        description:
+                            'Please check your email to verify your account',
+                        dialogType: DialogType.success,
                       );
-                      FirebaseAuth.instance.currentUser!
-                          .sendEmailVerification();
                       // Handle create account
-                      navigateTo(context, LoginScreen());
+                      // navigateTo(context, LoginScreen());
                     },
                   ),
 
