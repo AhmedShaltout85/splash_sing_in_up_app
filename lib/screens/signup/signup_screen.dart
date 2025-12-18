@@ -1,11 +1,9 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_button.dart';
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_text.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/resuable_widgets.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_dialog.dart';
-import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
 import 'package:splash_sing_in_up_app/newtorkl_repos/remote_repo/firebase_api_services.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
 import 'package:splash_sing_in_up_app/utils/app_colors.dart';
@@ -142,25 +140,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 50,
                     width: 200,
                     onTap: () {
-                      //create account on firebase by email and password
-                      FirebaseApiSAuthServices.createUserWithEmailAndPassword(
-                        emailAddress: _emailController.text.trim(),
-                        password: _passwordController.text.trim(),
-                      );
-                      FirebaseApiSAuthServices.verifyEmail();
-                      // ReusableToast.showToast(
-                      //   message: 'Account created successfully',
-                      //   bgColor: Colors.green,
-                      //   textColor: Colors.white,
-                      //   fontSize: fontSize,
-                      // );
-                      ReusableDialog.showAwesomeDialog(
-                        context,
-                        title: 'Account created successfully',
-                        description:
-                            'Please check your email to verify your account',
-                        dialogType: DialogType.success,
-                      );
+                      if (_firstNameController.text.isNotEmpty &&
+                          _lastNameController.text.isNotEmpty &&
+                          _userNameController.text.isNotEmpty &&
+                          _emailController.text.isNotEmpty &&
+                          _passwordController.text.isNotEmpty &&
+                          _confirmPasswordController.text.isNotEmpty &&
+                          _passwordController.text ==
+                              _confirmPasswordController.text) {
+                        //create account on firebase by email and password
+                        FirebaseApiSAuthServices.createUserWithEmailAndPassword(
+                          emailAddress: _emailController.text.trim(),
+                          password: _passwordController.text.trim(),
+                        );
+
+                        ReusableDialog.showAwesomeDialog(
+                          context,
+                          title: 'Account created successfully',
+                          description:
+                              'Please check your email to verify your account',
+                          dialogType: DialogType.success,
+                        );
+                      } else {
+                        ReusableDialog.showAwesomeDialog(
+                          context,
+                          title: 'Error',
+                          description: 'Please fill all fields correctly',
+                          dialogType: DialogType.error,
+                        );
+                      }
                       // Handle create account
                       // navigateTo(context, LoginScreen());
                     },

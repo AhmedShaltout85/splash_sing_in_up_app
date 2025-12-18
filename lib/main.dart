@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(
               builder: (context) => const SignUpScreen(),
             );
+
           default:
             return MaterialPageRoute(
               builder: (context) => const SplashScreen(),

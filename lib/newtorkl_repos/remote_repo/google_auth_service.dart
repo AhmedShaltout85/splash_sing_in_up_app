@@ -1,8 +1,8 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:splash_sing_in_up_app/newtorkl_repos/remote_repo/add_new_user_to_db.dart';
 
 // Google Sign-In Service Class
 class GoogleSignInService {
@@ -45,23 +45,8 @@ class GoogleSignInService {
       );
       final UserCredential userCredential = await FirebaseAuth.instance
           .signInWithCredential(credential);
-      final User? user = userCredential.user;
-      if (user != null) {
-        final userDoc = FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid);
-        final docSnapshot = await userDoc.get();
-        if (!docSnapshot.exists) {
-          await userDoc.set({
-            'uid': user.uid,
-            'name': user.displayName ?? '',
-            'email': user.email ?? '',
-            'photoURL': user.photoURL ?? '',
-            'provider': 'google',
-            'createdAt': FieldValue.serverTimestamp(),
-          });
-        }
-      }
+      // Save user data to Firestore
+      await AddNewUserToDB.saveUserInfo(userCredential);
       return userCredential;
     } catch (e) {
       log('Error: $e');

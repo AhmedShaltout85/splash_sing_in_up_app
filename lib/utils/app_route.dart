@@ -3,4 +3,5 @@ class AppRoute {
   static const String loginRouteName = '/login-screen';
   static const String signupRouteName = '/signup-screen';
   static const String homeRouteName = '/home-screen';
+  static const String testRouteName = '/test-screen';
 }

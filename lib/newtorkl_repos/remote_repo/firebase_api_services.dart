@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:splash_sing_in_up_app/newtorkl_repos/remote_repo/add_new_user_to_db.dart';
 
 class FirebaseApiSAuthServices {
   static FirebaseApiSAuthServices instance = FirebaseApiSAuthServices();
@@ -15,7 +16,10 @@ class FirebaseApiSAuthServices {
             email: emailAddress,
             password: password,
           );
+      //save user data
+      await AddNewUserToDB.saveUserInfo(credential);
 
+      //
       log(credential.user!.email.toString());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -39,7 +43,6 @@ class FirebaseApiSAuthServices {
         password: password,
       );
       log(credential.user!.email.toString());
-      credential.user!.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         log('No user found for that email.');
@@ -85,8 +88,27 @@ class FirebaseApiSAuthServices {
   //verify email
 
   static Future<void> verifyEmail() async {
-    await FirebaseAuth.instance.currentUser!.sendEmailVerification();
+    await FirebaseAuth.instance.currentUser?.sendEmailVerification();
   }
+  // static Future<void> verifyEmail() async {
+  //   try {
+  //     final user = FirebaseAuth.instance.currentUser;
+
+  //     if (user == null) {
+  //       throw Exception('No user is currently signed in');
+  //     }
+
+  //     if (!user.emailVerified) {
+  //       await user.sendEmailVerification();
+  //       log('Verification email sent to ${user.email}');
+  //     } else {
+  //       log('Email is already verified');
+  //     }
+  //   } catch (e) {
+  //     log('Error sending verification email: $e');
+  //     rethrow;
+  //   }
+  // }
 
   //update password
 

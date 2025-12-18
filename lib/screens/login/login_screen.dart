@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_button.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_dialog.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
+import 'package:splash_sing_in_up_app/newtorkl_repos/remote_repo/facebook_auth_service.dart';
 import 'package:splash_sing_in_up_app/newtorkl_repos/remote_repo/firebase_api_services.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
 import 'package:splash_sing_in_up_app/utils/app_colors.dart';
@@ -200,8 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onTap: () {
                   // Handle login
                   if (_usernameController.text.isNotEmpty &&
-                      _passwordController.text.isNotEmpty &&
-                      FirebaseAuth.instance.currentUser!.emailVerified) {
+                      _passwordController.text.isNotEmpty) {
                     FirebaseAuth.instance.signInWithEmailAndPassword(
                       email: _usernameController.text,
                       password: _passwordController.text,
@@ -214,7 +214,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                     navigateToReplacementNamed(context, AppRoute.homeRouteName);
                   } else {
-                    FirebaseAuth.instance.currentUser!.sendEmailVerification();
                     log('Please verify your email ${_usernameController.text}');
                     ReusableDialog.showAwesomeDialog(
                       context,
@@ -247,7 +246,31 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Facebook button
-                  CustomSocialIcon(iconPath: AppAssets.facebook, onTap: () {}),
+                  CustomSocialIcon(
+                    iconPath: AppAssets.facebook,
+                    onTap: () {
+                      //facebookSignIn
+                      if (FirebaseAuth.instance.currentUser != null) {
+                        navigateToReplacementNamed(
+                          context,
+                          AppRoute.homeRouteName,
+                        );
+                      } else {
+                        try {
+                          FacebookAuthService.login();
+                        } catch (e) {
+                          log('Error logging in with Facebook: $e');
+                          ReusableToast.showToast(
+                            message:
+                                'Error logging in with Facebook: ======> $e',
+                            bgColor: AppColors.redColor,
+                            textColor: AppColors.whiteColor,
+                            fontSize: 16,
+                          );
+                        }
+                      }
+                    },
+                  ),
 
                   gap(width: 24),
 
