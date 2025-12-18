@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Splash Sing In Up App</string>
+    
+    <!-- Replace with your actual Facebook App ID -->
+    <string name="facebook_app_id">1211526794262745</string>
+    
+    <!-- Replace with your actual Facebook Client Token -->
+    <string name="facebook_client_token">72c598df63407b177a52533f824cf1f0</string>
+    
+    <!-- Replace 1234567890 with your Facebook App ID -->
+    <string name="fb_login_protocol_scheme">fb1211526794262745</string>
+</resources>

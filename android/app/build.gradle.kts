@@ -31,6 +31,9 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        manifestPlaceholders["appAuthRedirectScheme"] = "fb1211526794262745"
+
+
     }
 
     buildTypes {
@@ -44,4 +47,8 @@ android {
 
 flutter {
     source = "../.."
+}
+dependencies {
+    // Make sure you have this dependency
+    implementation("com.facebook.android:facebook-login:latest.release")
 }
