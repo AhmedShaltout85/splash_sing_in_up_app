@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:splash_sing_in_up_app/newtorkl_repos/remote_repo/add_new_user_to_db.dart';
+import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/add_new_user_to_db.dart';
 
 // Google Sign-In Service Class
 class GoogleSignInService {

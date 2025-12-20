@@ -4,7 +4,7 @@ import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_butto
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_text.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/resuable_widgets.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_dialog.dart';
-import 'package:splash_sing_in_up_app/newtorkl_repos/remote_repo/firebase_api_services.dart';
+import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firebase_api_services.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
 import 'package:splash_sing_in_up_app/utils/app_colors.dart';
 

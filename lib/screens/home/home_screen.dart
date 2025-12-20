@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:splash_sing_in_up_app/newtorkl_repos/remote_repo/firebase_api_services.dart';
+import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firebase_api_services.dart';
 import 'package:splash_sing_in_up_app/utils/app_colors.dart';
 
 class HomeScreen extends StatelessWidget {
