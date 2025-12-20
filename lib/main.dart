@@ -39,34 +39,34 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'UI Kit App',
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          case AppRoute.splashRouteName:
-            return MaterialPageRoute(
-              builder: (context) => const SplashScreen(),
-            );
-          case AppRoute.loginRouteName:
-            return MaterialPageRoute(builder: (context) => const LoginScreen());
-          case AppRoute.homeRouteName:
-            return MaterialPageRoute(builder: (context) => const HomeScreen());
-          case AppRoute.signupRouteName:
-            return MaterialPageRoute(
-              builder: (context) => const SignUpScreen(),
-            );
-          case AppRoute.userRouteName:
-            return MaterialPageRoute(
-              builder: (context) => const UserListScreen(),
-            );
-          case AppRoute.taskRouteName:
-            return MaterialPageRoute(builder: (context) => const TaskScreen());
+      // onGenerateRoute: (settings) {
+      //   switch (settings.name) {
+      //     case AppRoute.splashRouteName:
+      //       return MaterialPageRoute(
+      //         builder: (context) => const SplashScreen(),
+      //       );
+      //     case AppRoute.loginRouteName:
+      //       return MaterialPageRoute(builder: (context) => const LoginScreen());
+      //     case AppRoute.homeRouteName:
+      //       return MaterialPageRoute(builder: (context) => const HomeScreen());
+      //     case AppRoute.signupRouteName:
+      //       return MaterialPageRoute(
+      //         builder: (context) => const SignUpScreen(),
+      //       );
+      //     case AppRoute.userRouteName:
+      //       return MaterialPageRoute(
+      //         builder: (context) => const UserListScreen(),
+      //       );
+      //     case AppRoute.taskRouteName:
+      //       return MaterialPageRoute(builder: (context) => const TaskScreen());
 
-          default:
-            return MaterialPageRoute(
-              builder: (context) => const SplashScreen(),
-            );
-        }
-      },
-      // home: const TaskScreen(),
+      //     default:
+      //       return MaterialPageRoute(
+      //         builder: (context) => const SplashScreen(),
+      //       );
+      //   }
+      // },
+      home: const TaskScreen(),
     );
   }
 }

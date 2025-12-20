@@ -13,6 +13,9 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
+  final taskTitleController = TextEditingController();
+  final taskDescriptionController = TextEditingController();
+  final taskNoteController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -24,11 +27,15 @@ class _TaskScreenState extends State<TaskScreen> {
     });
   }
 
-  void _showAddTaskDialog() {
-    final taskTitleController = TextEditingController();
-    final taskDescriptionController = TextEditingController();
-    final taskNoteController = TextEditingController();
+  @override
+  void dispose() {
+    taskTitleController.dispose();
+    taskDescriptionController.dispose();
+    taskNoteController.dispose();
+    super.dispose();
+  }
 
+  void _showAddTaskDialog() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -84,7 +91,15 @@ class _TaskScreenState extends State<TaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Tasks')),
+      appBar: AppBar(
+        title: const Text('Tasks', style: TextStyle(color: Colors.blue)),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.blue),
+            onPressed: _showAddTaskDialog,
+          ),
+        ],
+      ),
       body: Consumer<TaskProvider>(
         builder: (context, provider, child) {
           if (provider.isLoading && provider.tasks.isEmpty) {
@@ -124,9 +139,16 @@ class _TaskScreenState extends State<TaskScreen> {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: ListTile(
-                  title: Text(task.taskTitle),
+                  title: Text(
+                    task.taskTitle,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   subtitle: Text(
-                    '${task.taskDescription} - Age: ${task.notes}',
+                    'Description: ${task.taskDescription} \n Note: ${task.notes} \n Status: ${task.status} \n Assigned To: ${task.assignedTo} \n Assigned By: ${task.assignedBy} \n Created At: ${task.createdAt} \n Updated At: ${task.updatedAt}',
+                    style: const TextStyle(fontSize: 15),
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -142,7 +164,10 @@ class _TaskScreenState extends State<TaskScreen> {
                       ),
                       IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
-                        onPressed: () => provider.deleteTask(task.id),
+                        onPressed: () {
+                          provider.updateTask(task.id, {'status': false});
+                          provider.fetchTasks();
+                        },
                       ),
                     ],
                   ),
@@ -153,8 +178,9 @@ class _TaskScreenState extends State<TaskScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue,
         onPressed: _showAddTaskDialog,
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

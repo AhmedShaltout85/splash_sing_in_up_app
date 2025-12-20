@@ -50,6 +50,7 @@ class TaskFirestoreServices {
 
       return snapshot.docs
           .map((doc) => TaskModel.fromMap(doc.data() as Map<String, dynamic>))
+          .where((doc) => doc.status == true)
           .toList();
     } catch (e) {
       throw Exception('Error retrieving all data: $e');
