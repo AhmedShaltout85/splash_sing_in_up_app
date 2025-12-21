@@ -1,116 +1,111 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:splash_sing_in_up_app/models/task_model.dart';
+
+import '../../../models/task_model.dart';
 
 class TaskFirestoreServices {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
   static const String _collectionName = 'tasks';
 
-  // Add a new document
-  static Future<String> addTaskData(TaskModel task) async {
+  // Fetch all tasks
+  static Future<List<Task>> getAllTasks() async {
     try {
-      DocumentReference docRef = await _db
+      final snapshot = await _db
           .collection(_collectionName)
-          .add(task.toMap());
-      return docRef.id;
-    } catch (e) {
-      throw Exception('Error adding data: $e');
-    }
-  }
-
-  // Add a document with custom ID
-  static Future<void> addTaskDataWithId(String id, TaskModel task) async {
-    try {
-      await _db.collection(_collectionName).doc(id).set(task.toMap());
-    } catch (e) {
-      throw Exception('Error adding data with ID: $e');
-    }
-  }
-
-  // Retrieve a single document by ID
-  static Future<TaskModel?> getData(String id) async {
-    try {
-      DocumentSnapshot doc = await _db
-          .collection(_collectionName)
-          .doc(id)
+          .where('status', isEqualTo: true)
           .get();
 
-      if (doc.exists) {
-        return TaskModel.fromMap(doc.data() as Map<String, dynamic>);
-      }
-      return null;
-    } catch (e) {
-      throw Exception('Error retrieving data: $e');
-    }
-  }
-
-  // Retrieve all documents
-  static Future<List<TaskModel>> getAllTaskData() async {
-    try {
-      QuerySnapshot snapshot = await _db.collection(_collectionName).get();
-
-      return snapshot.docs
-          .map((doc) => TaskModel.fromMap(doc.data() as Map<String, dynamic>))
-          .where((doc) => doc.status == true)
-          .toList();
+      return snapshot.docs.map((doc) {
+        return Task.fromFirestore(doc);
+      }).toList();
     } catch (e) {
       throw Exception('Error retrieving all data: $e');
     }
   }
 
-  // Retrieve documents with a query
-  static Future<List<TaskModel>> getTaskDataWhere({
-    required String field,
-    required dynamic isEqualTo,
-  }) async {
+  // Fetch a single task
+  static Future<Task?> getTask(String id) async {
     try {
-      QuerySnapshot snapshot = await _db
-          .collection(_collectionName)
-          .where(field, isEqualTo: isEqualTo)
-          .get();
+      final doc = await _db.collection(_collectionName).doc(id).get();
 
-      return snapshot.docs
-          .map((doc) => TaskModel.fromMap(doc.data() as Map<String, dynamic>))
-          .toList();
+      if (!doc.exists) {
+        return null;
+      }
+
+      return Task.fromFirestore(doc);
     } catch (e) {
-      throw Exception('Error querying data: $e');
+      throw Exception('Error retrieving task: $e');
     }
   }
 
-  // Update a document
+  // Add a new task (Firestore generates ID)
+  static Future<String> addTask(Map<String, dynamic> data) async {
+    try {
+      data['createdAt'] = FieldValue.serverTimestamp();
+      data['updatedAt'] = FieldValue.serverTimestamp();
+
+      final docRef = await _db.collection(_collectionName).add(data);
+      return docRef.id;
+    } catch (e) {
+      throw Exception('Error adding task: $e');
+    }
+  }
+
+  // Update a task
   static Future<void> updateTaskData(
     String id,
     Map<String, dynamic> data,
   ) async {
     try {
+      // Check if document exists
+      final docSnapshot = await _db.collection(_collectionName).doc(id).get();
+
+      if (!docSnapshot.exists) {
+        throw Exception('Task with ID $id does not exist');
+      }
+
+      // Add update timestamp
+      data['updatedAt'] = FieldValue.serverTimestamp();
+
       await _db.collection(_collectionName).doc(id).update(data);
     } catch (e) {
       throw Exception('Error updating data: $e');
     }
   }
 
-  // Delete a document
-  static Future<void> deleteTaskData(String id) async {
+  // Update or create task (use set with merge)
+  static Future<void> updateOrCreateTask(
+    String id,
+    Map<String, dynamic> data,
+  ) async {
     try {
-      await _db.collection(_collectionName).doc(id).delete();
+      data['updatedAt'] = FieldValue.serverTimestamp();
+
+      await _db
+          .collection(_collectionName)
+          .doc(id)
+          .set(data, SetOptions(merge: true));
     } catch (e) {
-      throw Exception('Error deleting data: $e');
+      throw Exception('Error updating/creating data: $e');
     }
   }
 
-  // Stream for real-time updates (all documents)
-  static Stream<List<TaskModel>> streamAllData() {
-    return _db.collection(_collectionName).snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) => TaskModel.fromMap(doc.data())).toList();
-    });
+  // Delete a task
+  static Future<void> deleteTask(String id) async {
+    try {
+      await _db.collection(_collectionName).doc(id).delete();
+    } catch (e) {
+      throw Exception('Error deleting task: $e');
+    }
   }
 
-  // Stream for real-time updates (single document)
-  static Stream<TaskModel?> streamData(String id) {
-    return _db.collection(_collectionName).doc(id).snapshots().map((doc) {
-      if (doc.exists) {
-        return TaskModel.fromMap(doc.data() as Map<String, dynamic>);
-      }
-      return null;
-    });
+  // Stream tasks (real-time updates)
+  static Stream<List<Task>> streamTasks() {
+    return _db
+        .collection(_collectionName)
+        .snapshots()
+        .map(
+          (snapshot) =>
+              snapshot.docs.map((doc) => Task.fromFirestore(doc)).toList(),
+        );
   }
 }

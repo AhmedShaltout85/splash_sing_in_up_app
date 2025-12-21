@@ -1,81 +1,80 @@
-class TaskModel {
-  final String id;
-  final String taskTitle;
-  final String taskDescription;
-  final String dateTime;
-  final bool status;
-  final String assignedTo;
-  final String assignedBy;
-  final String createdAt;
-  final String updatedAt;
-  String? notes;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  TaskModel({
+class Task {
+  final String id;
+  final String? title;
+  final bool status;
+  final String? taskDescription;
+  final String? assignedTo;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final String? notes;
+
+  Task({
+    this.taskDescription,
     required this.id,
-    required this.taskTitle,
-    required this.taskDescription,
-    required this.dateTime,
+    this.title,
     required this.status,
-    required this.assignedTo,
-    required this.assignedBy,
-    required this.createdAt,
-    required this.updatedAt,
+    this.assignedTo,
+    this.createdAt,
+    this.updatedAt,
     this.notes,
   });
 
-  TaskModel copyWith({
-    String? id,
-    String? taskTitle,
-    String? taskDescription,
-    String? dateTime,
-    bool? status,
-    String? assignedTo,
-    String? assignedBy,
-    String? createdAt,
-    String? updatedAt,
-    String? notes,
-  }) {
-    return TaskModel(
-      id: id ?? this.id,
-      taskTitle: taskTitle ?? this.taskTitle,
-      taskDescription: taskDescription ?? this.taskDescription,
-      dateTime: dateTime ?? this.dateTime,
-      status: status ?? this.status,
-      assignedTo: assignedTo ?? this.assignedTo,
-      assignedBy: assignedBy ?? this.assignedBy,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      notes: notes ?? this.notes,
+  // Convert Firestore document to Task
+  factory Task.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+
+    return Task(
+      id: doc.id,
+      title: data['title'] as String?,
+      status: data['status'] as bool? ?? false,
+      assignedTo: data['assignedTo'] as String?,
+      notes: data['notes'] as String?,
+      taskDescription: data['taskDescription'] as String?,
+      // Convert Timestamp to DateTime
+      createdAt: (data['createdAt'] as Timestamp?)?.toDate(),
+      updatedAt: (data['updatedAt'] as Timestamp?)?.toDate(),
     );
   }
 
-  Map<String, dynamic> toMap() {
+  // Convert Task to Map for Firestore
+  Map<String, dynamic> toFirestore() {
     return {
-      'id': id,
-      'taskTitle': taskTitle,
-      'taskDescription': taskDescription,
-      'dateTime': dateTime,
+      'title': title,
       'status': status,
       'assignedTo': assignedTo,
-      'assignedBy': assignedBy,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
       'notes': notes,
+      'taskDescription': taskDescription,
+      'createdAt': createdAt != null
+          ? Timestamp.fromDate(createdAt!)
+          : FieldValue.serverTimestamp(),
+      'updatedAt': updatedAt != null
+          ? Timestamp.fromDate(updatedAt!)
+          : FieldValue.serverTimestamp(),
     };
   }
 
-  factory TaskModel.fromMap(Map<String, dynamic> map) {
-    return TaskModel(
-      id: map['id'] ?? '',
-      taskTitle: map['taskTitle'] ?? '',
-      taskDescription: map['taskDescription'] ?? '',
-      dateTime: map['dateTime'] ?? '',
-      status: map['status'] ?? false,
-      assignedTo: map['assignedTo'] ?? '',
-      assignedBy: map['assignedBy'] ?? '',
-      createdAt: map['createdAt'] ?? '',
-      updatedAt: map['updatedAt'] ?? '',
-      notes: map['notes'] ?? '',
+  // CopyWith method for updating
+  Task copyWith({
+    String? id,
+    String? title,
+    bool? status,
+    String? assignedTo,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? taskDescription,
+    String? notes,
+  }) {
+    return Task(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      status: status ?? this.status,
+      assignedTo: assignedTo ?? this.assignedTo,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      notes: notes ?? this.notes,
+      taskDescription: taskDescription ?? this.taskDescription,
     );
   }
 }
