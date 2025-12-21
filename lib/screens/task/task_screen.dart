@@ -134,7 +134,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Logged out successfully'),
+                      content: Center(child: Text('Logged out successfully')),
                       backgroundColor: Colors.green,
                     ),
                   );
