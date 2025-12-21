@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../../models/task_model.dart';
+import '../../../models/task.dart';
 
 class TaskFirestoreServices {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;

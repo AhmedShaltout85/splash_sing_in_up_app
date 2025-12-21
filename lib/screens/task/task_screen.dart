@@ -2,8 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:splash_sing_in_up_app/controller/task_provider.dart';
-import 'package:splash_sing_in_up_app/models/task_model.dart';
+// import 'package:splash_sing_in_up_app/controller/task_provider.dart';
+import 'package:splash_sing_in_up_app/controller/task_providers.dart';
+import 'package:splash_sing_in_up_app/models/task.dart';
 
 import '../../newtork_repos/remote_repo/firebase_api_services.dart';
 
@@ -24,7 +25,7 @@ class _TaskScreenState extends State<TaskScreen> {
     super.initState();
     // Fetch tasks on screen load
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<TaskProvider>().fetchTasks();
+      context.read<TaskProviders>().fetchTasks();
     });
   }
 
@@ -83,7 +84,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
               try {
                 // Don't set 'id' - let Firestore generate it
-                await context.read<TaskProvider>().addTask({
+                await context.read<TaskProviders>().addTask({
                   'title': taskTitleController.text.trim(),
                   'taskDescription': taskDescriptionController.text.trim(),
                   'notes': taskNoteController.text.trim(),
@@ -154,7 +155,7 @@ class _TaskScreenState extends State<TaskScreen> {
           ),
         ],
       ),
-      body: Consumer<TaskProvider>(
+      body: Consumer<TaskProviders>(
         builder: (context, provider, child) {
           if (provider.isLoading && provider.tasks.isEmpty) {
             return const Center(child: CircularProgressIndicator());
@@ -232,7 +233,7 @@ class TaskItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TaskProvider>(context, listen: false);
+    final provider = Provider.of<TaskProviders>(context, listen: false);
 
     final colorList = <Color>[
       Colors.red.shade100,
@@ -380,7 +381,7 @@ class TaskItemCard extends StatelessWidget {
 
   void _showDeleteConfirmation(
     BuildContext context,
-    TaskProvider provider,
+    TaskProviders provider,
     Task task,
   ) {
     showDialog(

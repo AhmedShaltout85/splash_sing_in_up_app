@@ -1,124 +1,135 @@
-import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
-
+import 'package:splash_sing_in_up_app/newtork_repos/local_repos/task_repository.dart';
 import '../models/task_model.dart';
-import '../newtork_repos/remote_repo/firestore_services/task_firestore_services.dart';
 
-class TaskProvider extends ChangeNotifier {
-  List<Task> _tasks = [];
+class TaskProvider with ChangeNotifier {
+  final TaskRepository _repository;
+
+  List<TaskModel> _tasks = [];
   bool _isLoading = false;
   String? _error;
+  bool _disposed = false;
 
-  List<Task> get tasks => _tasks;
+  TaskProvider(this._repository) {
+    _init();
+  }
+
+  List<TaskModel> get tasks => _tasks;
   bool get isLoading => _isLoading;
   String? get error => _error;
 
-  void _setLoading(bool value) {
-    _isLoading = value;
+  Future<void> _init() async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+
+      // Start listening to task stream
+      _repository.tasksStream.listen(
+        (tasks) {
+          if (!_disposed) {
+            _tasks = tasks.where((task) => task.status == true).toList();
+            _isLoading = false;
+            _error = null;
+            notifyListeners();
+          }
+        },
+        onError: (error) {
+          if (!_disposed) {
+            _error = error.toString();
+            _isLoading = false;
+            notifyListeners();
+          }
+        },
+      );
+    } catch (e) {
+      if (!_disposed) {
+        _error = e.toString();
+        _isLoading = false;
+        notifyListeners();
+      }
+    }
+  }
+
+  // Method to manually fetch tasks (for compatibility with your code)
+  Future<void> fetchTasks() async {
+    // Since we're using streams, this just triggers a refresh
+    _isLoading = true;
+    notifyListeners();
+
+    // The stream will update automatically
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    _isLoading = false;
     notifyListeners();
   }
 
-  // Fetch all tasks
-  Future<void> fetchTasks() async {
-    _setLoading(true);
+  Future<void> addTask(TaskModel task) async {
     try {
-      _tasks = await TaskFirestoreServices.getAllTasks();
-      _error = null;
-      notifyListeners();
+      await _repository.addTask(task);
     } catch (e) {
-      _error = e.toString();
-      notifyListeners();
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  // Add a task
-  Future<String?> addTask(Map<String, dynamic> data) async {
-    _setLoading(true);
-    try {
-      final id = await TaskFirestoreServices.addTask(data);
-      await fetchTasks(); // Refresh list
-      _error = null;
-      return id;
-    } catch (e) {
-      _error = e.toString();
-      notifyListeners();
-      return null;
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  // Update a task
-  Future<void> updateTask(String id, Map<String, dynamic> data) async {
-    _setLoading(true);
-    try {
-      await TaskFirestoreServices.updateTaskData(id, data);
-
-      // Update local list
-      int index = _tasks.indexWhere((task) => task.id == id);
-      if (index != -1) {
-        _tasks[index] = _tasks[index].copyWith(
-          status: data['status'] as bool?,
-          assignedTo: data['assignedTo'] as String?,
-          updatedAt: DateTime.now(),
-          notes: data['notes'] as String?,
-        );
+      if (!_disposed) {
+        _error = e.toString();
+        notifyListeners();
+        rethrow;
       }
-
-      _error = null;
-      notifyListeners();
-    } catch (e) {
-      _error = e.toString();
-      notifyListeners();
-      rethrow;
-    } finally {
-      _setLoading(false);
     }
   }
 
-  // Delete a task
-  Future<void> deleteTask(String id) async {
-    _setLoading(true);
+  Future<void> updateTask(TaskModel task) async {
     try {
-      await TaskFirestoreServices.deleteTask(id);
-      _tasks.removeWhere((task) => task.id == id);
-      _error = null;
-      notifyListeners();
+      await _repository.updateTask(task);
     } catch (e) {
-      _error = e.toString();
-      notifyListeners();
-      rethrow;
-    } finally {
-      _setLoading(false);
+      if (!_disposed) {
+        _error = e.toString();
+        notifyListeners();
+        rethrow;
+      }
     }
   }
 
-  // Listen to real-time updates
-  void listenToTasks() {
-    TaskFirestoreServices.streamTasks().listen(
-      (tasks) {
-        _tasks = tasks;
-        _error = null;
+  // Alternative update method that takes Map (for compatibility)
+  Future<void> updateTaskMap(
+    String taskId,
+    Map<String, dynamic> updates,
+  ) async {
+    try {
+      final existingTask = _tasks.firstWhere((task) => task.id == taskId);
+      final updatedTask = TaskModel(
+        id: existingTask.id,
+        title: updates['title'] ?? existingTask.title,
+        status: updates['status'] ?? existingTask.status,
+        taskDescription:
+            updates['taskDescription'] ?? existingTask.taskDescription,
+        assignedTo: updates['assignedTo'] ?? existingTask.assignedTo,
+        createdAt: existingTask.createdAt,
+        updatedAt: DateTime.now(),
+        notes: updates['notes'] ?? existingTask.notes,
+      );
+      await _repository.updateTask(updatedTask);
+    } catch (e) {
+      if (!_disposed) {
+        _error = e.toString();
         notifyListeners();
-      },
-      onError: (error) {
-        _error = error.toString();
-        notifyListeners();
-      },
-    );
+        rethrow;
+      }
+    }
   }
 
-  // Debug method
-  void debuglogTaskIds() {
-    log('=== Current Task IDs ===');
-    for (var task in _tasks) {
-      log('Task ID: ${task.id}, Title: ${task.title ?? "No title"}');
+  Future<void> deleteTask(String taskId) async {
+    try {
+      await _repository.deleteTask(taskId);
+    } catch (e) {
+      if (!_disposed) {
+        _error = e.toString();
+        notifyListeners();
+        rethrow;
+      }
     }
-    log('=======================');
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
   }
 }
-
-// ======
