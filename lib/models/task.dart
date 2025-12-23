@@ -13,7 +13,7 @@ class Task {
   final DateTime? updatedAt;
   final DateTime expectedCompletionDate;
   final String taskPriority;
-  final String? notes;
+  final String? taskNote;
 
   Task({
     required this.applicationName,
@@ -28,7 +28,7 @@ class Task {
     required this.assignedTo,
     required this.createdAt,
     this.updatedAt,
-    this.notes,
+    this.taskNote,
   });
 
   // Convert Firestore document to Task
@@ -40,36 +40,19 @@ class Task {
       taskTitle: data['taskTitle'] as String? ?? '',
       taskStatus: data['taskStatus'] as bool? ?? true,
       assignedTo: data['assignedTo'] as String? ?? '',
-      notes: data['notes'] as String?,
+      taskNote: data['taskNote'] as String?,
       visitPlace: data['visitPlace'] as String? ?? '',
       applicationName: data['applicationName'] as String? ?? '',
       assignedBy: data['assignedBy'] as String? ?? '',
       coOperator: data['coOperator'] as String? ?? '',
       expectedCompletionDate:
-          data['expectedCompletionDate'] as DateTime? ?? DateTime.now(),
+          (data['expectedCompletionDate'] as Timestamp?)?.toDate() ??
+          DateTime.now(),
       taskPriority: data['taskPriority'] as String? ?? '',
       // Convert Timestamp to DateTime
       createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       updatedAt: (data['updatedAt'] as Timestamp?)?.toDate(),
     );
-  }
-
-  // Convert Task to Map for Firestore
-  Map<String, dynamic> toFirestore() {
-    return {
-      'taskTitle': taskTitle,
-      'taskStatus': taskStatus,
-      'assignedTo': assignedTo,
-      'notes': notes,
-      'visitPlace': visitPlace,
-      'createdAt': createdAt,
-      // != null
-      //     ? Timestamp.fromDate(createdAt)
-      //     : FieldValue.serverTimestamp(),
-      'updatedAt': updatedAt != null
-          ? Timestamp.fromDate(updatedAt!)
-          : FieldValue.serverTimestamp(),
-    };
   }
 
   // CopyWith method for updating
@@ -95,7 +78,7 @@ class Task {
       assignedTo: assignedTo ?? this.assignedTo,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      notes: notes ?? this.notes,
+      taskNote: taskNote,
       visitPlace: visitPlace ?? this.visitPlace,
       applicationName: applicationName ?? this.applicationName,
       assignedBy: assignedBy ?? this.assignedBy,
@@ -105,4 +88,26 @@ class Task {
       taskPriority: taskPriority ?? this.taskPriority,
     );
   }
+
+  // Convert Task to Map for Firestore
+  // Map<String, dynamic> toFirestore() {
+  //   return {
+  //     'taskTitle': taskTitle,
+  //     'taskStatus': taskStatus,
+  //     'assignedTo': assignedTo,
+  //     'taskNote': taskNote,
+  //     'applicationName': applicationName,
+  //     'assignedBy': assignedBy,
+  //     'coOperator': coOperator,
+  //     'expectedCompletionDate': expectedCompletionDate,  // Convert DateTime to Timestamp
+  //     'visitPlace': visitPlace,
+  //     'createdAt': createdAt,
+  //     // != null
+  //     //     ? Timestamp.fromDate(createdAt)
+  //     //     : FieldValue.serverTimestamp(),
+  //     'updatedAt': updatedAt != null
+  //         ? Timestamp.fromDate(updatedAt!)
+  //         : FieldValue.serverTimestamp(),
+  //   };
+  // }
 }
