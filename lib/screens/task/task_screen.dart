@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_text_field.dart';
 // import 'package:splash_sing_in_up_app/controller/task_provider.dart';
 import 'package:splash_sing_in_up_app/controller/task_providers.dart';
 import 'package:splash_sing_in_up_app/models/task.dart';
@@ -17,8 +18,13 @@ class TaskScreen extends StatefulWidget {
 
 class _TaskScreenState extends State<TaskScreen> {
   final taskTitleController = TextEditingController();
-  final taskDescriptionController = TextEditingController();
+  final appNameController = TextEditingController();
   final taskNoteController = TextEditingController();
+  final assignToController = TextEditingController();
+  final assignByController = TextEditingController();
+  final taskPeriorityController = TextEditingController();
+  final visitPlaceController = TextEditingController();
+  final coOperateController = TextEditingController();
 
   @override
   void initState() {
@@ -32,35 +38,105 @@ class _TaskScreenState extends State<TaskScreen> {
   @override
   void dispose() {
     taskTitleController.dispose();
-    taskDescriptionController.dispose();
+    appNameController.dispose();
     taskNoteController.dispose();
+    assignToController.dispose();
+    assignByController.dispose();
+    taskPeriorityController.dispose();
+    visitPlaceController.dispose();
+    coOperateController.dispose();
     super.dispose();
   }
 
   void _showAddTaskDialog() {
     // Clear previous input
     taskTitleController.clear();
-    taskDescriptionController.clear();
+    appNameController.clear();
     taskNoteController.clear();
+    assignToController.clear();
+    assignByController.clear();
+    taskPeriorityController.clear();
+    visitPlaceController.clear();
+    coOperateController.clear();
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Add New Task'),
+        title: const Text(
+          'Add New Task',
+          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(
-              controller: taskTitleController,
-              decoration: const InputDecoration(labelText: 'Title'),
+            SizedBox(
+              height: 30,
+              width: MediaQuery.of(context).size.width * 0.85,
             ),
-            TextField(
-              controller: taskDescriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: CustomTextFiled(
+                hintText: 'taskTitle',
+                controller: taskTitleController,
+                prefixIcon: SizedBox.shrink(),
+              ),
             ),
-            TextField(
-              controller: taskNoteController,
-              decoration: const InputDecoration(labelText: 'Note'),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: CustomTextFiled(
+                hintText: 'appName',
+                controller: appNameController,
+                prefixIcon: SizedBox.shrink(),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: CustomTextFiled(
+                hintText: 'taskNote',
+                controller: taskNoteController,
+                prefixIcon: SizedBox.shrink(),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: CustomTextFiled(
+                hintText: 'assignTo',
+                controller: assignToController,
+                prefixIcon: SizedBox.shrink(),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: CustomTextFiled(
+                controller: assignByController,
+                hintText: 'assignBy',
+                prefixIcon: SizedBox.shrink(),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: CustomTextFiled(
+                controller: taskPeriorityController,
+                hintText: 'taskPeriority',
+                prefixIcon: SizedBox.shrink(),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: CustomTextFiled(
+                controller: visitPlaceController,
+                hintText: 'visitPlace',
+                prefixIcon: SizedBox.shrink(),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: CustomTextFiled(
+                controller: coOperateController,
+                hintText: 'coOperate',
+                prefixIcon: SizedBox.shrink(),
+              ),
             ),
           ],
         ),
@@ -85,12 +161,16 @@ class _TaskScreenState extends State<TaskScreen> {
               try {
                 // Don't set 'id' - let Firestore generate it
                 await context.read<TaskProviders>().addTask({
-                  'title': taskTitleController.text.trim(),
-                  'taskDescription': taskDescriptionController.text.trim(),
-                  'notes': taskNoteController.text.trim(),
-                  'status': true,
-                  'assignedTo': 'Anonymous',
-                  'assignedBy': 'Manager',
+                  'id': DateTime.now().millisecondsSinceEpoch.toString(),
+                  'taskTitle': taskTitleController.text,
+                  'applicationName': appNameController.text,
+                  'taskNote': taskNoteController.text,
+                  'assignedTo': assignToController.text,
+                  'assignedBy': assignByController.text,
+                  'taskPeriority': taskPeriorityController.text,
+                  'visitPlace': visitPlaceController.text,
+                  'coOperator': coOperateController.text,
+
                   // Don't include createdAt/updatedAt - Firestore handles it
                 });
 
@@ -263,7 +343,7 @@ class TaskItemCard extends StatelessWidget {
       child: ListTile(
         contentPadding: const EdgeInsets.all(12.0),
         title: Text(
-          task.title ?? 'No Title',
+          task.taskTitle,
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -275,9 +355,18 @@ class TaskItemCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (task.taskDescription?.isNotEmpty ?? false)
+              if (task.assignedBy.isNotEmpty && task.assignedTo.isNotEmpty)
                 Text(
-                  'Description: ${task.taskDescription}',
+                  'Assigned by: ${task.assignedBy} to ${task.assignedTo}',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
+                ),
+              if (task.applicationName.isNotEmpty)
+                Text(
+                  'Application Name: ${task.applicationName}',
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w600,
@@ -297,13 +386,13 @@ class TaskItemCard extends StatelessWidget {
               Row(
                 children: [
                   Icon(
-                    task.status ? Icons.check_circle : Icons.cancel,
+                    task.taskStatus ? Icons.check_circle : Icons.cancel,
                     size: 16,
-                    color: task.status ? Colors.green : Colors.red,
+                    color: task.taskStatus ? Colors.green : Colors.red,
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    'Status: ${task.status ? "Active" : "Inactive"}',
+                    'Status: ${task.taskStatus ? "Active" : "Inactive"}',
                     style: TextStyle(
                       fontSize: 17,
                       color: Colors.black.withOpacity(0.6),
@@ -312,15 +401,14 @@ class TaskItemCard extends StatelessWidget {
                   ),
                 ],
               ),
-              if (task.createdAt != null)
-                Text(
-                  'Created: ${_formatDate(task.createdAt!)}',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black.withOpacity(0.5),
-                  ),
+              Text(
+                'Created: ${_formatDate(task.createdAt)}',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black.withOpacity(0.5),
                 ),
+              ),
             ],
           ),
         ),
@@ -330,13 +418,15 @@ class TaskItemCard extends StatelessWidget {
             // Toggle Status Button
             IconButton(
               icon: Icon(
-                task.status ? Icons.toggle_on : Icons.toggle_off,
-                color: task.status ? Colors.green : Colors.grey,
+                task.taskStatus ? Icons.toggle_on : Icons.toggle_off,
+                color: task.taskStatus ? Colors.green : Colors.grey,
                 size: 32,
               ),
               onPressed: () async {
                 try {
-                  await provider.updateTask(task.id, {'status': !task.status});
+                  await provider.updateTask(task.id, {
+                    'status': !task.taskStatus,
+                  });
                   await provider.fetchTasks();
 
                   if (context.mounted) {
@@ -344,7 +434,7 @@ class TaskItemCard extends StatelessWidget {
                       SnackBar(
                         content: Center(
                           child: Text(
-                            task.status
+                            task.taskStatus
                                 ? 'Task marked as inactive'
                                 : 'Task marked as active',
                           ),
@@ -388,7 +478,7 @@ class TaskItemCard extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Delete Task'),
-        content: Text('Are you sure you want to delete "${task.title}"?'),
+        content: Text('Are you sure you want to delete "${task.taskTitle}"?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

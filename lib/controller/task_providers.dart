@@ -61,7 +61,7 @@ class TaskProviders extends ChangeNotifier {
       int index = _tasks.indexWhere((task) => task.id == id);
       if (index != -1) {
         _tasks[index] = _tasks[index].copyWith(
-          status: data['status'] as bool?,
+          taskStatus: data['taskStatus'] as bool?,
           assignedTo: data['assignedTo'] as String?,
           updatedAt: DateTime.now(),
           notes: data['notes'] as String?,
@@ -115,7 +115,7 @@ class TaskProviders extends ChangeNotifier {
   void debuglogTaskIds() {
     log('=== Current Task IDs ===');
     for (var task in _tasks) {
-      log('Task ID: ${task.id}, Title: ${task.title ?? "No title"}');
+      log('Task ID: ${task.id}, Title: ${task.taskTitle}');
     }
     log('=======================');
   }

@@ -2,21 +2,31 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Task {
   final String id;
-  final String? title;
-  final bool status;
-  final String? taskDescription;
-  final String? assignedTo;
-  final DateTime? createdAt;
+  final String taskTitle;
+  final bool taskStatus;
+  final String applicationName;
+  final String visitPlace;
+  final String assignedTo;
+  final String assignedBy;
+  final String coOperator;
+  final DateTime createdAt;
   final DateTime? updatedAt;
+  final DateTime expectedCompletionDate;
+  final String taskPriority;
   final String? notes;
 
   Task({
-    this.taskDescription,
+    required this.applicationName,
+    required this.assignedBy,
+    required this.coOperator,
+    required this.expectedCompletionDate,
+    required this.taskPriority,
+    required this.visitPlace,
     required this.id,
-    this.title,
-    required this.status,
-    this.assignedTo,
-    this.createdAt,
+    required this.taskTitle,
+    required this.taskStatus,
+    required this.assignedTo,
+    required this.createdAt,
     this.updatedAt,
     this.notes,
   });
@@ -27,13 +37,19 @@ class Task {
 
     return Task(
       id: doc.id,
-      title: data['title'] as String?,
-      status: data['status'] as bool? ?? false,
-      assignedTo: data['assignedTo'] as String?,
+      taskTitle: data['taskTitle'] as String? ?? '',
+      taskStatus: data['taskStatus'] as bool? ?? true,
+      assignedTo: data['assignedTo'] as String? ?? '',
       notes: data['notes'] as String?,
-      taskDescription: data['taskDescription'] as String?,
+      visitPlace: data['visitPlace'] as String? ?? '',
+      applicationName: data['applicationName'] as String? ?? '',
+      assignedBy: data['assignedBy'] as String? ?? '',
+      coOperator: data['coOperator'] as String? ?? '',
+      expectedCompletionDate:
+          data['expectedCompletionDate'] as DateTime? ?? DateTime.now(),
+      taskPriority: data['taskPriority'] as String? ?? '',
       // Convert Timestamp to DateTime
-      createdAt: (data['createdAt'] as Timestamp?)?.toDate(),
+      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       updatedAt: (data['updatedAt'] as Timestamp?)?.toDate(),
     );
   }
@@ -41,14 +57,15 @@ class Task {
   // Convert Task to Map for Firestore
   Map<String, dynamic> toFirestore() {
     return {
-      'title': title,
-      'status': status,
+      'taskTitle': taskTitle,
+      'taskStatus': taskStatus,
       'assignedTo': assignedTo,
       'notes': notes,
-      'taskDescription': taskDescription,
-      'createdAt': createdAt != null
-          ? Timestamp.fromDate(createdAt!)
-          : FieldValue.serverTimestamp(),
+      'visitPlace': visitPlace,
+      'createdAt': createdAt,
+      // != null
+      //     ? Timestamp.fromDate(createdAt)
+      //     : FieldValue.serverTimestamp(),
       'updatedAt': updatedAt != null
           ? Timestamp.fromDate(updatedAt!)
           : FieldValue.serverTimestamp(),
@@ -58,23 +75,34 @@ class Task {
   // CopyWith method for updating
   Task copyWith({
     String? id,
-    String? title,
-    bool? status,
+    String? taskTitle,
+    bool? taskStatus,
     String? assignedTo,
     DateTime? createdAt,
     DateTime? updatedAt,
-    String? taskDescription,
+    String? visitPlace,
     String? notes,
+    String? applicationName,
+    String? assignedBy,
+    String? coOperator,
+    DateTime? expectedCompletionDate,
+    String? taskPriority,
   }) {
     return Task(
       id: id ?? this.id,
-      title: title ?? this.title,
-      status: status ?? this.status,
+      taskTitle: taskTitle ?? this.taskTitle,
+      taskStatus: taskStatus ?? this.taskStatus,
       assignedTo: assignedTo ?? this.assignedTo,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       notes: notes ?? this.notes,
-      taskDescription: taskDescription ?? this.taskDescription,
+      visitPlace: visitPlace ?? this.visitPlace,
+      applicationName: applicationName ?? this.applicationName,
+      assignedBy: assignedBy ?? this.assignedBy,
+      coOperator: coOperator ?? this.coOperator,
+      expectedCompletionDate:
+          expectedCompletionDate ?? this.expectedCompletionDate,
+      taskPriority: taskPriority ?? this.taskPriority,
     );
   }
 }

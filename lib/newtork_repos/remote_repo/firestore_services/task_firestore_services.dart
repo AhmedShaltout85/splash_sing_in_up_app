@@ -11,7 +11,7 @@ class TaskFirestoreServices {
     try {
       final snapshot = await _db
           .collection(_collectionName)
-          .where('status', isEqualTo: true)
+          .where('taskStatus', isEqualTo: true)
           .get();
 
       return snapshot.docs.map((doc) {
