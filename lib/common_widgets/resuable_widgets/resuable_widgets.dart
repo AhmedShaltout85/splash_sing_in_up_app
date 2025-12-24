@@ -29,7 +29,11 @@ void navigateToReplacementNamed(BuildContext context, String routeName) =>
 Widget gap({double? height, double? width}) =>
     SizedBox(height: height, width: width);
 
-void showCustomBottomSheet(BuildContext context) {
+void showCustomBottomSheet({
+  required BuildContext context,
+  required List<String> appNames,
+  required List<String> employeeNames,
+}) {
   CustomBottomSheet.show(
     context: context,
     title: 'Task Information',
@@ -50,16 +54,7 @@ void showCustomBottomSheet(BuildContext context) {
         key: 'app-name',
         label: 'Enter app name',
         icon: Icons.apps,
-        items: [
-          'LABS',
-          'STORES',
-          'EMERGENCY',
-          'HW-PRINTER',
-          'SECURITY',
-          'ARRCHIVE',
-          'LEGAL AFFAIRS',
-          'PRINTING HR SERVICES',
-        ],
+        items: appNames,
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Please enter a app name';
@@ -84,16 +79,7 @@ void showCustomBottomSheet(BuildContext context) {
       DropdownFieldConfig(
         key: 'assign-to',
         label: 'Assign To',
-        items: [
-          'A.Shaltout',
-          'O.Farag',
-          'A.AbdElaziz',
-          'M.Alaasar',
-          'M.Abdeldayem',
-          'I.Ali',
-          'N.Ashraf',
-          'S.Zakaria',
-        ],
+        items: employeeNames,
         icon: Icons.person,
         validator: (value) {
           if (value == null || value.isEmpty) {
@@ -128,10 +114,11 @@ void showCustomBottomSheet(BuildContext context) {
         },
       ),
 
-      TextFieldConfig(
+      DropdownFieldConfig(
         key: 'co-operator',
         hint: 'Enter co-operator',
         icon: Icons.person,
+        items: employeeNames,
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Please enter a co-operators';

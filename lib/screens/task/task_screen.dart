@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:splash_sing_in_up_app/controller/task_providers.dart';
 
+import '../../common_widgets/custom_widgets/custom_reusable_dialog.dart';
 import '../../common_widgets/custom_widgets/task_item_card.dart';
 import '../../common_widgets/resuable_widgets/resuable_widgets.dart';
+import '../../controller/app_name_provider.dart';
+import '../../controller/employee_name_provider.dart';
 import '../../newtork_repos/remote_repo/firebase_api_services.dart';
 
 class TaskScreen extends StatefulWidget {
@@ -30,7 +33,12 @@ class _TaskScreenState extends State<TaskScreen> {
     super.initState();
     // Fetch tasks on screen load
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Fetch tasks
       context.read<TaskProviders>().fetchTasks();
+      // Fetch app names and employee names List<String>
+      context.read<EmployeeNameProvider>().fetchEmployeeNamesAsStrings();
+      //Fetch app names List<String>
+      context.read<AppNameProvider>().fetchAppNamesAsStrings();
     });
   }
 
@@ -202,10 +210,55 @@ class _TaskScreenState extends State<TaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> employeeNames = context
+        .watch<EmployeeNameProvider>()
+        .employeeNameStrings;
+    List<String> appNames = context.watch<AppNameProvider>().appNameStrings;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tasks', style: TextStyle(color: Colors.blue)),
         actions: [
+          //add app and user button
+          IconButton(
+            icon: const Icon(Icons.add, color: Colors.blue),
+            onPressed: () {
+              //show dialog
+              var radioOptionsList = ['Add-app-name', 'Add-user'];
+              CustomReusableDialog.show(
+                context: context,
+                title: 'Add: (app-name / user)',
+                radioOptions: radioOptionsList,
+                initialSelectedOption: 'Add-app-name',
+                textFieldLabelBuilder: (selectedOption) {
+                  return selectedOption == 'Add-app-name'
+                      ? 'Enter App Name'
+                      : 'Enter User Name';
+                },
+                initialTextValue: '',
+                onSave: (selectedOption, textValue) {
+                  log('Selected: $selectedOption');
+                  log('Text: $textValue');
+
+                  switch (selectedOption) {
+                    case 'Add-app-name':
+                      context.read<AppNameProvider>().addAppName(textValue);
+                      break;
+                    case 'Add-user':
+                      context.read<EmployeeNameProvider>().addEmployeeName(
+                        textValue,
+                      );
+                      break;
+                    default:
+                      break;
+                  }
+                },
+                onCancel: () {
+                  log('Dialog cancelled');
+                },
+              );
+            },
+          ),
+          //sign out button
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.blue),
             onPressed: () async {
@@ -300,7 +353,11 @@ class _TaskScreenState extends State<TaskScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
         // onPressed: _showAddTaskDialog,
-        onPressed: () => showCustomBottomSheet(context),
+        onPressed: () => showCustomBottomSheet(
+          context: context,
+          appNames: appNames,
+          employeeNames: employeeNames,
+        ),
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );

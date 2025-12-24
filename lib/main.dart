@@ -76,6 +76,8 @@ import 'package:provider/provider.dart';
 import 'package:splash_sing_in_up_app/controller/task_providers.dart';
 import 'package:splash_sing_in_up_app/screens/task/task_screen.dart';
 
+import 'controller/app_name_provider.dart';
+import 'controller/employee_name_provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -86,7 +88,11 @@ void main() async {
 
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => TaskProviders())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => TaskProviders()),
+        ChangeNotifierProvider(create: (_) => AppNameProvider()),
+        ChangeNotifierProvider(create: (_) => EmployeeNameProvider()),
+      ],
       child: MyApp(),
     ),
   );
