@@ -88,26 +88,4 @@ class Task {
       taskPriority: taskPriority ?? this.taskPriority,
     );
   }
-
-  // Convert Task to Map for Firestore
-  // Map<String, dynamic> toFirestore() {
-  //   return {
-  //     'taskTitle': taskTitle,
-  //     'taskStatus': taskStatus,
-  //     'assignedTo': assignedTo,
-  //     'taskNote': taskNote,
-  //     'applicationName': applicationName,
-  //     'assignedBy': assignedBy,
-  //     'coOperator': coOperator,
-  //     'expectedCompletionDate': expectedCompletionDate,  // Convert DateTime to Timestamp
-  //     'visitPlace': visitPlace,
-  //     'createdAt': createdAt,
-  //     // != null
-  //     //     ? Timestamp.fromDate(createdAt)
-  //     //     : FieldValue.serverTimestamp(),
-  //     'updatedAt': updatedAt != null
-  //         ? Timestamp.fromDate(updatedAt!)
-  //         : FieldValue.serverTimestamp(),
-  //   };
-  // }
 }

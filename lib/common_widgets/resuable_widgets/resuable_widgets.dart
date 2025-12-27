@@ -128,6 +128,19 @@ void showCustomBottomSheet({
         label: 'Co-operator',
       ),
       TextFieldConfig(
+        key: 'expected-completion-date',
+        label: 'Expected Completion Date',
+        hint: 'Enter Expected Completion Date like 7, 15, 30 days',
+        icon: Icons.date_range,
+        keyboardType: TextInputType.number,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter expected completion date';
+          }
+          return null;
+        },
+      ),
+      TextFieldConfig(
         key: 'task-note',
         label: 'Task Note',
         hint: 'Enter note',
@@ -160,7 +173,11 @@ void showCustomBottomSheet({
           'taskPeriority': values['task-periority'],
           'coOperator': values['co-operator'],
           'taskStatus': true,
-          'expectedCompletionDate': DateTime.now().add(const Duration(days: 7)),
+          'expectedCompletionDate': DateTime.now().add(
+            Duration(
+              days: int.parse(values['expected-completion-date'] as String),
+            ),
+          ),
           // Don't include createdAt/updatedAt - Firestore handles it
         });
         log('Task added successfully');

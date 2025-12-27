@@ -1,4 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
+import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firebase_api_services.dart';
+import 'package:splash_sing_in_up_app/screens/report/report_screen.dart';
 
 import '../../screens/add_employee_app_name/add_employee_app_name.dart';
 
@@ -92,10 +97,10 @@ class CustomDrawer extends StatelessWidget {
                     context,
                     icon: Icons.boy_rounded,
                     title: 'Added Employees',
-                    onTap: () {
+                    onTap: () async {
                       Navigator.pop(context);
-                      // Navigate to favorites
-                      Navigator.push(
+                      // Navigate to Added Employees with await to refresh when returning
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const AddEmployeeAppName(
@@ -109,28 +114,10 @@ class CustomDrawer extends StatelessWidget {
                     context,
                     icon: Icons.desktop_mac_sharp,
                     title: 'Added Applications',
-                    // trailing: Container(
-                    //   padding: const EdgeInsets.symmetric(
-                    //     horizontal: 8,
-                    //     vertical: 4,
-                    //   ),
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.red,
-                    //     borderRadius: BorderRadius.circular(12),
-                    //   ),
-                    //   child: const Text(
-                    //     '5',
-                    //     style: TextStyle(
-                    //       color: Colors.white,
-                    //       fontSize: 12,
-                    //       fontWeight: FontWeight.bold,
-                    //     ),
-                    //   ),
-                    // ),
-                    onTap: () {
+                    onTap: () async {
                       Navigator.pop(context);
-                      // Navigate to notifications
-                      Navigator.push(
+                      // Navigate to Added Applications with await to refresh when returning
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const AddEmployeeAppName(
@@ -143,11 +130,18 @@ class CustomDrawer extends StatelessWidget {
                   const Divider(height: 30),
                   _buildDrawerItem(
                     context,
-                    icon: Icons.help_outline,
-                    title: 'Help & Support',
+                    icon: Icons.list_alt,
+                    title: 'Reports',
                     onTap: () {
                       Navigator.pop(context);
-                      // Navigate to help
+
+                      // Navigate to reports
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ReportScreen(),
+                        ),
+                      );
                     },
                   ),
                   _buildDrawerItem(
@@ -223,9 +217,27 @@ class CustomDrawer extends StatelessWidget {
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context);
               // Perform logout
+              // Add your logout logic here
+              try {
+                await FirebaseApiSAuthServices.signOut();
+                ReusableToast.showToast(
+                  message: 'Logged out successfully',
+                  bgColor: Colors.green,
+                  textColor: Colors.white,
+                  fontSize: 16,
+                );
+              } catch (e) {
+                log(e.toString());
+                ReusableToast.showToast(
+                  message: 'Logout error: ${e.toString()}',
+                  bgColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16,
+                );
+              }
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             child: const Text('Logout'),

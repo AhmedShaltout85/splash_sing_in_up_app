@@ -171,12 +171,13 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
+                      color: Colors.blue,
                     ),
                   ),
                   IconButton(
                     icon: const Icon(Icons.close),
                     onPressed: () {
-                      widget.onCancel?.call();
+                      // widget.onCancel?.call();
                       Navigator.pop(context);
                     },
                   ),
@@ -210,7 +211,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                     child: OutlinedButton(
                       onPressed: () {
                         widget.onCancel?.call();
-                        Navigator.pop(context);
+                        // Navigator.pop(context);
                       },
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
