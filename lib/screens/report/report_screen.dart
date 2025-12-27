@@ -12,7 +12,7 @@ class ReportScreen extends StatelessWidget {
       ),
       body: const Center(
         child: Text(
-          'Report Screen Content Goes Here',
+          'Report Screen Content Goes Here (Reports)',
           style: TextStyle(fontSize: 18),
         ),
       ),
