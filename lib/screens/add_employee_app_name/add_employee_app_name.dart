@@ -381,7 +381,7 @@ class _AddEmployeeAppNameState extends State<AddEmployeeAppName> {
               onPressed: () async {
                 if (type == 'app') {
                   // Add your delete method here
-                  // await context.read<AppNameProvider>().deleteAppName(index);
+                  // await context.read<AppNameProvider>().deleteAppName(index.toString());
                 } else {
                   // Add your delete method here
                   // await context.read<EmployeeNameProvider>().deleteEmployeeName(index);

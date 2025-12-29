@@ -102,31 +102,43 @@ void showCustomBottomSheet({
         },
       ),
       DropdownFieldConfig(
-        key: 'task-periority',
-        label: 'Enter task periority',
+        key: 'task-priority',
+        label: 'Enter task priority',
         items: ['High', 'Medium', 'Low'],
         icon: Icons.priority_high,
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'Please select a task periority';
+            return 'Please select a task priority';
           }
           return null;
         },
       ),
 
-      DropdownFieldConfig(
+      MultiSelectDropdownFieldConfig(
         key: 'co-operator',
-        hint: 'Enter co-operator',
-        icon: Icons.person,
-        items: employeeNames,
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter a co-operators';
-          }
-          return null;
-        },
         label: 'Co-operator',
+        items: employeeNames,
+        icon: Icons.person,
+        hint: 'Select co-operators',
+        initialValues: [],
+        includeSearch: false,
+        includeSelectAll: false,
+        isLarge: true,
+        boxDecoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Colors.grey),
+        ),
+        onChange: (values) {
+          log('Selected co-operators: $values');
+        },
+        // validator: (values) {
+        //   if (values == null || values.isEmpty) {
+        //     return 'Please select at least one co-operator';
+        //   }
+        //   return null;
+        // },
       ),
+
       TextFieldConfig(
         key: 'expected-completion-date',
         label: 'Expected Completion Date',
@@ -170,7 +182,7 @@ void showCustomBottomSheet({
           'assignedBy': values['assign-by'],
           'assignedTo': values['assign-to'],
           'visitPlace': values['visit-place'],
-          'taskPeriority': values['task-periority'],
+          'taskPriority': values['task-priority'],
           'coOperator': values['co-operator'],
           'taskStatus': true,
           'expectedCompletionDate': DateTime.now().add(

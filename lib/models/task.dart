@@ -8,7 +8,7 @@ class Task {
   final String visitPlace;
   final String assignedTo;
   final String assignedBy;
-  final String coOperator;
+  final List<dynamic> coOperator;
   final DateTime createdAt;
   final DateTime? updatedAt;
   final DateTime expectedCompletionDate;
@@ -44,7 +44,7 @@ class Task {
       visitPlace: data['visitPlace'] as String? ?? '',
       applicationName: data['applicationName'] as String? ?? '',
       assignedBy: data['assignedBy'] as String? ?? '',
-      coOperator: data['coOperator'] as String? ?? '',
+      coOperator: List<dynamic>.from(data['coOperator'] as List<dynamic>),
       expectedCompletionDate:
           (data['expectedCompletionDate'] as Timestamp?)?.toDate() ??
           DateTime.now(),
@@ -82,7 +82,7 @@ class Task {
       visitPlace: visitPlace ?? this.visitPlace,
       applicationName: applicationName ?? this.applicationName,
       assignedBy: assignedBy ?? this.assignedBy,
-      coOperator: coOperator ?? this.coOperator,
+      coOperator: coOperator != null ? [coOperator] : this.coOperator,
       expectedCompletionDate:
           expectedCompletionDate ?? this.expectedCompletionDate,
       taskPriority: taskPriority ?? this.taskPriority,

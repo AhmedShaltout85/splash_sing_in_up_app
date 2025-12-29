@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:splash_sing_in_up_app/controller/task_providers.dart';
@@ -100,6 +102,9 @@ class _TaskScreenState extends State<TaskScreen> {
               itemCount: provider.tasks.length,
               itemBuilder: (context, index) {
                 final task = provider.tasks[index];
+                log(
+                  'Building TaskItemCard for task ID: ${task.taskPriority} at index $index with title: ${task.taskTitle}',
+                );
                 return TaskItemCard(task: task);
               },
             ),
@@ -108,7 +113,6 @@ class _TaskScreenState extends State<TaskScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
-        // onPressed: _showAddTaskDialog,
         onPressed: () => showCustomBottomSheet(
           context: context,
           appNames: appNames,

@@ -64,7 +64,7 @@ class TaskProviders extends ChangeNotifier {
           taskStatus: data['taskStatus'] as bool?,
           assignedTo: data['assignedTo'] as String?,
           updatedAt: DateTime.now(),
-          notes: data['notes'] as String?,
+          notes: data['taskNote'] as String?,
         );
       }
 

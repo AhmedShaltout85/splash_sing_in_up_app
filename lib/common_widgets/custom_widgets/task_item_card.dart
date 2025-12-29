@@ -52,15 +52,6 @@ class TaskItemCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (task.assignedBy.isNotEmpty && task.assignedTo.isNotEmpty)
-                Text(
-                  'Assigned by: ${task.assignedBy} to ${task.assignedTo}',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black.withOpacity(0.7),
-                  ),
-                ),
               if (task.applicationName.isNotEmpty)
                 Text(
                   'Application Name: ${task.applicationName}',
@@ -70,15 +61,16 @@ class TaskItemCard extends StatelessWidget {
                     color: Colors.black.withOpacity(0.7),
                   ),
                 ),
-              if (task.taskNote?.isNotEmpty ?? false)
+              if (task.assignedBy.isNotEmpty && task.assignedTo.isNotEmpty)
                 Text(
-                  'Note: ${task.taskNote}',
+                  'Assigned by: ${task.assignedBy}, Assigned to: ${task.assignedTo}',
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w600,
                     color: Colors.black.withOpacity(0.7),
                   ),
                 ),
+
               const SizedBox(height: 4),
               Row(
                 children: [
@@ -99,7 +91,23 @@ class TaskItemCard extends StatelessWidget {
                 ],
               ),
               Text(
-                'Created: ${_formatDate(task.createdAt)}',
+                'Created At: ${_formatDate(task.createdAt)}, Expected Completion: ${_formatDate(task.expectedCompletionDate)}',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+              Text(
+                'Priority: ${task.taskPriority}',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+              Text(
+                'Visit Place: ${task.visitPlace}',
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
