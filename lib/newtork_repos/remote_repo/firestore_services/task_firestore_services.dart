@@ -2,14 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../models/task.dart';
 
+final FirebaseFirestore db = FirebaseFirestore.instance;
+
 class TaskFirestoreServices {
-  static final FirebaseFirestore _db = FirebaseFirestore.instance;
+  // static final FirebaseFirestore _db = FirebaseFirestore.instance;
   static const String _collectionName = 'tasks';
 
   // Fetch all tasks
   static Future<List<Task>> getAllTasks() async {
     try {
-      final snapshot = await _db
+      final snapshot = await db
           .collection(_collectionName)
           .where('taskStatus', isEqualTo: true)
           .get();
@@ -25,7 +27,7 @@ class TaskFirestoreServices {
   // Fetch a single task
   static Future<Task?> getTask(String id) async {
     try {
-      final doc = await _db.collection(_collectionName).doc(id).get();
+      final doc = await db.collection(_collectionName).doc(id).get();
 
       if (!doc.exists) {
         return null;
@@ -43,7 +45,7 @@ class TaskFirestoreServices {
       data['createdAt'] = FieldValue.serverTimestamp();
       data['updatedAt'] = FieldValue.serverTimestamp();
 
-      final docRef = await _db.collection(_collectionName).add(data);
+      final docRef = await db.collection(_collectionName).add(data);
       return docRef.id;
     } catch (e) {
       throw Exception('Error adding task: $e');
@@ -57,7 +59,7 @@ class TaskFirestoreServices {
   ) async {
     try {
       // Check if document exists
-      final docSnapshot = await _db.collection(_collectionName).doc(id).get();
+      final docSnapshot = await db.collection(_collectionName).doc(id).get();
 
       if (!docSnapshot.exists) {
         throw Exception('Task with ID $id does not exist');
@@ -66,7 +68,7 @@ class TaskFirestoreServices {
       // Add update timestamp
       data['updatedAt'] = FieldValue.serverTimestamp();
 
-      await _db.collection(_collectionName).doc(id).update(data);
+      await db.collection(_collectionName).doc(id).update(data);
     } catch (e) {
       throw Exception('Error updating data: $e');
     }
@@ -80,7 +82,7 @@ class TaskFirestoreServices {
     try {
       data['updatedAt'] = FieldValue.serverTimestamp();
 
-      await _db
+      await db
           .collection(_collectionName)
           .doc(id)
           .set(data, SetOptions(merge: true));
@@ -92,7 +94,7 @@ class TaskFirestoreServices {
   // Delete a task
   static Future<void> deleteTask(String id) async {
     try {
-      await _db.collection(_collectionName).doc(id).delete();
+      await db.collection(_collectionName).doc(id).delete();
     } catch (e) {
       throw Exception('Error deleting task: $e');
     }
@@ -100,7 +102,7 @@ class TaskFirestoreServices {
 
   // Stream tasks (real-time updates)
   static Stream<List<Task>> streamTasks() {
-    return _db
+    return db
         .collection(_collectionName)
         .snapshots()
         .map(

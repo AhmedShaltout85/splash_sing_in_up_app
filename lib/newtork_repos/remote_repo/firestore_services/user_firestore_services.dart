@@ -1,16 +1,17 @@
 // services/firestore_service.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firestore_services/task_firestore_services.dart';
 
 import '../../../models/user_model.dart';
 
 class UserFirestoreServices {
-  static final FirebaseFirestore _db = FirebaseFirestore.instance;
+  // static final FirebaseFirestore db = FirebaseFirestore.instance;
   static const String _collectionName = 'users';
 
   // Add a new document
   static Future<String> addData(UserModel user) async {
     try {
-      DocumentReference docRef = await _db
+      DocumentReference docRef = await db
           .collection(_collectionName)
           .add(user.toMap());
       return docRef.id;
@@ -22,7 +23,7 @@ class UserFirestoreServices {
   // Add a document with custom ID
   static Future<void> addDataWithId(String id, UserModel user) async {
     try {
-      await _db.collection(_collectionName).doc(id).set(user.toMap());
+      await db.collection(_collectionName).doc(id).set(user.toMap());
     } catch (e) {
       throw Exception('Error adding data with ID: $e');
     }
@@ -31,10 +32,7 @@ class UserFirestoreServices {
   // Retrieve a single document by ID
   static Future<UserModel?> getData(String id) async {
     try {
-      DocumentSnapshot doc = await _db
-          .collection(_collectionName)
-          .doc(id)
-          .get();
+      DocumentSnapshot doc = await db.collection(_collectionName).doc(id).get();
 
       if (doc.exists) {
         return UserModel.fromMap(doc.id, doc.data() as Map<String, dynamic>);
@@ -48,7 +46,7 @@ class UserFirestoreServices {
   // Retrieve all documents
   static Future<List<UserModel>> getAllData() async {
     try {
-      QuerySnapshot snapshot = await _db.collection(_collectionName).get();
+      QuerySnapshot snapshot = await db.collection(_collectionName).get();
 
       return snapshot.docs
           .map(
@@ -67,7 +65,7 @@ class UserFirestoreServices {
     required dynamic isEqualTo,
   }) async {
     try {
-      QuerySnapshot snapshot = await _db
+      QuerySnapshot snapshot = await db
           .collection(_collectionName)
           .where(field, isEqualTo: isEqualTo)
           .get();
@@ -86,7 +84,7 @@ class UserFirestoreServices {
   // Update a document
   static Future<void> updateData(String id, Map<String, dynamic> data) async {
     try {
-      await _db.collection(_collectionName).doc(id).update(data);
+      await db.collection(_collectionName).doc(id).update(data);
     } catch (e) {
       throw Exception('Error updating data: $e');
     }
@@ -95,7 +93,7 @@ class UserFirestoreServices {
   // Delete a document
   static Future<void> deleteData(String id) async {
     try {
-      await _db.collection(_collectionName).doc(id).delete();
+      await db.collection(_collectionName).doc(id).delete();
     } catch (e) {
       throw Exception('Error deleting data: $e');
     }
@@ -103,7 +101,7 @@ class UserFirestoreServices {
 
   // Stream for real-time updates (all documents)
   static Stream<List<UserModel>> streamAllData() {
-    return _db.collection(_collectionName).snapshots().map((snapshot) {
+    return db.collection(_collectionName).snapshots().map((snapshot) {
       return snapshot.docs
           .map((doc) => UserModel.fromMap(doc.id, doc.data()))
           .toList();
@@ -112,7 +110,7 @@ class UserFirestoreServices {
 
   // Stream for real-time updates (single document)
   static Stream<UserModel?> streamData(String id) {
-    return _db.collection(_collectionName).doc(id).snapshots().map((doc) {
+    return db.collection(_collectionName).doc(id).snapshots().map((doc) {
       if (doc.exists) {
         return UserModel.fromMap(doc.id, doc.data() as Map<String, dynamic>);
       }

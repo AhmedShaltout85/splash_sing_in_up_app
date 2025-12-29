@@ -1,13 +1,14 @@
 // app_name_firestore_service.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firestore_services/task_firestore_services.dart';
 import '../../../models/app_name_model.dart';
 
 class AppNameFirestoreService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final String collectionName = 'appNames';
 
   // Get collection reference
-  CollectionReference get _collection => _firestore.collection(collectionName);
+  CollectionReference get _collection => db.collection(collectionName);
 
   // Add a new app name
   Future<String> addAppName(String appName) async {
