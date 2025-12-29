@@ -2,59 +2,70 @@
 
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:splash_sing_in_up_app/controller/task_providers.dart';
+import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firebase_api_services.dart';
 
-import '../../common_widgets/custom_widgets/custom_drawer.dart';
 import '../../common_widgets/custom_widgets/task_item_card.dart';
-import '../../common_widgets/resuable_widgets/resuable_widgets.dart';
-import '../../controller/app_name_provider.dart';
-import '../../controller/employee_name_provider.dart';
 
-class TaskScreen extends StatefulWidget {
-  const TaskScreen({super.key});
+class UserTaskScreen extends StatefulWidget {
+  const UserTaskScreen({super.key});
 
   @override
-  State<TaskScreen> createState() => _TaskScreenState();
+  State<UserTaskScreen> createState() => _UserTaskScreenState();
 }
 
-class _TaskScreenState extends State<TaskScreen> {
+class _UserTaskScreenState extends State<UserTaskScreen> {
   @override
   void initState() {
     super.initState();
     // Fetch tasks on screen load
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Fetch tasks
-      context.read<TaskProviders>().fetchTasks();
-      // Fetch app names and employee names List<String>
-      context.read<EmployeeNameProvider>().fetchEmployeeNamesAsStrings();
-      //Fetch app names List<String>
-      context.read<AppNameProvider>().fetchAppNamesAsStrings();
+      context.read<TaskProviders>().fetchTasksByStatus(true);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    List<String> employeeNames = context
-        .watch<EmployeeNameProvider>()
-        .employeeNameStrings;
-    List<String> appNames = context.watch<AppNameProvider>().appNameStrings;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tasks', style: TextStyle(color: Colors.blue)),
+        title: Text(
+          'Tasks Assigned to User',
+          // 'Tasks Assigned to ${FirebaseAuth.instance.currentUser!.displayName}',
+          style: TextStyle(color: Colors.blue),
+        ),
         iconTheme: IconThemeData(color: Colors.blue),
         actions: [
+          Container(
+            width: 28,
+            height: 28,
+            decoration: BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Text(
+                '${context.watch<TaskProviders>().tasks.length}',
+                style: const TextStyle(color: Colors.white, fontSize: 12),
+              ),
+            ),
+          ),
           IconButton(
-            tooltip: 'Add Task',
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            icon: const Icon(Icons.add, color: Colors.blue),
+            icon: const Icon(Icons.refresh, color: Colors.blue),
             onPressed: () {
-              showCustomBottomSheet(
-                context: context,
-                appNames: appNames,
-                employeeNames: employeeNames,
-              );
+              context.read<TaskProviders>().fetchTasksByStatus(true);
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.blue),
+            onPressed: () {
+              //logout from firebase
+              if (FirebaseAuth.instance.currentUser != null) {
+                FirebaseApiSAuthServices.signOut();
+              }
             },
           ),
         ],
@@ -80,7 +91,7 @@ class _TaskScreenState extends State<TaskScreen> {
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
-                      provider.fetchTasks();
+                      provider.fetchTasksByStatus(true);
                     },
                     child: const Text('Retry'),
                   ),
@@ -125,16 +136,6 @@ class _TaskScreenState extends State<TaskScreen> {
           );
         },
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.blue,
-      //   onPressed: () => showCustomBottomSheet(
-      //     context: context,
-      //     appNames: appNames,
-      //     employeeNames: employeeNames,
-      //   ),
-      //   child: const Icon(Icons.add, color: Colors.white),
-      // ),
-      drawer: const CustomDrawer(),
     );
   }
 }

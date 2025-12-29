@@ -1,4 +1,5 @@
 // providers/user_provider.dart
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 import '../models/user_model.dart';
@@ -54,9 +55,12 @@ class UserProvider with ChangeNotifier {
       int index = _users.indexWhere((user) => user.id == id);
       if (index != -1) {
         _users[index] = _users[index].copyWith(
-          name: data['name'] ?? _users[index].name,
+          displayName: data['displayName'] ?? _users[index].displayName,
           email: data['email'] ?? _users[index].email,
-          age: data['age'] ?? _users[index].age,
+          photoURL: data['photoURL'] ?? _users[index].photoURL,
+          createdAt: data['createdAt'] != null
+              ? (data['createdAt'] as Timestamp).toDate()
+              : _users[index].createdAt,
         );
       }
 

@@ -28,9 +28,9 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       } else {
         log('User is signed in!');
-        if (mounted) {
-          navigateToReplacementNamed(context, AppRoute.homeRouteName);
-        }
+        // if (mounted) {
+        //   navigateToReplacementNamed(context, AppRoute.userTaskRouteName);
+        // }
       }
     });
   }

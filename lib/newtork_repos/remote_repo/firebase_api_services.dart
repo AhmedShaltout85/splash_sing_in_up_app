@@ -17,7 +17,7 @@ class FirebaseApiSAuthServices {
             password: password,
           );
       //save user data
-      await AddNewUserToDB.saveUserInfo(credential);
+      // await AddNewUserToDB.saveUserInfo(credential);
 
       //
       log(credential.user!.email.toString());

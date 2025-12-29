@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
 import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firebase_api_services.dart';
 import 'package:splash_sing_in_up_app/screens/report/report_screen.dart';
+import 'package:splash_sing_in_up_app/screens/user/user_list_screen.dart';
 
 import '../../screens/add_employee_app_name/add_employee_app_name.dart';
 
@@ -77,11 +78,17 @@ class CustomDrawer extends StatelessWidget {
                   ),
                   _buildDrawerItem(
                     context,
-                    icon: Icons.person,
-                    title: 'Profile',
+                    icon: Icons.person_add,
+                    title: 'Users Profiles',
                     onTap: () {
                       Navigator.pop(context);
                       // Navigate to profile
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const UserListScreen(),
+                        ),
+                      );
                     },
                   ),
                   _buildDrawerItem(

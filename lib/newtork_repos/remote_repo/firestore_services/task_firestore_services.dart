@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../models/task.dart';
 
@@ -13,7 +14,7 @@ class TaskFirestoreServices {
     try {
       final snapshot = await db
           .collection(_collectionName)
-          .where('taskStatus', isEqualTo: true)
+          // .where('taskStatus', isEqualTo: true)
           .get();
 
       return snapshot.docs.map((doc) {
@@ -21,6 +22,27 @@ class TaskFirestoreServices {
       }).toList();
     } catch (e) {
       throw Exception('Error retrieving all data: $e');
+    }
+  }
+
+  // Fetch a list of tasks
+  static Future<List<Task>> getTasksByStatus(bool status) async {
+    try {
+      final snapshot = await db
+          .collection(_collectionName)
+          .where('taskStatus', isEqualTo: status)
+          .where(
+            'assignedTo',
+            isEqualTo: 'husieen',
+            // isEqualTo: FirebaseAuth.instance.currentUser!.displayName,
+          )
+          .get();
+
+      return snapshot.docs.map((doc) {
+        return Task.fromFirestore(doc);
+      }).toList();
+    } catch (e) {
+      throw Exception('Error retrieving tasks by status: $e');
     }
   }
 

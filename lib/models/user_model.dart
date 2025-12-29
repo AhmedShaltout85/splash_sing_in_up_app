@@ -2,25 +2,31 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
   final String id;
-  final String name;
+  final String? firstName;
+  final String? lastName;
+  final String displayName;
   final String email;
-  final int age;
+  final String? photoURL;
   final DateTime createdAt;
 
   UserModel({
+    this.firstName,
+    this.lastName,
+    this.photoURL,
     required this.id,
-    required this.name,
+    required this.displayName,
     required this.email,
-    required this.age,
     required this.createdAt,
   });
 
   // Convert UserModel to Map for Firestore
   Map<String, dynamic> toMap() {
     return {
-      'name': name,
+      'firstName': firstName,
+      'lastName': lastName,
+      'displayName': displayName,
       'email': email,
-      'age': age,
+      'photoURL': photoURL,
       'createdAt': Timestamp.fromDate(createdAt),
     };
   }
@@ -40,9 +46,11 @@ class UserModel {
 
     return UserModel(
       id: id,
-      name: map['name'] ?? '',
+      firstName: map['firstName'] ?? '',
+      lastName: map['lastName'] ?? '',
+      displayName: map['displayName'] ?? '',
       email: map['email'] ?? '',
-      age: map['age'] ?? 0,
+      photoURL: map['photoURL'] ?? 0,
       createdAt: createdAtDateTime,
     );
   }
@@ -50,16 +58,20 @@ class UserModel {
   // Create a copy with modified fields
   UserModel copyWith({
     String? id,
-    String? name,
+    String? firstName,
+    String? lastName,
+    String? displayName,
     String? email,
-    int? age,
+    String? photoURL,
     DateTime? createdAt,
   }) {
     return UserModel(
       id: id ?? this.id,
-      name: name ?? this.name,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      displayName: displayName ?? this.displayName,
       email: email ?? this.email,
-      age: age ?? this.age,
+      photoURL: photoURL ?? this.photoURL,
       createdAt: createdAt ?? this.createdAt,
     );
   }

@@ -202,17 +202,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   // Handle login
                   if (_usernameController.text.isNotEmpty &&
                       _passwordController.text.isNotEmpty) {
-                    FirebaseAuth.instance.signInWithEmailAndPassword(
-                      email: _usernameController.text,
-                      password: _passwordController.text,
-                    );
-                    ReusableToast.showToast(
-                      message: 'Login successful',
-                      bgColor: Colors.green,
-                      textColor: Colors.white,
-                      fontSize: 16,
-                    );
-                    navigateToReplacementNamed(context, AppRoute.homeRouteName);
+                    if (FirebaseAuth.instance.currentUser!.email ==
+                        _usernameController.text.trim()) {
+                      FirebaseAuth.instance.signInWithEmailAndPassword(
+                        email: _usernameController.text,
+                        password: _passwordController.text,
+                      );
+                      ReusableToast.showToast(
+                        message: 'Login successful',
+                        bgColor: Colors.green,
+                        textColor: Colors.white,
+                        fontSize: 16,
+                      );
+                      navigateToReplacementNamed(
+                        context,
+                        AppRoute.userTaskRouteName,
+                      );
+                    }
                   } else {
                     log('Please verify your email ${_usernameController.text}');
                     ReusableDialog.showAwesomeDialog(

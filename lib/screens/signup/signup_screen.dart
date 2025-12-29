@@ -4,6 +4,8 @@ import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_butto
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_text.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/resuable_widgets.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_dialog.dart';
+import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
+import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/add_new_user_to_db.dart';
 import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firebase_api_services.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
 import 'package:splash_sing_in_up_app/utils/app_colors.dart';
@@ -139,7 +141,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     fontSize: fontSize + 2,
                     height: 50,
                     width: 200,
-                    onTap: () {
+                    onTap: () async {
                       if (_firstNameController.text.isNotEmpty &&
                           _lastNameController.text.isNotEmpty &&
                           _userNameController.text.isNotEmpty &&
@@ -153,24 +155,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           emailAddress: _emailController.text.trim(),
                           password: _passwordController.text.trim(),
                         );
+                        // Save user info to Firestore
+                        await AddNewUserToDB.saveUser({
+                          'firstName': _firstNameController.text.trim(),
+                          'lastName': _lastNameController.text.trim(),
+                          'userName': _userNameController.text.trim(),
+                          'email': _emailController.text.trim(),
+                          'password': _passwordController.text.trim(),
+                        });
 
-                        ReusableDialog.showAwesomeDialog(
-                          context,
-                          title: 'Account created successfully',
-                          description:
-                              'Please check your email to verify your account',
-                          dialogType: DialogType.success,
+                        ReusableToast.showToast(
+                          message: 'Account created successfully!',
+                          textColor: Colors.white,
+                          fontSize: 16,
+                          bgColor: Colors.green,
                         );
+                        // Handle create account
+                        navigateTo(context, LoginScreen());
                       } else {
-                        ReusableDialog.showAwesomeDialog(
-                          context,
-                          title: 'Error',
-                          description: 'Please fill all fields correctly',
-                          dialogType: DialogType.error,
+                        ReusableToast.showToast(
+                          message:
+                              'Please fill all fields correctly to create an account.',
+                          textColor: Colors.white,
+                          fontSize: 16,
+                          bgColor: Colors.red,
                         );
                       }
-                      // Handle create account
-                      // navigateTo(context, LoginScreen());
                     },
                   ),
 

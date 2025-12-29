@@ -5,7 +5,6 @@ import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firestore_servic
 import '../../../models/user_model.dart';
 
 class UserFirestoreServices {
-  // static final FirebaseFirestore db = FirebaseFirestore.instance;
   static const String _collectionName = 'users';
 
   // Add a new document

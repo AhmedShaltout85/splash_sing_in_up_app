@@ -26,9 +26,9 @@ class _UserListScreenState extends State<UserListScreen> {
   }
 
   void _showAddUserDialog() {
-    final nameController = TextEditingController();
+    final displayNameController = TextEditingController();
     final emailController = TextEditingController();
-    final ageController = TextEditingController();
+    // final ageController = TextEditingController();
 
     showDialog(
       context: context,
@@ -38,18 +38,18 @@ class _UserListScreenState extends State<UserListScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              controller: nameController,
+              controller: displayNameController,
               decoration: const InputDecoration(labelText: 'Name'),
             ),
             TextField(
               controller: emailController,
               decoration: const InputDecoration(labelText: 'Email'),
             ),
-            TextField(
-              controller: ageController,
-              decoration: const InputDecoration(labelText: 'Age'),
-              keyboardType: TextInputType.number,
-            ),
+            // TextField(
+            //   // controller: ageController,
+            //   decoration: const InputDecoration(labelText: 'Age'),
+            //   keyboardType: TextInputType.number,
+            // ),
           ],
         ),
         actions: [
@@ -61,9 +61,11 @@ class _UserListScreenState extends State<UserListScreen> {
             onPressed: () {
               final user = UserModel(
                 id: '',
-                name: nameController.text,
+                firstName: displayNameController.text.split(' ').first,
+                lastName: displayNameController.text.split(' ').last,
+                displayName: displayNameController.text,
                 email: emailController.text,
-                age: int.tryParse(ageController.text) ?? 0,
+                // photoURL: '',
                 createdAt: DateTime.now(),
               );
               context.read<UserProvider>().addUser(user);
@@ -79,7 +81,18 @@ class _UserListScreenState extends State<UserListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Users')),
+      appBar: AppBar(
+        title: const Text('Manage Users', style: TextStyle(color: Colors.blue)),
+        iconTheme: IconThemeData(color: Colors.blue),
+        actions: [
+          IconButton(
+            tooltip: 'Add User',
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            icon: const Icon(Icons.person_add, color: Colors.blue),
+            onPressed: _showAddUserDialog,
+          ),
+        ],
+      ),
       body: Consumer<UserProvider>(
         builder: (context, provider, child) {
           if (provider.isLoading && provider.users.isEmpty) {
@@ -113,8 +126,12 @@ class _UserListScreenState extends State<UserListScreen> {
             itemBuilder: (context, index) {
               final user = provider.users[index];
               return ListTile(
-                title: Text(user.name),
-                subtitle: Text('${user.email} - Age: ${user.age}'),
+                title: Text(user.displayName),
+                subtitle: Text('${user.email} - email: ${user.email}'),
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(user.photoURL ?? ''),
+                  radius: 30,
+                ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -122,7 +139,7 @@ class _UserListScreenState extends State<UserListScreen> {
                       icon: const Icon(Icons.edit),
                       onPressed: () {
                         // Implement edit functionality
-                        provider.updateUser(user.id, {'age': user.age + 1});
+                        provider.updateUser(user.id, {'email': user.email});
                       },
                     ),
                     IconButton(
@@ -135,10 +152,6 @@ class _UserListScreenState extends State<UserListScreen> {
             },
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showAddUserDialog,
-        child: const Icon(Icons.add),
       ),
     );
   }

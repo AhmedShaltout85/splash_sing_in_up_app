@@ -46,7 +46,7 @@ class GoogleSignInService {
       final UserCredential userCredential = await FirebaseAuth.instance
           .signInWithCredential(credential);
       // Save user data to Firestore
-      await AddNewUserToDB.saveUserInfo(userCredential);
+      // await AddNewUserToDB.saveUserInfo(userCredential);
       return userCredential;
     } catch (e) {
       log('Error: $e');

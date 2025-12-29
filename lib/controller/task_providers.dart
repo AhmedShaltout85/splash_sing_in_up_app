@@ -34,6 +34,21 @@ class TaskProviders extends ChangeNotifier {
     }
   }
 
+  // Fetch all tasks
+  Future<void> fetchTasksByStatus(bool status) async {
+    _setLoading(true);
+    try {
+      _tasks = await TaskFirestoreServices.getTasksByStatus(status);
+      _error = null;
+      notifyListeners();
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+    } finally {
+      _setLoading(false);
+    }
+  }
+
   // Add a task
   Future<String?> addTask(Map<String, dynamic> data) async {
     _setLoading(true);
