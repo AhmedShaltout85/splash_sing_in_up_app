@@ -1,9 +1,7 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_button.dart';
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_text.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/resuable_widgets.dart';
-import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_dialog.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
 import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/add_new_user_to_db.dart';
 import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firebase_api_services.dart';
