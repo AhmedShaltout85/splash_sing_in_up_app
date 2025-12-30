@@ -370,7 +370,6 @@ import '../../common_widgets/custom_widgets/custom_social_icon.dart';
 import '../../common_widgets/custom_widgets/custom_text.dart';
 import '../../common_widgets/custom_widgets/custom_text_field.dart';
 import '../../common_widgets/resuable_widgets/resuable_widgets.dart';
-import '../../newtork_repos/remote_repo/google_auth_service.dart';
 import '../../utils/app_route.dart';
 import '../signup/signup_screen.dart';
 
