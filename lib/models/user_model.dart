@@ -50,7 +50,7 @@ class UserModel {
       lastName: map['lastName'] ?? '',
       displayName: map['displayName'] ?? '',
       email: map['email'] ?? '',
-      photoURL: map['photoURL'] ?? 0,
+      photoURL: map['photoURL'] ?? '',
       createdAt: createdAtDateTime,
     );
   }

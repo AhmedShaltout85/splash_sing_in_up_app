@@ -91,15 +91,15 @@ class CustomDrawer extends StatelessWidget {
                       );
                     },
                   ),
-                  _buildDrawerItem(
-                    context,
-                    icon: Icons.settings,
-                    title: 'Settings',
-                    onTap: () {
-                      Navigator.pop(context);
-                      // Navigate to settings
-                    },
-                  ),
+                  // _buildDrawerItem(
+                  //   context,
+                  //   icon: Icons.settings,
+                  //   title: 'Settings',
+                  //   onTap: () {
+                  //     Navigator.pop(context);
+                  //     // Navigate to settings
+                  //   },
+                  // ),
                   _buildDrawerItem(
                     context,
                     icon: Icons.boy_rounded,
@@ -151,15 +151,15 @@ class CustomDrawer extends StatelessWidget {
                       );
                     },
                   ),
-                  _buildDrawerItem(
-                    context,
-                    icon: Icons.info_outline,
-                    title: 'About',
-                    onTap: () {
-                      Navigator.pop(context);
-                      // Navigate to about
-                    },
-                  ),
+                  // _buildDrawerItem(
+                  //   context,
+                  //   icon: Icons.info_outline,
+                  //   title: 'About',
+                  //   onTap: () {
+                  //     Navigator.pop(context);
+                  //     // Navigate to about
+                  //   },
+                  // ),
                 ],
               ),
             ),

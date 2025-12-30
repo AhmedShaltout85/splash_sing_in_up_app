@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_button.dart';
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_text.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/resuable_widgets.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
+import 'package:splash_sing_in_up_app/controller/employee_name_provider.dart';
 import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/add_new_user_to_db.dart';
 import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firebase_api_services.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
@@ -157,11 +159,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         await AddNewUserToDB.saveUser({
                           'firstName': _firstNameController.text.trim(),
                           'lastName': _lastNameController.text.trim(),
-                          'userName': _userNameController.text.trim(),
+                          'displayName': _userNameController.text.trim(),
                           'email': _emailController.text.trim(),
                           'password': _passwordController.text.trim(),
                         });
 
+                        await context
+                            .read<EmployeeNameProvider>()
+                            .addEmployeeName(_userNameController.text.trim());
                         ReusableToast.showToast(
                           message: 'Account created successfully!',
                           textColor: Colors.white,

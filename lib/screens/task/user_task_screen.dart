@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
 import 'package:splash_sing_in_up_app/controller/task_providers.dart';
 import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firebase_api_services.dart';
 
@@ -33,9 +34,13 @@ class _UserTaskScreenState extends State<UserTaskScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Tasks Assigned to User',
+          'Tasks Assigned to ${FirebaseAuth.instance.currentUser!.email?.substring(0, FirebaseAuth.instance.currentUser!.email!.indexOf('@'))}',
           // 'Tasks Assigned to ${FirebaseAuth.instance.currentUser!.displayName}',
-          style: TextStyle(color: Colors.blue),
+          style: TextStyle(
+            color: Colors.blue,
+            fontWeight: FontWeight.bold,
+            fontSize: 13,
+          ),
         ),
         iconTheme: IconThemeData(color: Colors.blue),
         actions: [
@@ -65,6 +70,12 @@ class _UserTaskScreenState extends State<UserTaskScreen> {
               //logout from firebase
               if (FirebaseAuth.instance.currentUser != null) {
                 FirebaseApiSAuthServices.signOut();
+                ReusableToast.showToast(
+                  message: 'Logged out successfully',
+                  bgColor: Colors.green,
+                  textColor: Colors.white,
+                  fontSize: 16,
+                );
               }
             },
           ),

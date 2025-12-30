@@ -42,18 +42,17 @@ class _AddEmployeeAppNameState extends State<AddEmployeeAppName> {
 
   // Method to fetch data
   void _fetchData() {
-    // Fetch app names and employee names List<String>
-    context.read<EmployeeNameProvider>().fetchEmployeeNamesAsStrings();
-    //Fetch app names List<String>
-    context.read<AppNameProvider>().fetchAppNamesAsStrings();
+    // Fetch employee names with full models (to get IDs)
+    context.read<EmployeeNameProvider>().fetchAllEmployeeNames();
+    // Fetch app names with full models (to get IDs)
+    context.read<AppNameProvider>().fetchAllAppNames();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<String> employeeNames = context
-        .watch<EmployeeNameProvider>()
-        .employeeNameStrings;
-    List<String> appNames = context.watch<AppNameProvider>().appNameStrings;
+    // Use full models instead of just strings to access IDs
+    final employeeNames = context.watch<EmployeeNameProvider>().employeeNames;
+    final appNames = context.watch<AppNameProvider>().appNames;
 
     // Check if we should show only one list
     bool isAddedEmployees = widget.title.toLowerCase() == 'added employees';
@@ -208,7 +207,7 @@ class _AddEmployeeAppNameState extends State<AddEmployeeAppName> {
   }
 
   // Build App Names List
-  Widget _buildAppNamesList(List<String> appNames) {
+  Widget _buildAppNamesList(List<dynamic> appNames) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -244,6 +243,7 @@ class _AddEmployeeAppNameState extends State<AddEmployeeAppName> {
               : ListView.builder(
                   itemCount: appNames.length,
                   itemBuilder: (context, index) {
+                    final appName = appNames[index];
                     return Card(
                       margin: EdgeInsets.only(bottom: 8),
                       elevation: 2,
@@ -259,7 +259,7 @@ class _AddEmployeeAppNameState extends State<AddEmployeeAppName> {
                           ),
                         ),
                         title: Text(
-                          appNames[index],
+                          appName.appName,
                           style: TextStyle(fontSize: 16),
                         ),
                         trailing: IconButton(
@@ -268,8 +268,9 @@ class _AddEmployeeAppNameState extends State<AddEmployeeAppName> {
                             _showDeleteConfirmation(
                               context,
                               'app',
-                              appNames[index],
-                              index,
+                              appName.appName,
+                              appName
+                                  .id, // Pass the document ID instead of index
                             );
                           },
                         ),
@@ -283,7 +284,7 @@ class _AddEmployeeAppNameState extends State<AddEmployeeAppName> {
   }
 
   // Build Employee Names List
-  Widget _buildEmployeeNamesList(List<String> employeeNames) {
+  Widget _buildEmployeeNamesList(List<dynamic> employeeNames) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -319,6 +320,7 @@ class _AddEmployeeAppNameState extends State<AddEmployeeAppName> {
               : ListView.builder(
                   itemCount: employeeNames.length,
                   itemBuilder: (context, index) {
+                    final employeeName = employeeNames[index];
                     return Card(
                       margin: EdgeInsets.only(bottom: 8),
                       elevation: 2,
@@ -334,7 +336,7 @@ class _AddEmployeeAppNameState extends State<AddEmployeeAppName> {
                           ),
                         ),
                         title: Text(
-                          employeeNames[index],
+                          employeeName.employeeName,
                           style: TextStyle(fontSize: 16),
                         ),
                         trailing: IconButton(
@@ -343,8 +345,9 @@ class _AddEmployeeAppNameState extends State<AddEmployeeAppName> {
                             _showDeleteConfirmation(
                               context,
                               'employee',
-                              employeeNames[index],
-                              index,
+                              employeeName.employeeName,
+                              employeeName
+                                  .id, // Pass the document ID instead of index
                             );
                           },
                         ),
@@ -361,7 +364,7 @@ class _AddEmployeeAppNameState extends State<AddEmployeeAppName> {
     BuildContext context,
     String type,
     String name,
-    int index,
+    String id, // Changed from int index to String id
   ) {
     showDialog(
       context: context,
@@ -380,11 +383,13 @@ class _AddEmployeeAppNameState extends State<AddEmployeeAppName> {
               child: Text('Delete', style: TextStyle(color: Colors.red)),
               onPressed: () async {
                 if (type == 'app') {
-                  // Add your delete method here
-                  // await context.read<AppNameProvider>().deleteAppName(index.toString());
+                  // Pass document ID instead of index
+                  await context.read<AppNameProvider>().deleteAppName(id);
                 } else {
-                  // Add your delete method here
-                  // await context.read<EmployeeNameProvider>().deleteEmployeeName(index);
+                  // Pass document ID instead of index
+                  await context.read<EmployeeNameProvider>().deleteEmployeeName(
+                    id,
+                  );
                 }
                 Navigator.of(context).pop();
                 // Refresh the list after deleting

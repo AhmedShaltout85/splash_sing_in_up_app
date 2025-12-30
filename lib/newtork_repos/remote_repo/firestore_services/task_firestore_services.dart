@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../models/task.dart';
 
@@ -32,8 +33,11 @@ class TaskFirestoreServices {
           .where('taskStatus', isEqualTo: status)
           .where(
             'assignedTo',
-            isEqualTo: 'husieen',
-            // isEqualTo: FirebaseAuth.instance.currentUser!.displayName,
+            // isEqualTo: 'husieen',
+            isEqualTo: FirebaseAuth.instance.currentUser!.email?.substring(
+              0,
+              FirebaseAuth.instance.currentUser!.email!.indexOf('@'),
+            ),
           )
           .get();
 

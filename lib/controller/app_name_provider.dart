@@ -1,8 +1,6 @@
-// app_name_provider.dart
 import 'package:flutter/foundation.dart';
-
+import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firestore_services/app_name_firebase_services.dart';
 import '../models/app_name_model.dart';
-import '../newtork_repos/remote_repo/firestore_services/app_name_firebase_services.dart';
 
 class AppNameProvider extends ChangeNotifier {
   final AppNameFirestoreService _firestoreService = AppNameFirestoreService();

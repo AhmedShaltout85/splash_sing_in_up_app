@@ -21,6 +21,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      log(
+        'SPLASH SCREEN: Auth state changed. Current user: UUID:=>${user?.uid} EMAIL:=>${user?.email} DISPLAY NAME:=>${user?.email?.substring(0, user.email?.indexOf('@'))}',
+      );
+      // );
       if (user == null) {
         log('User is currently signed out!');
         if (mounted) {
@@ -28,9 +32,14 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       } else {
         log('User is signed in!');
-        // if (mounted) {
-        //   navigateToReplacementNamed(context, AppRoute.userTaskRouteName);
-        // }
+        if (mounted) {
+          if (user.email?.substring(0, user.email?.indexOf('@')) == 'admin') {
+            navigateToReplacementNamed(context, AppRoute.taskRouteName);
+          } else {
+            navigateToReplacementNamed(context, AppRoute.userTaskRouteName);
+          }
+          // navigateToReplacementNamed(context, AppRoute.userTaskRouteName);
+        }
       }
     });
   }

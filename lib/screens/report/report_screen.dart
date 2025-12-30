@@ -263,6 +263,7 @@ class _ReportScreenState extends State<ReportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Reports', style: TextStyle(color: Colors.blue)),
         iconTheme: IconThemeData(color: Colors.blue),
@@ -324,12 +325,12 @@ class _ReportScreenState extends State<ReportScreen> {
                     Text(
                       'Search Filters',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Colors.blue,
                       ),
                     ),
-                    SizedBox(height: 16),
+                    SizedBox(height: 13),
                     // Date Range Selection
                     Row(
                       children: [
@@ -402,6 +403,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       children: [
                         Expanded(
                           child: DropdownButtonFormField<String>(
+                            isExpanded: true,
                             initialValue:
                                 assigneeList.contains(selectedAssignee)
                                 ? selectedAssignee
@@ -468,6 +470,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       children: [
                         Expanded(
                           child: DropdownButtonFormField<String>(
+                            isExpanded: true,
                             initialValue: statusList.contains(selectedStatus)
                                 ? selectedStatus
                                 : 'All',
@@ -515,7 +518,7 @@ class _ReportScreenState extends State<ReportScreen> {
                         // Clear Filters Button
                         Expanded(
                           child: SizedBox(
-                            height: 45,
+                            height: 50,
                             child: ElevatedButton.icon(
                               onPressed: () {
                                 setState(() {
