@@ -57,7 +57,7 @@ class UserProvider with ChangeNotifier {
         _users[index] = _users[index].copyWith(
           displayName: data['displayName'] ?? _users[index].displayName,
           email: data['email'] ?? _users[index].email,
-          photoURL: data['photoURL'] ?? _users[index].photoURL,
+          password: data['password'] ?? _users[index].password,
           createdAt: data['createdAt'] != null
               ? (data['createdAt'] as Timestamp).toDate()
               : _users[index].createdAt,

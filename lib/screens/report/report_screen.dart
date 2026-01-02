@@ -16,14 +16,17 @@ class ReportScreen extends StatefulWidget {
   State<ReportScreen> createState() => _ReportScreenState();
 }
 
-class _ReportScreenState extends State<ReportScreen> {
+class _ReportScreenState extends State<ReportScreen>
+    with SingleTickerProviderStateMixin {
   DateTime? startDate;
   DateTime? endDate;
   String? selectedAssignee;
   String? selectedApplication;
   String? selectedStatus;
+  bool _isFilterExpanded = true;
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
 
-  // Status options list
   final List<String> statusList = ['All', 'Pending', 'Completed'];
 
   @override
@@ -33,15 +36,27 @@ class _ReportScreenState extends State<ReportScreen> {
     selectedApplication = 'All';
     selectedStatus = 'All';
 
-    // Fetch tasks on screen load
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _fadeAnimation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    );
+    _animationController.forward();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Fetch tasks
       context.read<TaskProviders>().fetchTasks();
-      // Fetch app names and employee names List<String>
       context.read<EmployeeNameProvider>().fetchEmployeeNamesAsStrings();
-      //Fetch app names List<String>
       context.read<AppNameProvider>().fetchAppNamesAsStrings();
     });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   Future<void> _selectDate(BuildContext context, bool isStartDate) async {
@@ -53,10 +68,13 @@ class _ReportScreenState extends State<ReportScreen> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: Colors.blue,
+            colorScheme: const ColorScheme.light(
+              primary: Color(0xFF2196F3),
               onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: Colors.black87,
             ),
+            dialogTheme: DialogThemeData(backgroundColor: Colors.white),
           ),
           child: child!,
         );
@@ -81,30 +99,25 @@ class _ReportScreenState extends State<ReportScreen> {
       bool matchesApplication = true;
       bool matchesStatus = true;
 
-      // Date filter - using task object properties
       if (startDate != null || endDate != null) {
         DateTime? taskDate = task.createdAt;
-
         if (startDate != null && taskDate.isBefore(startDate!)) {
           matchesDate = false;
         }
         if (endDate != null &&
-            taskDate.isAfter(endDate!.add(Duration(days: 1)))) {
+            taskDate.isAfter(endDate!.add(const Duration(days: 1)))) {
           matchesDate = false;
         }
       }
 
-      // Assignee filter - using task object properties
       if (selectedAssignee != null && selectedAssignee != 'All') {
         matchesAssignee = task.assignedTo == selectedAssignee;
       }
 
-      // Application filter - using task object properties
       if (selectedApplication != null && selectedApplication != 'All') {
         matchesApplication = task.applicationName == selectedApplication;
       }
 
-      // Status filter - using task object properties
       if (selectedStatus != null && selectedStatus != 'All') {
         String taskStatusString = task.taskStatus ? 'Pending' : 'Completed';
         matchesStatus = taskStatusString == selectedStatus;
@@ -119,15 +132,13 @@ class _ReportScreenState extends State<ReportScreen> {
 
   Future<void> _generatePDF(List<Task> filteredData) async {
     final pdf = pw.Document();
-
-    // Load a font that supports Unicode (using system font)
     final font = await PdfGoogleFonts.notoSansRegular();
     final fontBold = await PdfGoogleFonts.notoSansBold();
 
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
-        margin: pw.EdgeInsets.all(32),
+        margin: const pw.EdgeInsets.all(32),
         theme: pw.ThemeData.withFont(base: font, bold: fontBold),
         build: (pw.Context context) {
           return [
@@ -150,60 +161,60 @@ class _ReportScreenState extends State<ReportScreen> {
             if (startDate != null || endDate != null)
               pw.Text(
                 'Date Range: ${startDate != null ? DateFormat('yyyy-MM-dd').format(startDate!) : 'N/A'} to ${endDate != null ? DateFormat('yyyy-MM-dd').format(endDate!) : 'N/A'}',
-                style: pw.TextStyle(fontSize: 12),
+                style: const pw.TextStyle(fontSize: 12),
               ),
             if (selectedAssignee != null && selectedAssignee != 'All')
               pw.Text(
                 'Assignee: $selectedAssignee',
-                style: pw.TextStyle(fontSize: 12),
+                style: const pw.TextStyle(fontSize: 12),
               ),
             if (selectedApplication != null && selectedApplication != 'All')
               pw.Text(
                 'Application Name: $selectedApplication',
-                style: pw.TextStyle(fontSize: 12),
+                style: const pw.TextStyle(fontSize: 12),
               ),
             if (selectedStatus != null && selectedStatus != 'All')
               pw.Text(
                 'Status: $selectedStatus',
-                style: pw.TextStyle(fontSize: 12),
+                style: const pw.TextStyle(fontSize: 12),
               ),
             pw.SizedBox(height: 20),
             pw.Table(
               border: pw.TableBorder.all(color: PdfColors.grey400),
               children: [
                 pw.TableRow(
-                  decoration: pw.BoxDecoration(color: PdfColors.blue100),
+                  decoration: const pw.BoxDecoration(color: PdfColors.blue100),
                   children: [
                     pw.Padding(
-                      padding: pw.EdgeInsets.all(8),
+                      padding: const pw.EdgeInsets.all(8),
                       child: pw.Text(
                         'Date',
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
                       ),
                     ),
                     pw.Padding(
-                      padding: pw.EdgeInsets.all(8),
+                      padding: const pw.EdgeInsets.all(8),
                       child: pw.Text(
                         'Task',
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
                       ),
                     ),
                     pw.Padding(
-                      padding: pw.EdgeInsets.all(8),
+                      padding: const pw.EdgeInsets.all(8),
                       child: pw.Text(
                         'Assignee',
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
                       ),
                     ),
                     pw.Padding(
-                      padding: pw.EdgeInsets.all(8),
+                      padding: const pw.EdgeInsets.all(8),
                       child: pw.Text(
                         'Application',
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
                       ),
                     ),
                     pw.Padding(
-                      padding: pw.EdgeInsets.all(8),
+                      padding: const pw.EdgeInsets.all(8),
                       child: pw.Text(
                         'Status',
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
@@ -212,32 +223,28 @@ class _ReportScreenState extends State<ReportScreen> {
                   ],
                 ),
                 ...filteredData.map((task) {
-                  String date = 'N/A';
-                  DateTime? taskDate = task.createdAt;
-                  date = DateFormat('yyyy-MM-dd').format(taskDate);
-
+                  String date = DateFormat('yyyy-MM-dd').format(task.createdAt);
                   String status = task.taskStatus ? 'Pending' : 'Completed';
-
                   return pw.TableRow(
                     children: [
                       pw.Padding(
-                        padding: pw.EdgeInsets.all(8),
+                        padding: const pw.EdgeInsets.all(8),
                         child: pw.Text(date),
                       ),
                       pw.Padding(
-                        padding: pw.EdgeInsets.all(8),
+                        padding: const pw.EdgeInsets.all(8),
                         child: pw.Text(task.taskTitle),
                       ),
                       pw.Padding(
-                        padding: pw.EdgeInsets.all(8),
+                        padding: const pw.EdgeInsets.all(8),
                         child: pw.Text(task.assignedTo),
                       ),
                       pw.Padding(
-                        padding: pw.EdgeInsets.all(8),
+                        padding: const pw.EdgeInsets.all(8),
                         child: pw.Text(task.applicationName),
                       ),
                       pw.Padding(
-                        padding: pw.EdgeInsets.all(8),
+                        padding: const pw.EdgeInsets.all(8),
                         child: pw.Text(status),
                       ),
                     ],
@@ -260,23 +267,62 @@ class _ReportScreenState extends State<ReportScreen> {
     );
   }
 
+  void _showSuccessSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.check_circle, color: Colors.white),
+            const SizedBox(width: 12),
+            Expanded(child: Text(message)),
+          ],
+        ),
+        backgroundColor: Colors.green,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF5F7FA),
       appBar: AppBar(
-        title: const Text('Reports', style: TextStyle(color: Colors.blue)),
-        iconTheme: IconThemeData(color: Colors.blue),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Reports & Analytics',
+          style: TextStyle(
+            color: Colors.blue,
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+          ),
+        ),
+        iconTheme: const IconThemeData(color: Color(0xFF2196F3)),
         actions: [
           Consumer<TaskProviders>(
             builder: (context, taskProvider, child) {
               final filteredData = getFilteredData(taskProvider.tasks);
-              return IconButton(
-                icon: Icon(Icons.download, color: Colors.blue),
-                onPressed: filteredData.isEmpty
-                    ? null
-                    : () => _generatePDF(filteredData),
-                tooltip: 'Download PDF',
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                decoration: BoxDecoration(
+                  color: filteredData.isEmpty
+                      ? Colors.grey.shade200
+                      : const Color(0xFF2196F3),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.download_rounded, size: 22),
+                  color: filteredData.isEmpty ? Colors.grey : Colors.white,
+                  onPressed: filteredData.isEmpty
+                      ? null
+                      : () {
+                          _generatePDF(filteredData);
+                          _showSuccessSnackbar('PDF generated successfully!');
+                        },
+                  tooltip: 'Download PDF Report',
+                ),
               );
             },
           ),
@@ -288,391 +334,670 @@ class _ReportScreenState extends State<ReportScreen> {
           final employeeNames = employeeProvider.employeeNameStrings;
           final appNames = appProvider.appNameStrings;
           final filteredData = getFilteredData(tasks);
-
-          // Create dropdown lists with "All" option
           final assigneeList = ['All', ...employeeNames];
-          final List<String> applicationList = ['All', ...appNames];
-
-          // Check if providers are loading
+          final applicationList = ['All', ...appNames];
           final isLoading =
               taskProvider.isLoading ||
               employeeProvider.isLoading ||
               appProvider.isLoading;
 
           if (isLoading) {
-            return Center(child: CircularProgressIndicator(color: Colors.blue));
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Color(0xFF2196F3),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Loading reports...',
+                    style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
+                  ),
+                ],
+              ),
+            );
           }
 
-          return Column(
-            children: [
-              // Search Filters Container
-              Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Search Filters',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue,
-                      ),
-                    ),
-                    SizedBox(height: 13),
-                    // Date Range Selection
-                    Row(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: () => _selectDate(context, true),
-                            child: InputDecorator(
-                              decoration: InputDecoration(
-                                labelText: 'Start Date',
-                                border: OutlineInputBorder(),
-                                prefixIcon: Icon(
-                                  Icons.calendar_today,
-                                  color: Colors.blue,
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 12,
-                                ),
-                              ),
-                              child: Text(
-                                startDate != null
-                                    ? DateFormat(
-                                        'yyyy-MM-dd',
-                                      ).format(startDate!)
-                                    : 'Select Date',
-                                style: TextStyle(
-                                  color: startDate != null
-                                      ? Colors.black
-                                      : Colors.grey,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 12),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () => _selectDate(context, false),
-                            child: InputDecorator(
-                              decoration: InputDecoration(
-                                labelText: 'End Date',
-                                border: OutlineInputBorder(),
-                                prefixIcon: Icon(
-                                  Icons.calendar_today,
-                                  color: Colors.blue,
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 12,
-                                ),
-                              ),
-                              child: Text(
-                                endDate != null
-                                    ? DateFormat('yyyy-MM-dd').format(endDate!)
-                                    : 'Select Date',
-                                style: TextStyle(
-                                  color: endDate != null
-                                      ? Colors.black
-                                      : Colors.grey,
-                                ),
-                              ),
-                            ),
-                          ),
+          return FadeTransition(
+            opacity: _fadeAnimation,
+            child: Column(
+              children: [
+                // Filter Section
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                  child: Container(
+                    margin: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
                         ),
                       ],
                     ),
-                    SizedBox(height: 16),
-                    // First Row: Assignee and Application dropdowns
-                    Row(
+                    child: Column(
                       children: [
-                        Expanded(
-                          child: DropdownButtonFormField<String>(
-                            isExpanded: true,
-                            initialValue:
-                                assigneeList.contains(selectedAssignee)
-                                ? selectedAssignee
-                                : 'All',
-                            decoration: InputDecoration(
-                              labelText: 'Assigned To',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(
-                                Icons.person,
-                                color: Colors.blue,
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 12,
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              _isFilterExpanded = !_isFilterExpanded;
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.grey.shade200,
+                                  width: 1,
+                                ),
                               ),
                             ),
-                            items: assigneeList.map((String assignee) {
-                              return DropdownMenuItem<String>(
-                                value: assignee,
-                                child: Text(assignee),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                selectedAssignee = newValue;
-                              });
-                            },
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: const Color(
+                                      0xFF2196F3,
+                                    ).withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: const Icon(
+                                    Icons.filter_alt_rounded,
+                                    color: Color(0xFF2196F3),
+                                    size: 20,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                const Text(
+                                  'Search Filters',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF1E293B),
+                                  ),
+                                ),
+                                const Spacer(),
+                                AnimatedRotation(
+                                  turns: _isFilterExpanded ? 0.5 : 0,
+                                  duration: const Duration(milliseconds: 300),
+                                  child: Icon(
+                                    Icons.keyboard_arrow_down_rounded,
+                                    color: Colors.grey.shade600,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        SizedBox(width: 12),
-                        Expanded(
-                          child: DropdownButtonFormField<String>(
-                            initialValue:
-                                applicationList.contains(selectedApplication)
-                                ? selectedApplication
-                                : 'All',
-                            decoration: InputDecoration(
-                              labelText: 'Application Name',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.apps, color: Colors.blue),
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 12,
-                              ),
-                            ),
-                            items: applicationList.map((String app) {
-                              return DropdownMenuItem<String>(
-                                value: app,
-                                child: Text(app),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                selectedApplication = newValue;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    //                     // Status Dropdown
-                    Row(
-                      children: [
-                        Expanded(
-                          child: DropdownButtonFormField<String>(
-                            isExpanded: true,
-                            initialValue: statusList.contains(selectedStatus)
-                                ? selectedStatus
-                                : 'All',
-                            decoration: InputDecoration(
-                              labelText: 'Task Status',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(
-                                Icons.info_outline,
-                                color: Colors.blue,
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 12,
-                              ),
-                            ),
-                            items: statusList.map((String status) {
-                              return DropdownMenuItem<String>(
-                                value: status,
-                                child: Row(
+                        AnimatedCrossFade(
+                          firstChild: Container(),
+                          secondChild: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              children: [
+                                // Date Range
+                                Row(
                                   children: [
-                                    if (status != 'All')
-                                      Container(
-                                        width: 12,
-                                        height: 12,
-                                        margin: EdgeInsets.only(right: 8),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: _getStatusColor(status),
-                                        ),
+                                    Expanded(
+                                      child: _buildDateField(
+                                        label: 'Start Date',
+                                        date: startDate,
+                                        onTap: () => _selectDate(context, true),
                                       ),
-                                    Text(status),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: _buildDateField(
+                                        label: 'End Date',
+                                        date: endDate,
+                                        onTap: () =>
+                                            _selectDate(context, false),
+                                      ),
+                                    ),
                                   ],
                                 ),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                selectedStatus = newValue;
-                              });
-                            },
+                                const SizedBox(height: 16),
+                                // Assignee and Application
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: _buildDropdown(
+                                        label: 'Assigned To',
+                                        value:
+                                            assigneeList.contains(
+                                              selectedAssignee,
+                                            )
+                                            ? selectedAssignee!
+                                            : 'All',
+                                        items: assigneeList,
+                                        icon: Icons.person_outline_rounded,
+                                        onChanged: (value) {
+                                          setState(
+                                            () => selectedAssignee = value,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: _buildDropdown(
+                                        label: 'Application',
+                                        value:
+                                            applicationList.contains(
+                                              selectedApplication,
+                                            )
+                                            ? selectedApplication!
+                                            : 'All',
+                                        items: applicationList,
+                                        icon: Icons.apps_rounded,
+                                        onChanged: (value) {
+                                          setState(
+                                            () => selectedApplication = value,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 16),
+                                // Status and Clear Button
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: _buildStatusDropdown(
+                                        value:
+                                            statusList.contains(selectedStatus)
+                                            ? selectedStatus!
+                                            : 'All',
+                                        items: statusList,
+                                        onChanged: (value) {
+                                          setState(
+                                            () => selectedStatus = value,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: ElevatedButton.icon(
+                                        onPressed: () {
+                                          setState(() {
+                                            startDate = null;
+                                            endDate = null;
+                                            selectedAssignee = 'All';
+                                            selectedApplication = 'All';
+                                            selectedStatus = 'All';
+                                          });
+                                          _showSuccessSnackbar(
+                                            'Filters cleared',
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.clear_rounded,
+                                          size: 20,
+                                        ),
+                                        label: const Text('Clear Filters'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.grey.shade100,
+                                          foregroundColor: Colors.grey.shade700,
+                                          elevation: 0,
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 16,
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          crossFadeState: _isFilterExpanded
+                              ? CrossFadeState.showSecond
+                              : CrossFadeState.showFirst,
+                          duration: const Duration(milliseconds: 300),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // Summary Stats
+                if (filteredData.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: _buildStatCard(
+                            'Total Tasks',
+                            filteredData.length.toString(),
+                            Icons.list_alt_rounded,
+                            const Color(0xFF2196F3),
                           ),
                         ),
-                        SizedBox(width: 12),
-
-                        // Clear Filters Button
+                        const SizedBox(width: 12),
                         Expanded(
-                          child: SizedBox(
-                            height: 50,
-                            child: ElevatedButton.icon(
-                              onPressed: () {
-                                setState(() {
-                                  startDate = null;
-                                  endDate = null;
-                                  selectedAssignee = 'All';
-                                  selectedApplication = 'All';
-                                  selectedStatus = 'All';
-                                });
-                              },
-                              icon: Icon(Icons.clear),
-                              label: Text('Clear Filters'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
-                                foregroundColor: Colors.white,
-                                padding: EdgeInsets.symmetric(vertical: 12),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
+                          child: _buildStatCard(
+                            'Completed',
+                            filteredData
+                                .where((t) => !t.taskStatus)
+                                .length
+                                .toString(),
+                            Icons.check_circle_outline_rounded,
+                            Colors.green,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _buildStatCard(
+                            'Pending',
+                            filteredData
+                                .where((t) => t.taskStatus)
+                                .length
+                                .toString(),
+                            Icons.pending_outlined,
+                            Colors.orange,
                           ),
                         ),
                       ],
                     ),
-                  ],
+                  ),
+                const SizedBox(height: 16),
+                // Results List
+                Expanded(
+                  child: filteredData.isEmpty
+                      ? _buildEmptyState()
+                      : ListView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          itemCount: filteredData.length,
+                          itemBuilder: (context, index) {
+                            final task = filteredData[index];
+                            return _buildTaskCard(task, index);
+                          },
+                        ),
                 ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildDateField({
+    required String label,
+    required DateTime? date,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              Icons.calendar_today_rounded,
+              size: 20,
+              color: Colors.grey.shade600,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    date != null
+                        ? DateFormat('MMM dd, yyyy').format(date)
+                        : 'Select Date',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: date != null
+                          ? const Color(0xFF1E293B)
+                          : Colors.grey.shade400,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
-              // Results Section
-              Expanded(
-                child: filteredData.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropdown({
+    required String label,
+    required String value,
+    required List<String> items,
+    required IconData icon,
+    required Function(String?) onChanged,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: value,
+          isExpanded: true,
+          icon: Icon(
+            Icons.keyboard_arrow_down_rounded,
+            color: Colors.grey.shade600,
+          ),
+          style: const TextStyle(
+            fontSize: 14,
+            color: Color(0xFF1E293B),
+            fontWeight: FontWeight.w500,
+          ),
+          items: items.map((item) {
+            return DropdownMenuItem<String>(
+              value: item,
+              child: Row(
+                children: [
+                  Icon(icon, size: 18, color: Colors.grey.shade600),
+                  const SizedBox(width: 12),
+                  Text(item),
+                ],
+              ),
+            );
+          }).toList(),
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatusDropdown({
+    required String value,
+    required List<String> items,
+    required Function(String?) onChanged,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: value,
+          isExpanded: true,
+          icon: Icon(
+            Icons.keyboard_arrow_down_rounded,
+            color: Colors.grey.shade600,
+          ),
+          style: const TextStyle(
+            fontSize: 14,
+            color: Color(0xFF1E293B),
+            fontWeight: FontWeight.w500,
+          ),
+          items: items.map((status) {
+            return DropdownMenuItem<String>(
+              value: status,
+              child: Row(
+                children: [
+                  if (status != 'All')
+                    Container(
+                      width: 10,
+                      height: 10,
+                      margin: const EdgeInsets.only(right: 12),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _getStatusColor(status),
+                      ),
+                    )
+                  else
+                    Icon(
+                      Icons.info_outline_rounded,
+                      size: 18,
+                      color: Colors.grey.shade600,
+                    ),
+                  if (status == 'All') const SizedBox(width: 12),
+                  Text(status),
+                ],
+              ),
+            );
+          }).toList(),
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatCard(
+    String title,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Icon(icon, color: color, size: 24),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey.shade600,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTaskCard(Task task, int index) {
+    final status = task.taskStatus ? 'Pending' : 'Completed';
+    final date = DateFormat('MMM dd, yyyy').format(task.createdAt);
+
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0.0, end: 1.0),
+      duration: Duration(milliseconds: 300 + (index * 50)),
+      curve: Curves.easeOut,
+      builder: (context, value, child) {
+        return Transform.translate(
+          offset: Offset(0, 20 * (1 - value)),
+          child: Opacity(opacity: value, child: child),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: () {},
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          task.taskTitle,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF1E293B),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _getStatusColor(status).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(
-                              Icons.search_off,
-                              size: 64,
-                              color: Colors.grey,
+                            Container(
+                              width: 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: _getStatusColor(status),
+                              ),
                             ),
-                            SizedBox(height: 16),
+                            const SizedBox(width: 6),
                             Text(
-                              'No results found',
+                              status,
                               style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey,
+                                color: _getStatusColor(status),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
                               ),
                             ),
                           ],
                         ),
-                      )
-                    : ListView.builder(
-                        padding: EdgeInsets.all(16),
-                        itemCount: filteredData.length,
-                        itemBuilder: (context, index) {
-                          final task = filteredData[index];
-
-                          // Access task properties directly using dot notation
-                          String taskName = task.taskTitle;
-                          String assignee = task.assignedTo;
-                          String appName = task.applicationName;
-                          String status = task.taskStatus
-                              ? 'Pending'
-                              : 'Completed';
-
-                          String date = 'N/A';
-                          DateTime? taskDate = task.createdAt;
-                          date = DateFormat('yyyy-MM-dd').format(taskDate);
-
-                          return Card(
-                            margin: EdgeInsets.only(bottom: 12),
-                            elevation: 2,
-                            child: ListTile(
-                              contentPadding: EdgeInsets.all(16),
-                              title: Text(
-                                taskName,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 8),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.apps,
-                                        size: 16,
-                                        color: Colors.blue,
-                                      ),
-                                      SizedBox(width: 4),
-                                      Expanded(child: Text(appName)),
-                                    ],
-                                  ),
-                                  SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.person,
-                                        size: 16,
-                                        color: Colors.blue,
-                                      ),
-                                      SizedBox(width: 4),
-                                      Expanded(child: Text(assignee)),
-                                    ],
-                                  ),
-                                  SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.calendar_today,
-                                        size: 16,
-                                        color: Colors.blue,
-                                      ),
-                                      SizedBox(width: 4),
-                                      Text(date),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              trailing: Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: _getStatusColor(
-                                    status,
-                                  ).withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: _getStatusColor(status),
-                                    width: 1,
-                                  ),
-                                ),
-                                child: Text(
-                                  status,
-                                  style: TextStyle(
-                                    color: _getStatusColor(status),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
                       ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  _buildInfoRow(
+                    Icons.apps_rounded,
+                    task.applicationName,
+                    const Color(0xFF2196F3),
+                  ),
+                  const SizedBox(height: 8),
+                  _buildInfoRow(
+                    Icons.person_outline_rounded,
+                    task.assignedTo,
+                    const Color(0xFF64748B),
+                  ),
+                  const SizedBox(height: 8),
+                  _buildInfoRow(
+                    Icons.calendar_today_rounded,
+                    date,
+                    const Color(0xFF64748B),
+                  ),
+                ],
               ),
-            ],
-          );
-        },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String text, Color iconColor) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: iconColor),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            text,
+            style: const TextStyle(fontSize: 14, color: Color(0xFF64748B)),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.search_off_rounded,
+              size: 64,
+              color: Colors.grey.shade400,
+            ),
+          ),
+          const SizedBox(height: 24),
+          const Text(
+            'No Results Found',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF1E293B),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Try adjusting your filters to find what you\'re looking for',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+          ),
+        ],
       ),
     );
   }
@@ -686,7 +1011,7 @@ class _ReportScreenState extends State<ReportScreen> {
       case 'ongoing':
         return Colors.orange;
       case 'pending':
-        return Colors.blue;
+        return const Color(0xFF2196F3);
       case 'cancelled':
       case 'failed':
         return Colors.red;

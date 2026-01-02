@@ -6,13 +6,13 @@ class UserModel {
   final String? lastName;
   final String displayName;
   final String email;
-  final String? photoURL;
+  final String? password;
   final DateTime createdAt;
 
   UserModel({
     this.firstName,
     this.lastName,
-    this.photoURL,
+    this.password,
     required this.id,
     required this.displayName,
     required this.email,
@@ -26,7 +26,7 @@ class UserModel {
       'lastName': lastName,
       'displayName': displayName,
       'email': email,
-      'photoURL': photoURL,
+      'password': password,
       'createdAt': Timestamp.fromDate(createdAt),
     };
   }
@@ -50,7 +50,7 @@ class UserModel {
       lastName: map['lastName'] ?? '',
       displayName: map['displayName'] ?? '',
       email: map['email'] ?? '',
-      photoURL: map['photoURL'] ?? '',
+      password: map['password'] ?? '123456',
       createdAt: createdAtDateTime,
     );
   }
@@ -62,7 +62,7 @@ class UserModel {
     String? lastName,
     String? displayName,
     String? email,
-    String? photoURL,
+    String? password,
     DateTime? createdAt,
   }) {
     return UserModel(
@@ -71,7 +71,7 @@ class UserModel {
       lastName: lastName ?? this.lastName,
       displayName: displayName ?? this.displayName,
       email: email ?? this.email,
-      photoURL: photoURL ?? this.photoURL,
+      password: password ?? this.password,
       createdAt: createdAt ?? this.createdAt,
     );
   }

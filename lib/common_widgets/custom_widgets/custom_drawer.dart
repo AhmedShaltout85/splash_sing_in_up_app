@@ -1,214 +1,402 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
 import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firebase_api_services.dart';
 import 'package:splash_sing_in_up_app/screens/report/report_screen.dart';
-import 'package:splash_sing_in_up_app/screens/user/user_list_screen.dart';
-
+import 'package:splash_sing_in_up_app/screens/user/manage_users.dart';
 import '../../screens/add_employee_app_name/add_employee_app_name.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
+
+  @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+  int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  String _getInitials() {
+    final email = FirebaseAuth.instance.currentUser?.email ?? '';
+    if (email.isEmpty) return 'U';
+    final name = email.split('@').first;
+    return name.isNotEmpty ? name[0].toUpperCase() : 'U';
+  }
+
+  String _getDisplayName() {
+    final email = FirebaseAuth.instance.currentUser?.email ?? '';
+    if (email.isEmpty) return 'User';
+    final name = email.split('@').first;
+    return name.isNotEmpty
+        ? name[0].toUpperCase() + name.substring(1).toLowerCase()
+        : 'User';
+  }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: Colors.white,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.white, Colors.grey.shade50],
+          ),
+        ),
         child: Column(
           children: [
-            // Header with user info
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Colors.blue.shade700, Colors.blue.shade500],
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      Icons.person,
-                      size: 45,
-                      color: Colors.blue.shade700,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  const Text(
-                    'Login User',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    'login-user@example.com',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // Enhanced Header with gradient and shadow
+            _buildDrawerHeader(),
 
-            // Menu items
+            // Menu items with fade animation
             Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                children: [
-                  _buildDrawerItem(
-                    context,
-                    icon: Icons.home,
-                    title: 'Home',
-                    onTap: () {
-                      Navigator.pop(context);
-                      // Navigate to home
-                    },
-                  ),
-                  _buildDrawerItem(
-                    context,
-                    icon: Icons.person_add,
-                    title: 'Users Profiles',
-                    onTap: () {
-                      Navigator.pop(context);
-                      // Navigate to profile
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const UserListScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                  // _buildDrawerItem(
-                  //   context,
-                  //   icon: Icons.settings,
-                  //   title: 'Settings',
-                  //   onTap: () {
-                  //     Navigator.pop(context);
-                  //     // Navigate to settings
-                  //   },
-                  // ),
-                  _buildDrawerItem(
-                    context,
-                    icon: Icons.boy_rounded,
-                    title: 'Added Employees',
-                    onTap: () async {
-                      Navigator.pop(context);
-                      // Navigate to Added Employees with await to refresh when returning
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AddEmployeeAppName(
-                            title: 'Added Employees',
+              child: FadeTransition(
+                opacity: _animation,
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  children: [
+                    _buildDrawerItem(
+                      context,
+                      index: 0,
+                      icon: Icons.home_rounded,
+                      title: 'Home',
+                      onTap: () {
+                        setState(() => _selectedIndex = 0);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    _buildDrawerItem(
+                      context,
+                      index: 1,
+                      icon: Icons.people_rounded,
+                      title: 'Manage Users',
+                      onTap: () {
+                        setState(() => _selectedIndex = 1);
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const UserListScreen(),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                  _buildDrawerItem(
-                    context,
-                    icon: Icons.desktop_mac_sharp,
-                    title: 'Added Applications',
-                    onTap: () async {
-                      Navigator.pop(context);
-                      // Navigate to Added Applications with await to refresh when returning
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AddEmployeeAppName(
-                            title: 'Added Applications',
+                        );
+                      },
+                    ),
+                    _buildDrawerItem(
+                      context,
+                      index: 2,
+                      icon: Icons.badge_rounded,
+                      title: 'Added Employees',
+                      onTap: () async {
+                        setState(() => _selectedIndex = 2);
+                        Navigator.pop(context);
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AddEmployeeAppName(
+                              title: 'Added Employees',
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                  const Divider(height: 30),
-                  _buildDrawerItem(
-                    context,
-                    icon: Icons.list_alt,
-                    title: 'Reports',
-                    onTap: () {
-                      Navigator.pop(context);
-
-                      // Navigate to reports
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ReportScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                  // _buildDrawerItem(
-                  //   context,
-                  //   icon: Icons.info_outline,
-                  //   title: 'About',
-                  //   onTap: () {
-                  //     Navigator.pop(context);
-                  //     // Navigate to about
-                  //   },
-                  // ),
-                ],
-              ),
-            ),
-
-            // Logout button at bottom
-            Container(
-              padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: Colors.grey.shade300, width: 1),
+                        );
+                      },
+                    ),
+                    _buildDrawerItem(
+                      context,
+                      index: 3,
+                      icon: Icons.apps_rounded,
+                      title: 'Added Applications',
+                      onTap: () async {
+                        setState(() => _selectedIndex = 3);
+                        Navigator.pop(context);
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AddEmployeeAppName(
+                              title: 'Added Applications',
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: Divider(color: Colors.grey.shade300, thickness: 1),
+                    ),
+                    _buildDrawerItem(
+                      context,
+                      index: 4,
+                      icon: Icons.assessment_rounded,
+                      title: 'Reports',
+                      onTap: () {
+                        setState(() => _selectedIndex = 4);
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ReportScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
-              child: _buildDrawerItem(
-                context,
-                icon: Icons.logout,
-                title: 'Logout',
-                iconColor: Colors.red,
-                onTap: () {
-                  Navigator.pop(context);
-                  // Handle logout
-                  _showLogoutDialog(context);
-                },
-              ),
             ),
+
+            // Enhanced logout button
+            _buildLogoutSection(),
           ],
         ),
       ),
     );
   }
 
+  Widget _buildDrawerHeader() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(24, 60, 24, 24),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.blue.shade700,
+            Colors.blue.shade500,
+            Colors.blue.shade400,
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.shade200.withOpacity(0.5),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Animated Avatar
+          Hero(
+            tag: 'user_avatar',
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: CircleAvatar(
+                radius: 42,
+                backgroundColor: Colors.white,
+                child: CircleAvatar(
+                  radius: 38,
+                  backgroundColor: Colors.blue.shade50,
+                  child: Text(
+                    _getInitials(),
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue.shade700,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          // User name with better typography
+          Text(
+            _getDisplayName(),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 0.5,
+            ),
+          ),
+          const SizedBox(height: 6),
+          // Email with icon
+          Row(
+            children: [
+              Icon(
+                Icons.email_outlined,
+                size: 16,
+                color: Colors.white.withOpacity(0.9),
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  FirebaseAuth.instance.currentUser?.email ?? '',
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.9),
+                    fontSize: 14,
+                    letterSpacing: 0.3,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildDrawerItem(
     BuildContext context, {
+    required int index,
     required IconData icon,
     required String title,
     required VoidCallback onTap,
-    Widget? trailing,
-    Color? iconColor,
   }) {
-    return ListTile(
-      leading: Icon(icon, color: iconColor ?? Colors.blue.shade700, size: 26),
-      title: Text(
-        title,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+    final isSelected = _selectedIndex == index;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(12),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            decoration: BoxDecoration(
+              color: isSelected ? Colors.blue.shade50 : Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: isSelected ? Colors.blue.shade200 : Colors.transparent,
+                width: 1,
+              ),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? Colors.blue.shade100
+                        : Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: isSelected
+                        ? Colors.blue.shade700
+                        : Colors.grey.shade700,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: isSelected
+                          ? FontWeight.w600
+                          : FontWeight.w500,
+                      color: isSelected
+                          ? Colors.blue.shade900
+                          : Colors.grey.shade800,
+                    ),
+                  ),
+                ),
+                if (isSelected)
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 16,
+                    color: Colors.blue.shade700,
+                  ),
+              ],
+            ),
+          ),
+        ),
       ),
-      trailing: trailing,
-      onTap: onTap,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      hoverColor: Colors.blue.shade50,
+    );
+  }
+
+  Widget _buildLogoutSection() {
+    return Container(
+      margin: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade300,
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+            _showLogoutDialog(context);
+          },
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade50,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    Icons.logout_rounded,
+                    color: Colors.red.shade700,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Text(
+                  'Logout',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.red.shade700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -216,18 +404,53 @@ class CustomDrawer extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.red.shade50,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                Icons.logout_rounded,
+                color: Colors.red.shade700,
+                size: 24,
+              ),
+            ),
+            const SizedBox(width: 12),
+            const Text(
+              'Logout',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        content: const Text(
+          'Are you sure you want to logout?',
+          style: TextStyle(fontSize: 16),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: Text(
+              'Cancel',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey.shade700,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
           ElevatedButton(
             onPressed: () async {
               Navigator.pop(context);
-              // Perform logout
-              // Add your logout logic here
               try {
                 await FirebaseApiSAuthServices.signOut();
                 ReusableToast.showToast(
@@ -246,8 +469,19 @@ class CustomDrawer extends StatelessWidget {
                 );
               }
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Logout'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red.shade600,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              elevation: 2,
+            ),
+            child: const Text(
+              'Logout',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),
