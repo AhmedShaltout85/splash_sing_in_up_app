@@ -14,7 +14,6 @@ import '../../common_widgets/custom_widgets/custom_social_icon.dart';
 import '../../common_widgets/custom_widgets/custom_text.dart';
 import '../../common_widgets/custom_widgets/custom_text_field.dart';
 import '../../common_widgets/resuable_widgets/resuable_widgets.dart';
-import '../../utils/app_route.dart';
 import '../signup/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -188,6 +187,25 @@ class _LoginScreenState extends State<LoginScreen> {
     String password = _passwordController.text.trim();
 
     // ... your validation code ...
+    if (email.isEmpty || password.isEmpty) {
+      ReusableToast.showToast(
+        message: 'Please enter both email and password',
+        bgColor: AppColors.redColor,
+        textColor: AppColors.whiteColor,
+        fontSize: 16,
+      );
+      return;
+    }
+
+    if (!_isValidEmail(email)) {
+      ReusableToast.showToast(
+        message: 'Please enter a valid email address',
+        bgColor: AppColors.redColor,
+        textColor: AppColors.whiteColor,
+        fontSize: 16,
+      );
+      return;
+    }
 
     setState(() {
       _isLoading = true;
@@ -217,6 +235,55 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } on FirebaseAuthException catch (e) {
       // ... your error handling ...
+      String errorMessage;
+
+      switch (e.code) {
+        case 'user-not-found':
+          errorMessage = 'No user found with this email';
+          break;
+        case 'wrong-password':
+          errorMessage = 'Incorrect password';
+          break;
+        case 'invalid-email':
+          errorMessage = 'Invalid email address';
+          break;
+        case 'user-disabled':
+          errorMessage = 'This account has been disabled';
+          break;
+        case 'too-many-requests':
+          errorMessage = 'Too many attempts. Please try again later';
+          break;
+        case 'invalid-credential':
+          errorMessage = 'Invalid email or password';
+          break;
+        case 'network-request-failed':
+          errorMessage = 'Network error. Please check your connection';
+          break;
+        default:
+          errorMessage = 'Login failed: ${e.message ?? "Unknown error"}';
+      }
+
+      if (mounted) {
+        ReusableToast.showToast(
+          message: errorMessage,
+          bgColor: AppColors.redColor,
+          textColor: AppColors.whiteColor,
+          fontSize: 16,
+        );
+      }
+
+      log('Login error: ${e.code} - ${e.message}');
+    } catch (e) {
+      if (mounted) {
+        ReusableToast.showToast(
+          message: 'An unexpected error occurred. Please try again.',
+          bgColor: AppColors.redColor,
+          textColor: AppColors.whiteColor,
+          fontSize: 16,
+        );
+      }
+
+      log('Unexpected error during login: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -227,19 +294,19 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   // Helper method to check if user is admin
-  bool _isAdminUser(String? email) {
-    if (email == null || email.isEmpty) return false;
+  // bool _isAdminUser(String? email) {
+  //   if (email == null || email.isEmpty) return false;
 
-    // Get username part before @
-    final username = email.split('@').first.toLowerCase();
+  //   // Get username part before @
+  //   final username = email.split('@').first.toLowerCase();
 
-    // Check if username is 'admin' or matches your admin criteria
-    return username == 'admin';
+  //   // Check if username is 'admin' or matches your admin criteria
+  //   return username == 'admin';
 
-    // Alternative: Check against a list of admin emails
-    // const adminEmails = ['admin@gmail.com', 'admin@example.com'];
-    // return adminEmails.contains(email.toLowerCase());
-  }
+  //   // Alternative: Check against a list of admin emails
+  //   // const adminEmails = ['admin@gmail.com', 'admin@example.com'];
+  //   // return adminEmails.contains(email.toLowerCase());
+  // }
 
   @override
   Widget build(BuildContext context) {
