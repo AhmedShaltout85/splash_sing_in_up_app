@@ -931,6 +931,12 @@ class _ReportScreenState extends State<ReportScreen>
                   ),
                   const SizedBox(height: 8),
                   _buildInfoRow(
+                    Icons.person,
+                    task.assignedBy,
+                    const Color.fromARGB(255, 25, 109, 225),
+                  ),
+                  const SizedBox(height: 8),
+                  _buildInfoRow(
                     Icons.person_outline_rounded,
                     task.assignedTo,
                     const Color(0xFF64748B),
@@ -939,6 +945,14 @@ class _ReportScreenState extends State<ReportScreen>
                   _buildInfoRow(
                     Icons.calendar_today_rounded,
                     date,
+                    const Color(0xFF64748B),
+                  ),
+                  const SizedBox(height: 8),
+                  _buildInfoRow(
+                    Icons.group,
+                    task.coOperator.length > 1
+                        ? '${task.coOperator.first} and ${task.coOperator.last} Co-Operators'
+                        : '${task.coOperator.first} Co-Operator',
                     const Color(0xFF64748B),
                   ),
                 ],

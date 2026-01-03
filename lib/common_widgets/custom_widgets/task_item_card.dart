@@ -138,6 +138,15 @@ class TaskItemCard extends StatelessWidget {
                   Colors.red,
                 ),
                 const SizedBox(height: 8),
+                _buildDetailRow(
+                  Icons.group,
+                  'Co-Operator',
+                  task.coOperator.length > 1
+                      ? '${task.coOperator.first}, ${task.coOperator.last}'
+                      : task.coOperator.first,
+                  Colors.brown,
+                ),
+                const SizedBox(height: 8),
 
                 // Dates Section
                 Container(

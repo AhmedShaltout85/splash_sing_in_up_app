@@ -75,12 +75,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:splash_sing_in_up_app/controller/task_providers.dart';
 import 'package:splash_sing_in_up_app/controller/user_provider.dart';
-import 'package:splash_sing_in_up_app/screens/home/home_screen.dart';
+import 'package:splash_sing_in_up_app/screens/auth/auth_wrapper.dart';
 import 'package:splash_sing_in_up_app/screens/login/login_screen.dart';
-import 'package:splash_sing_in_up_app/screens/signup/signup_screen.dart';
 import 'package:splash_sing_in_up_app/screens/splash/splash_screen.dart';
 import 'package:splash_sing_in_up_app/screens/task/task_screen.dart';
 import 'package:splash_sing_in_up_app/screens/task/user_task_screen.dart';
+import 'package:splash_sing_in_up_app/screens/signup/signup_screen.dart';
+import 'package:splash_sing_in_up_app/screens/home/home_screen.dart';
 import 'package:splash_sing_in_up_app/utils/app_route.dart';
 
 import 'controller/app_name_provider.dart';
@@ -115,6 +116,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Firebase App',
       theme: ThemeData(primarySwatch: Colors.blue),
+
       initialRoute: AppRoute.splashRouteName,
       routes: {
         AppRoute.splashRouteName: (context) => const SplashScreen(),
@@ -123,9 +125,8 @@ class MyApp extends StatelessWidget {
         AppRoute.taskRouteName: (context) => const TaskScreen(),
         AppRoute.userTaskRouteName: (context) => const UserTaskScreen(),
         AppRoute.homeRouteName: (context) => const HomeScreen(),
+        AppRoute.authWrapperRouteName: (context) => const AuthWrapper(),
       },
-      // home: const TaskScreen(),
-      // home: const UserTaskScreen(),
     );
   }
 }

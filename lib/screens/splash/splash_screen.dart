@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_text.dart';
 import 'package:splash_sing_in_up_app/utils/app_assets.dart';
@@ -20,26 +17,31 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      log(
-        'SPLASH SCREEN: Auth state changed. Current user: UUID:=>${user?.uid} EMAIL:=>${user?.email} DISPLAY NAME:=>${user?.email?.substring(0, user.email?.indexOf('@'))}',
-      );
-      // );
-      if (user == null) {
-        log('User is currently signed out!');
-        if (mounted) {
-          navigateToReplacementNamed(context, AppRoute.loginRouteName);
-        }
-      } else {
-        log('User is signed in!');
-        if (mounted) {
-          if (user.email?.substring(0, user.email?.indexOf('@')) == 'admin') {
-            navigateToReplacementNamed(context, AppRoute.taskRouteName);
-          } else {
-            navigateToReplacementNamed(context, AppRoute.userTaskRouteName);
-          }
-          // navigateToReplacementNamed(context, AppRoute.userTaskRouteName);
-        }
+    // FirebaseAuth.instance.authStateChanges().listen((User? user) {
+    //   log(
+    //     'SPLASH SCREEN: Auth state changed. Current user: UUID:=>${user?.uid} EMAIL:=>${user?.email} DISPLAY NAME:=>${user?.email?.substring(0, user.email?.indexOf('@'))}',
+    //   );
+    //   // );
+    //   if (user == null) {
+    //     log('User is currently signed out!');
+    //     if (mounted) {
+    //       navigateToReplacementNamed(context, AppRoute.loginRouteName);
+    //     }
+    //   } else {
+    //     log('User is signed in!');
+    //     if (mounted) {
+    //       if (user.email?.substring(0, user.email?.indexOf('@')) == 'admin') {
+    //         navigateToNamed(context, AppRoute.taskRouteName);
+    //       } else {
+    //         navigateToNamed(context, AppRoute.userTaskRouteName);
+    //       }
+    //     }
+    //   }
+    // });
+    Future.delayed(const Duration(seconds: 3), () {
+      // navigateToReplacementNamed(context, AppRoute.loginRouteName);
+      if (mounted) {
+        navigateToReplacementNamed(context, AppRoute.authWrapperRouteName);
       }
     });
   }
@@ -58,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Positioned(
             top: kHeight * 0.0,
             child: Image.asset(
-              AppAssets.splashLogo,
+              AppAssets.taskSplashLogo,
               height: kHeight * 0.8,
               width: kWidth * 0.8,
               fit: BoxFit.fill,
@@ -66,9 +68,9 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
 
           Positioned(
-            top: kHeight * 0.65,
+            top: kHeight * 0.85,
             child: CustomText(
-              text: 'LOREM IPSUM',
+              text: 'قطاع التكنولوجيا والخدمات الرقمية',
               fontSize: fontSize + 4,
               fontWeight: FontWeight.bold,
               color: AppColors.blackColor,
@@ -76,11 +78,11 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
 
           Positioned(
-            top: kHeight * 0.7,
+            top: kHeight * 0.9,
             left: kWidth * 0.1,
             right: kWidth * 0.1,
             child: CustomText(
-              text: 'Lorem Ipsum is a dummy text used as placeholder',
+              text: 'إدارة البرامج وصيانتها',
               fontSize: fontSize,
               textAlign: TextAlign.center,
               fontWeight: FontWeight.normal,

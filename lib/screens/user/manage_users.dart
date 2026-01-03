@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:splash_sing_in_up_app/controller/employee_name_provider.dart';
 import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firebase_api_services.dart';
 
 import '../../controller/user_provider.dart';
@@ -170,6 +171,13 @@ class _UserListScreenState extends State<UserListScreen> {
                           FirebaseApiSAuthServices.createUserWithEmailAndPassword(
                             emailAddress: emailController.text.trim(),
                             password: '123456',
+                          );
+                          //
+                          context.read<EmployeeNameProvider>().addEmployeeName(
+                            displayNameController.text.trim().replaceAll(
+                              ' ',
+                              '.',
+                            ),
                           );
                           //refresh user list
                           context.read<UserProvider>().fetchUsers();
@@ -421,6 +429,11 @@ class _UserListScreenState extends State<UserListScreen> {
           ElevatedButton(
             onPressed: () {
               context.read<UserProvider>().deleteUser(userId);
+              //
+              // FirebaseAuth.instance.currentUser!.delete();
+              //
+              context.read<EmployeeNameProvider>().deleteEmployeeName(userId);
+              //
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -484,12 +497,12 @@ class _UserListScreenState extends State<UserListScreen> {
             icon: const Icon(Icons.refresh, color: Colors.blue),
             onPressed: () => context.read<UserProvider>().fetchUsers(),
           ),
-          IconButton(
-            tooltip: 'Add User',
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            icon: const Icon(Icons.person_add, color: Colors.blue),
-            onPressed: _showAddUserDialog,
-          ),
+          // IconButton(
+          //   tooltip: 'Add User',
+          //   padding: const EdgeInsets.symmetric(horizontal: 20),
+          //   icon: const Icon(Icons.person_add, color: Colors.blue),
+          //   onPressed: _showAddUserDialog,
+          // ),
         ],
       ),
       body: Consumer<UserProvider>(

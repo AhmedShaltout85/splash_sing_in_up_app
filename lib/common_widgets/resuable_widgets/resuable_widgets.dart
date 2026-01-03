@@ -14,6 +14,9 @@ void showSnackBar(String message, BuildContext context) => ScaffoldMessenger.of(
 //navigation function using MaterialPageRoute
 void navigateTo(BuildContext context, Widget widget) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
+//navigation function using MaterialPageRoute
+void navigateToNamed(BuildContext context, String routeName) =>
+    Navigator.pushNamed(context, routeName);
 
 //navigation function using pushReplacement
 void navigateToReplacement(BuildContext context, Widget widget) =>

@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
 import 'package:splash_sing_in_up_app/controller/task_providers.dart';
-import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firebase_api_services.dart';
 
 import '../../common_widgets/custom_widgets/task_item_card.dart';
 
@@ -39,7 +38,7 @@ class _UserTaskScreenState extends State<UserTaskScreen> {
           style: TextStyle(
             color: Colors.blue,
             fontWeight: FontWeight.bold,
-            fontSize: 13,
+            fontSize: 15,
           ),
         ),
         iconTheme: IconThemeData(color: Colors.blue),
@@ -66,16 +65,18 @@ class _UserTaskScreenState extends State<UserTaskScreen> {
           ),
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.blue),
-            onPressed: () {
-              //logout from firebase
+            onPressed: () async {
               if (FirebaseAuth.instance.currentUser != null) {
-                FirebaseApiSAuthServices.signOut();
-                ReusableToast.showToast(
-                  message: 'Logged out successfully',
-                  bgColor: Colors.green,
-                  textColor: Colors.white,
-                  fontSize: 16,
-                );
+                await FirebaseAuth.instance.signOut();
+                // AuthWrapper automatically detects logout and shows login screen
+                if (mounted) {
+                  ReusableToast.showToast(
+                    message: 'Logged out successfully',
+                    bgColor: Colors.green,
+                    textColor: Colors.white,
+                    fontSize: 16,
+                  );
+                }
               }
             },
           ),
