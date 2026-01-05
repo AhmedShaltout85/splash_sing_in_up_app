@@ -206,7 +206,7 @@ class _TaskScreenState extends State<TaskScreen> {
                                   const DropdownMenuItem<String>(
                                     value: null,
                                     child: Text(
-                                      'All Employees',
+                                      'All',
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(fontSize: 13),
                                     ),
@@ -252,7 +252,7 @@ class _TaskScreenState extends State<TaskScreen> {
                                   const DropdownMenuItem<String>(
                                     value: null,
                                     child: Text(
-                                      'All Applications',
+                                      'All',
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(fontSize: 13),
                                     ),
@@ -298,7 +298,7 @@ class _TaskScreenState extends State<TaskScreen> {
                                   DropdownMenuItem<bool?>(
                                     value: null,
                                     child: Text(
-                                      'All Tasks',
+                                      'All',
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(fontSize: 13),
                                     ),
