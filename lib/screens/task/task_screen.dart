@@ -206,9 +206,8 @@ class _TaskScreenState extends State<TaskScreen> {
                                   const DropdownMenuItem<String>(
                                     value: null,
                                     child: Text(
-                                      'All',
+                                      'All Employees',
                                       overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(fontSize: 13),
                                     ),
                                   ),
                                   ...employeeNames.map((name) {
@@ -252,9 +251,8 @@ class _TaskScreenState extends State<TaskScreen> {
                                   const DropdownMenuItem<String>(
                                     value: null,
                                     child: Text(
-                                      'All',
+                                      'All Apps',
                                       overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(fontSize: 13),
                                     ),
                                   ),
                                   ...appNames.map((name) {
@@ -277,6 +275,11 @@ class _TaskScreenState extends State<TaskScreen> {
                             const SizedBox(width: 5),
 
                             // Active status filter
+                          ],
+                        ),
+                        SizedBox(height: 12),
+                        Row(
+                          children: [
                             Expanded(
                               child: DropdownButtonFormField<bool?>(
                                 initialValue: isActiveFilter,
@@ -298,9 +301,8 @@ class _TaskScreenState extends State<TaskScreen> {
                                   DropdownMenuItem<bool?>(
                                     value: null,
                                     child: Text(
-                                      'All',
+                                      'All Status',
                                       overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(fontSize: 13),
                                     ),
                                   ),
                                   DropdownMenuItem<bool?>(
@@ -325,6 +327,8 @@ class _TaskScreenState extends State<TaskScreen> {
                                 },
                               ),
                             ),
+                            const SizedBox(width: 5),
+                            Expanded(child: SizedBox.shrink()),
                           ],
                         ),
                       ],
