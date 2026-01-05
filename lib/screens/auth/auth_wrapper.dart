@@ -1,9 +1,9 @@
 // 1. CREATE: lib/screens/auth/auth_wrapper.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:splash_sing_in_up_app/screens/login/login_screen.dart';
-import 'package:splash_sing_in_up_app/screens/task/task_screen.dart';
-import 'package:splash_sing_in_up_app/screens/task/user_task_screen.dart';
+import 'package:task_app/screens/login/login_screen.dart';
+import 'package:task_app/screens/task/task_screen.dart';
+import 'package:task_app/screens/task/user_task_screen.dart';
 
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});

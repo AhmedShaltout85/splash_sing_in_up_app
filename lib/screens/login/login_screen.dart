@@ -2,12 +2,12 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_button.dart';
-import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
-// import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/facebook_auth_service.dart';
-import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firebase_api_services.dart';
-import 'package:splash_sing_in_up_app/utils/app_assets.dart';
-import 'package:splash_sing_in_up_app/utils/app_colors.dart';
+import 'package:task_app/common_widgets/custom_widgets/custom_button.dart';
+import 'package:task_app/common_widgets/resuable_widgets/reusable_toast.dart';
+// import 'package:task_app/newtork_repos/remote_repo/facebook_auth_service.dart';
+import 'package:task_app/newtork_repos/remote_repo/firebase_api_services.dart';
+import 'package:task_app/utils/app_assets.dart';
+import 'package:task_app/utils/app_colors.dart';
 
 import '../../common_widgets/custom_widgets/custom_logo_text.dart';
 import '../../common_widgets/custom_widgets/custom_social_icon.dart';

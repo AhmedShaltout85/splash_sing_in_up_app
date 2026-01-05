@@ -5,8 +5,8 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
-import 'package:splash_sing_in_up_app/controller/task_providers.dart';
+import 'package:task_app/common_widgets/resuable_widgets/reusable_toast.dart';
+import 'package:task_app/controller/task_providers.dart';
 
 import '../../common_widgets/custom_widgets/task_item_card.dart';
 

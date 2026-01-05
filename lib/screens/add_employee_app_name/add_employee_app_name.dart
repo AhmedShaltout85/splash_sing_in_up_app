@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_reusable_dialog.dart';
-import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
-import 'package:splash_sing_in_up_app/controller/app_name_provider.dart';
-import 'package:splash_sing_in_up_app/controller/employee_name_provider.dart';
+import 'package:task_app/common_widgets/custom_widgets/custom_reusable_dialog.dart';
+import 'package:task_app/common_widgets/resuable_widgets/reusable_toast.dart';
+import 'package:task_app/controller/app_name_provider.dart';
+import 'package:task_app/controller/employee_name_provider.dart';
 
 class AddEmployeeAppName extends StatefulWidget {
   final String title;

@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
+import 'package:task_app/common_widgets/resuable_widgets/reusable_toast.dart';
 
 import '../../controller/task_providers.dart';
 import '../custom_widgets/custom_bottom_sheet.dart';

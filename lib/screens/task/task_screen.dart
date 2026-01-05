@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:splash_sing_in_up_app/controller/task_providers.dart';
+import 'package:task_app/controller/task_providers.dart';
 
 import '../../common_widgets/custom_widgets/custom_drawer.dart';
 import '../../common_widgets/custom_widgets/task_item_card.dart';

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_button.dart';
-import 'package:splash_sing_in_up_app/common_widgets/custom_widgets/custom_text.dart';
-import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/resuable_widgets.dart';
-import 'package:splash_sing_in_up_app/common_widgets/resuable_widgets/reusable_toast.dart';
-import 'package:splash_sing_in_up_app/controller/employee_name_provider.dart';
-import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/add_new_user_to_db.dart';
-import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firebase_api_services.dart';
-import 'package:splash_sing_in_up_app/utils/app_assets.dart';
-import 'package:splash_sing_in_up_app/utils/app_colors.dart';
+import 'package:task_app/common_widgets/custom_widgets/custom_button.dart';
+import 'package:task_app/common_widgets/custom_widgets/custom_text.dart';
+import 'package:task_app/common_widgets/resuable_widgets/resuable_widgets.dart';
+import 'package:task_app/common_widgets/resuable_widgets/reusable_toast.dart';
+import 'package:task_app/controller/employee_name_provider.dart';
+import 'package:task_app/newtork_repos/remote_repo/add_new_user_to_db.dart';
+import 'package:task_app/newtork_repos/remote_repo/firebase_api_services.dart';
+import 'package:task_app/utils/app_assets.dart';
+import 'package:task_app/utils/app_colors.dart';
 
 import '../../common_widgets/custom_widgets/custom_textfield_signup.dart';
 import '../login/login_screen.dart';

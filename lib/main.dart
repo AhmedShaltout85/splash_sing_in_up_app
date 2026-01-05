@@ -1,16 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:splash_sing_in_up_app/controller/task_providers.dart';
-import 'package:splash_sing_in_up_app/controller/user_provider.dart';
-import 'package:splash_sing_in_up_app/screens/auth/auth_wrapper.dart';
-import 'package:splash_sing_in_up_app/screens/login/login_screen.dart';
-import 'package:splash_sing_in_up_app/screens/splash/splash_screen.dart';
-import 'package:splash_sing_in_up_app/screens/task/task_screen.dart';
-import 'package:splash_sing_in_up_app/screens/task/user_task_screen.dart';
-import 'package:splash_sing_in_up_app/screens/signup/signup_screen.dart';
-import 'package:splash_sing_in_up_app/screens/home/home_screen.dart';
-import 'package:splash_sing_in_up_app/utils/app_route.dart';
+import 'package:task_app/controller/task_providers.dart';
+import 'package:task_app/controller/user_provider.dart';
+import 'package:task_app/screens/auth/auth_wrapper.dart';
+import 'package:task_app/screens/login/login_screen.dart';
+import 'package:task_app/screens/splash/splash_screen.dart';
+import 'package:task_app/screens/task/task_screen.dart';
+import 'package:task_app/screens/task/user_task_screen.dart';
+import 'package:task_app/screens/signup/signup_screen.dart';
+import 'package:task_app/screens/home/home_screen.dart';
+import 'package:task_app/utils/app_route.dart';
 
 import 'controller/app_name_provider.dart';
 import 'controller/employee_name_provider.dart';

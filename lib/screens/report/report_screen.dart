@@ -4,10 +4,10 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:provider/provider.dart';
-import 'package:splash_sing_in_up_app/controller/app_name_provider.dart';
-import 'package:splash_sing_in_up_app/controller/employee_name_provider.dart';
-import 'package:splash_sing_in_up_app/controller/task_providers.dart';
-import 'package:splash_sing_in_up_app/models/task.dart';
+import 'package:task_app/controller/app_name_provider.dart';
+import 'package:task_app/controller/employee_name_provider.dart';
+import 'package:task_app/controller/task_providers.dart';
+import 'package:task_app/models/task.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});

@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:splash_sing_in_up_app/controller/employee_name_provider.dart';
-import 'package:splash_sing_in_up_app/newtork_repos/remote_repo/firebase_api_services.dart';
+import 'package:task_app/controller/employee_name_provider.dart';
+import 'package:task_app/newtork_repos/remote_repo/firebase_api_services.dart';
 
 import '../../controller/user_provider.dart';
 import '../../models/user_model.dart';

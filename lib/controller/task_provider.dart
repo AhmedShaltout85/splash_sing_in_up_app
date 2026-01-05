@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:splash_sing_in_up_app/newtork_repos/local_repos/task_repository.dart';
+import 'package:task_app/newtork_repos/local_repos/task_repository.dart';
 import '../models/task_model.dart';
 
 class TaskProvider with ChangeNotifier {
