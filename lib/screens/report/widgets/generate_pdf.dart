@@ -86,69 +86,6 @@ Future<void> generatePDF({
                   headerCell('Priority', cellPadding, headerTextStyle),
                   headerCell('Co-Operators', cellPadding, headerTextStyle),
                   headerCell('Completed-Date', cellPadding, headerTextStyle),
-                  // pw.Padding(
-                  //   padding: pw.EdgeInsets.all(cellPadding),
-                  //   child: pw.Text(
-                  //     'Task',
-                  //     style: headerTextStyle,
-                  //   ),
-                  // ),
-                  // pw.Padding(
-                  //   padding: pw.EdgeInsets.all(cellPadding),
-                  //   child: pw.Text(
-                  //     'Assignee',
-                  //     style: headerTextStyle,
-                  //   ),
-                  // ),
-                  // pw.Padding(
-                  //   padding: pw.EdgeInsets.all(cellPadding),
-                  //   child: pw.Text(
-                  //     'Assigned By',
-                  //     style: headerTextStyle,
-                  //   ),
-                  // ),
-                  // pw.Padding(
-                  //   padding: pw.EdgeInsets.all(cellPadding),
-                  //   child: pw.Text(
-                  //     'Visited Place',
-                  //     style:headerTextStyle,
-                  //   ),
-                  // ),
-                  // pw.Padding(
-                  //   padding: pw.EdgeInsets.all(cellPadding),
-                  //   child: pw.Text(
-                  //     'App Name',
-                  //     style: headerTextStyle,
-                  //   ),
-                  // ),
-                  // pw.Padding(
-                  //   padding: pw.EdgeInsets.all(cellPadding),
-                  //   child: pw.Text(
-                  //     'Status',
-                  //     style: headerTextStyle,
-                  //   ),
-                  // ),
-                  // pw.Padding(
-                  //   padding: pw.EdgeInsets.all(cellPadding),
-                  //   child: pw.Text(
-                  //     'Priority',
-                  //     style: headerTextStyle,
-                  //   ),
-                  // ),
-                  // pw.Padding(
-                  //   padding: pw.EdgeInsets.all(cellPadding),
-                  //   child: pw.Text(
-                  //     'Co-Operator',
-                  //     style:headerTextStyle,
-                  //   ),
-                  // ),
-                  // pw.Padding(
-                  //   padding: pw.EdgeInsets.all(cellPadding),
-                  //   child: pw.Text(
-                  //     'Finshed Date',
-                  //     style: headerTextStyle,
-                  //   ),
-                  // ),
                 ],
               ),
               ...filteredData.map((task) {
