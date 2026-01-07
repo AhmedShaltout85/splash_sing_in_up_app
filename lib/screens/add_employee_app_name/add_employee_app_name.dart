@@ -79,19 +79,19 @@ class _AddEmployeeAppNameState extends State<AddEmployeeAppName>
         widget.title.toLowerCase() == 'added applications';
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      // backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
+        // elevation: 0,
+        // backgroundColor: Colors.white,
         title: Text(
           currentTitle,
-          style: const TextStyle(
-            color: Color(0xFF2196F3),
-            fontWeight: FontWeight.w600,
-            fontSize: 20,
-          ),
+          // style: const TextStyle(
+          //   color: Color(0xFF2196F3),
+          //   fontWeight: FontWeight.w600,
+          //   fontSize: 20,
+          // ),
         ),
-        iconTheme: const IconThemeData(color: Color(0xFF2196F3)),
+        // iconTheme: const IconThemeData(color: Color(0xFF2196F3)),
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 8),

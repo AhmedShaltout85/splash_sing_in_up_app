@@ -478,23 +478,26 @@ class _UserListScreenState extends State<UserListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      // backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
+        // elevation: 0,
+        // backgroundColor: Colors.white,
         title: const Text(
           'Manage Users',
-          style: TextStyle(
-            color: Colors.blue,
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-          ),
+          // style: TextStyle(
+          //   color: Colors.blue,
+          //   fontWeight: FontWeight.bold,
+          //   fontSize: 22,
+          // ),
         ),
-        iconTheme: const IconThemeData(color: Colors.blue),
+        // iconTheme: const IconThemeData(color: Colors.blue),
         actions: [
           IconButton(
             tooltip: 'Refresh',
-            icon: const Icon(Icons.refresh, color: Colors.blue),
+            icon: const Icon(
+              Icons.refresh,
+              // color: Colors.blue,
+            ),
             onPressed: () => context.read<UserProvider>().fetchUsers(),
           ),
           // IconButton(

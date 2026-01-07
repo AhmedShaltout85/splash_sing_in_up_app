@@ -149,19 +149,19 @@ class _ReportScreenState extends State<ReportScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      // backgroundColor: const Color(0xFFF5F7FA),
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
+        // elevation: 0,
+        // backgroundColor: Colors.white,
         title: const Text(
           'Reports & Analytics',
-          style: TextStyle(
-            color: Colors.blue,
-            fontWeight: FontWeight.w600,
-            fontSize: 20,
-          ),
+          // style: TextStyle(
+          //   color: Colors.blue,
+          //   fontWeight: FontWeight.w600,
+          //   fontSize: 20,
+          // ),
         ),
-        iconTheme: const IconThemeData(color: Color(0xFF2196F3)),
+        // iconTheme: const IconThemeData(color: Color(0xFF2196F3)),
         actions: [
           Consumer<TaskProviders>(
             builder: (context, taskProvider, child) {

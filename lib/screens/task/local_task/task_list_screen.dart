@@ -4,8 +4,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../controller/local_control/task_provider.dart';
-import '../../models/hive_model/task_model.dart';
+import '../../../controller/local_control/task_provider.dart';
+import '../../../models/hive_model/task_model.dart';
 
 class TaskListScreen extends StatefulWidget {
   const TaskListScreen({super.key});

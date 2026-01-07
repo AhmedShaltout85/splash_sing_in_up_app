@@ -103,15 +103,21 @@ class _TaskScreenState extends State<TaskScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tasks', style: TextStyle(color: Colors.blue)),
-        iconTheme: const IconThemeData(color: Colors.blue),
+        title: const Text(
+          'Tasks',
+          // style: TextStyle(color: Colors.blue),
+        ),
+        // iconTheme: const IconThemeData(color: Colors.blue),
         actions: [
           // Filter toggle button
           Stack(
             children: [
               IconButton(
                 tooltip: 'Filters',
-                icon: const Icon(Icons.filter_list, color: Colors.blue),
+                icon: const Icon(
+                  Icons.filter_list,
+                  // color: Colors.blue,
+                ),
                 onPressed: () {
                   setState(() {
                     showFilters = !showFilters;
@@ -136,7 +142,10 @@ class _TaskScreenState extends State<TaskScreen> {
           IconButton(
             tooltip: 'Add Task',
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            icon: const Icon(Icons.add, color: Colors.blue),
+            icon: const Icon(
+              Icons.add,
+              // color: Colors.blue
+            ),
             onPressed: () {
               showCustomBottomSheet(
                 context: context,

@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:task_app/common_widgets/resuable_widgets/reusable_toast.dart';
+import 'package:task_app/controller/theme_provider.dart';
 import 'package:task_app/newtork_repos/remote_repo/firestore_services/firebase_email_password_services/firebase_api_services.dart';
 import 'package:task_app/screens/report/report_screen.dart';
 import 'package:task_app/screens/user/manage_users.dart';
@@ -56,6 +58,11 @@ class _CustomDrawerState extends State<CustomDrawer>
 
   @override
   Widget build(BuildContext context) {
+    // Access theme provider
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    themeProvider.themeMode == ThemeMode.dark
+        ? Brightness.dark
+        : Brightness.light;
     return Drawer(
       child: Container(
         decoration: BoxDecoration(
@@ -139,13 +146,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                         );
                       },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      child: Divider(color: Colors.grey.shade300, thickness: 1),
-                    ),
+
                     _buildDrawerItem(
                       context,
                       index: 4,
@@ -160,6 +161,26 @@ class _CustomDrawerState extends State<CustomDrawer>
                             builder: (context) => const ReportScreen(),
                           ),
                         );
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: Divider(color: Colors.grey.shade300, thickness: 1),
+                    ),
+                    _buildDrawerItem(
+                      context,
+                      index: 5,
+                      icon: themeProvider.isDark
+                          ? Icons.light_mode_outlined
+                          : Icons.dark_mode_outlined,
+                      title: themeProvider.isDark ? 'Light Mode' : 'Dark Mode',
+                      onTap: () {
+                        setState(() => _selectedIndex = 5);
+                        Navigator.pop(context);
+                        themeProvider.toggleTheme();
                       },
                     ),
                   ],
