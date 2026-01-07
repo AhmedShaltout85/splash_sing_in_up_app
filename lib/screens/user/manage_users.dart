@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_app/controller/employee_name_provider.dart';
-import 'package:task_app/newtork_repos/remote_repo/firebase_email_password_services/firebase_api_services.dart';
+import 'package:task_app/newtork_repos/remote_repo/firestore_services/firebase_email_password_services/firebase_api_services.dart';
 
 import '../../controller/user_provider.dart';
 import '../../models/user_model.dart';
