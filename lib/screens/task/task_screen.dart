@@ -95,6 +95,12 @@ class _TaskScreenState extends State<TaskScreen> {
         .toSet()
         .toList();
 
+    employeeNames.contains('system.admin')
+        ? employeeNames.remove('system.admin')
+        : employeeNames;
+
+    List<String> uniqueEmployeeNames = ['none', ...employeeNames];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tasks', style: TextStyle(color: Colors.blue)),
@@ -135,7 +141,11 @@ class _TaskScreenState extends State<TaskScreen> {
               showCustomBottomSheet(
                 context: context,
                 appNames: appNames,
-                employeeNames: employeeNames,
+                employeeNames: uniqueEmployeeNames,
+                employeeNamesWithoutNone: uniqueEmployeeNames
+                    .where((name) => name != 'none')
+                    .toList(),
+                // employeeNames: employeeNames,
               );
             },
           ),

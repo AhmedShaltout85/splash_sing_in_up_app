@@ -36,6 +36,7 @@ void showCustomBottomSheet({
   required BuildContext context,
   required List<String> appNames,
   required List<String> employeeNames,
+  required List<String> employeeNamesWithoutNone,
 }) {
   CustomBottomSheet.show(
     context: context,
@@ -82,7 +83,7 @@ void showCustomBottomSheet({
       DropdownFieldConfig(
         key: 'assign-to',
         label: 'Assign To',
-        items: employeeNames,
+        items: employeeNamesWithoutNone,
         icon: Icons.person,
         validator: (value) {
           if (value == null || value.isEmpty) {
