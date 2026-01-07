@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
+
 import 'package:provider/provider.dart';
 import 'package:task_app/controller/app_name_provider.dart';
 import 'package:task_app/controller/employee_name_provider.dart';
 import 'package:task_app/controller/task_providers.dart';
 import 'package:task_app/models/task.dart';
+import 'package:task_app/screens/report/widgets/generate_pdf.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -130,143 +129,6 @@ class _ReportScreenState extends State<ReportScreen>
     }).toList();
   }
 
-  Future<void> _generatePDF(List<Task> filteredData) async {
-    final pdf = pw.Document();
-    final font = await PdfGoogleFonts.notoSansRegular();
-    final fontBold = await PdfGoogleFonts.notoSansBold();
-
-    pdf.addPage(
-      pw.MultiPage(
-        pageFormat: PdfPageFormat.a4,
-        margin: const pw.EdgeInsets.all(32),
-        theme: pw.ThemeData.withFont(base: font, bold: fontBold),
-        build: (pw.Context context) {
-          return [
-            pw.Header(
-              level: 0,
-              child: pw.Text(
-                'Activities Report',
-                style: pw.TextStyle(
-                  fontSize: 24,
-                  fontWeight: pw.FontWeight.bold,
-                ),
-              ),
-            ),
-            pw.SizedBox(height: 20),
-            pw.Text(
-              'Generated on: ${DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now())}',
-              style: pw.TextStyle(fontSize: 12, color: PdfColors.grey700),
-            ),
-            pw.SizedBox(height: 10),
-            if (startDate != null || endDate != null)
-              pw.Text(
-                'Date Range: ${startDate != null ? DateFormat('yyyy-MM-dd').format(startDate!) : 'N/A'} to ${endDate != null ? DateFormat('yyyy-MM-dd').format(endDate!) : 'N/A'}',
-                style: const pw.TextStyle(fontSize: 12),
-              ),
-            if (selectedAssignee != null && selectedAssignee != 'All')
-              pw.Text(
-                'Assignee: $selectedAssignee',
-                style: const pw.TextStyle(fontSize: 12),
-              ),
-            if (selectedApplication != null && selectedApplication != 'All')
-              pw.Text(
-                'Application Name: $selectedApplication',
-                style: const pw.TextStyle(fontSize: 12),
-              ),
-            if (selectedStatus != null && selectedStatus != 'All')
-              pw.Text(
-                'Status: $selectedStatus',
-                style: const pw.TextStyle(fontSize: 12),
-              ),
-            pw.SizedBox(height: 20),
-            pw.Table(
-              border: pw.TableBorder.all(color: PdfColors.grey400),
-              children: [
-                pw.TableRow(
-                  decoration: const pw.BoxDecoration(color: PdfColors.blue100),
-                  children: [
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.all(8),
-                      child: pw.Text(
-                        'Date',
-                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                      ),
-                    ),
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.all(8),
-                      child: pw.Text(
-                        'Task',
-                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                      ),
-                    ),
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.all(8),
-                      child: pw.Text(
-                        'Assignee',
-                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                      ),
-                    ),
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.all(8),
-                      child: pw.Text(
-                        'Application',
-                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                      ),
-                    ),
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.all(8),
-                      child: pw.Text(
-                        'Status',
-                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                ),
-                ...filteredData.map((task) {
-                  String date = DateFormat('yyyy-MM-dd').format(task.createdAt);
-                  String status = task.taskStatus ? 'Pending' : 'Completed';
-                  return pw.TableRow(
-                    children: [
-                      pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text(date),
-                      ),
-                      pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text(task.taskTitle),
-                      ),
-                      pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text(task.assignedTo),
-                      ),
-                      pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text(task.applicationName),
-                      ),
-                      pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text(status),
-                      ),
-                    ],
-                  );
-                }),
-              ],
-            ),
-            pw.SizedBox(height: 20),
-            pw.Text(
-              'Total Records: ${filteredData.length}',
-              style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold),
-            ),
-          ];
-        },
-      ),
-    );
-
-    await Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async => pdf.save(),
-    );
-  }
-
   void _showSuccessSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -318,7 +180,14 @@ class _ReportScreenState extends State<ReportScreen>
                   onPressed: filteredData.isEmpty
                       ? null
                       : () {
-                          _generatePDF(filteredData);
+                          generatePDF(
+                            filteredData: filteredData,
+                            startDate: startDate,
+                            endDate: endDate,
+                            selectedStatus: selectedStatus,
+                            selectedAssignee: selectedAssignee,
+                            selectedApplication: selectedApplication,
+                          );
                           _showSuccessSnackbar('PDF generated successfully!');
                         },
                   tooltip: 'Download PDF Report',
@@ -945,15 +814,15 @@ class _ReportScreenState extends State<ReportScreen>
                   _buildInfoRow(
                     Icons.calendar_today_rounded,
                     date,
-                    const Color(0xFF64748B),
+                    const Color(0xFF60048B),
                   ),
                   const SizedBox(height: 8),
                   _buildInfoRow(
                     Icons.group,
                     task.coOperator.length > 1
-                        ? '${task.coOperator.first} and ${task.coOperator.last} Co-Operators'
+                        ? '${task.coOperator.toString().replaceAll('[', ' ').replaceAll(']', ' ')} Co-Operators'
                         : '${task.coOperator.first} Co-Operator',
-                    const Color(0xFF64748B),
+                    const Color(0xFF69948B),
                   ),
                 ],
               ),
