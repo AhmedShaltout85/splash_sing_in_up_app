@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 import '../models/user_model.dart';
-import '../newtork_repos/remote_repo/firestore_services/user_firestore_services.dart';
+import '../newtork_repos/remote_repo/firestore_services/firestore_db/user_firestore_services.dart';
 
 class UserProvider with ChangeNotifier {
   List<UserModel> _users = [];

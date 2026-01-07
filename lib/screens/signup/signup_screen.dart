@@ -5,8 +5,8 @@ import 'package:task_app/common_widgets/custom_widgets/custom_text.dart';
 import 'package:task_app/common_widgets/resuable_widgets/resuable_widgets.dart';
 import 'package:task_app/common_widgets/resuable_widgets/reusable_toast.dart';
 import 'package:task_app/controller/employee_name_provider.dart';
-import 'package:task_app/newtork_repos/remote_repo/add_new_user_to_db.dart';
-import 'package:task_app/newtork_repos/remote_repo/firebase_api_services.dart';
+import 'package:task_app/newtork_repos/remote_repo/firestore_services/firestore_db/add_new_user_to_db.dart';
+import 'package:task_app/newtork_repos/remote_repo/firebase_email_password_services/firebase_api_services.dart';
 import 'package:task_app/utils/app_assets.dart';
 import 'package:task_app/utils/app_colors.dart';
 

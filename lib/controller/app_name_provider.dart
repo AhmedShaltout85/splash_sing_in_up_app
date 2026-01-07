@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:task_app/newtork_repos/remote_repo/firestore_services/app_name_firebase_services.dart';
+import 'package:task_app/newtork_repos/remote_repo/firestore_services/firestore_db/app_name_firebase_services.dart';
 import '../models/app_name_model.dart';
 
 class AppNameProvider extends ChangeNotifier {

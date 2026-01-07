@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:task_app/newtork_repos/remote_repo/firestore_services/task_firestore_services.dart';
+import 'package:task_app/newtork_repos/remote_repo/firestore_services/firestore_db/task_firestore_services.dart';
 
 class AddNewUserToDB {
   // static Future<void> saveUserInfo(UserCredential userCredential) async {

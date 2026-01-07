@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 
 import '../models/task.dart';
-import '../newtork_repos/remote_repo/firestore_services/task_firestore_services.dart';
+import '../newtork_repos/remote_repo/firestore_services/firestore_db/task_firestore_services.dart';
 
 class TaskProviders extends ChangeNotifier {
   List<Task> _tasks = [];

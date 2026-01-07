@@ -1,7 +1,7 @@
 // employee_name_firestore_service.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:task_app/newtork_repos/remote_repo/firestore_services/task_firestore_services.dart';
-import '../../../models/employee_name_model.dart';
+import 'package:task_app/newtork_repos/remote_repo/firestore_services/firestore_db/task_firestore_services.dart';
+import '../../../../models/employee_name_model.dart';
 
 class EmployeeNameFirestoreServices {
   // final FirebaseFirestore _firestore = FirebaseFirestore.instance;

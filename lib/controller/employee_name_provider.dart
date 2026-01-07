@@ -2,7 +2,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../models/employee_name_model.dart';
-import '../newtork_repos/remote_repo/firestore_services/employee_name_firebase_services.dart';
+import '../newtork_repos/remote_repo/firestore_services/firestore_db/employee_name_firebase_services.dart';
 
 class EmployeeNameProvider extends ChangeNotifier {
   final EmployeeNameFirestoreServices _firestoreService =
