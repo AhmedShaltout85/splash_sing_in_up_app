@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:task_app/newtork_repos/local_repos/firestore_service.dart';
 import 'package:task_app/newtork_repos/local_repos/local_database_service.dart';
 import 'package:task_app/services/connectivity_service.dart';
-import 'package:task_app/models/task_model.dart';
+import 'package:task_app/models/hive_model/task_model.dart';
 
 class TaskRepository {
   final LocalDatabaseService _localDb;

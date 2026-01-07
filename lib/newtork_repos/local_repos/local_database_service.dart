@@ -1,6 +1,6 @@
 // lib/services/local_database_service.dart
 import 'package:hive/hive.dart';
-import '../../models/task_model.dart';
+import '../../models/hive_model/task_model.dart';
 
 class LocalDatabaseService {
   static const String _taskBoxName = 'tasks_box';

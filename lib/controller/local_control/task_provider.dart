@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:task_app/newtork_repos/local_repos/task_repository.dart';
-import '../models/task_model.dart';
+import '../../models/hive_model/task_model.dart';
 
 class TaskProvider with ChangeNotifier {
   final TaskRepository _repository;
