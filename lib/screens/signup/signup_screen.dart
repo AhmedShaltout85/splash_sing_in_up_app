@@ -228,17 +228,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_app/common_widgets/custom_widgets/custom_button.dart';
-import 'package:task_app/common_widgets/custom_widgets/custom_text.dart';
 import 'package:task_app/common_widgets/resuable_widgets/resuable_widgets.dart';
 import 'package:task_app/common_widgets/resuable_widgets/reusable_toast.dart';
 import 'package:task_app/controller/employee_name_provider.dart';
 import 'package:task_app/controller/theme_provider.dart';
 import 'package:task_app/newtork_repos/remote_repo/firestore_services/firestore_db/add_new_user_to_db.dart';
 import 'package:task_app/newtork_repos/remote_repo/firestore_services/firebase_email_password_services/firebase_api_services.dart';
-import 'package:task_app/utils/app_assets.dart';
 
-import '../../common_widgets/custom_widgets/custom_textfield_signup.dart';
 import '../login/login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
