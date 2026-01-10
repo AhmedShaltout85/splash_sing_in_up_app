@@ -272,7 +272,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final isDark = themeProvider.isDark;
     final colorScheme = Theme.of(context).colorScheme;
 
-    final double iconWH = 24;
+    // final double iconWH = 24;
     final double fontSize = 14;
 
     return Scaffold(
