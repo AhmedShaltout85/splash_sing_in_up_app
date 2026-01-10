@@ -533,7 +533,7 @@ class _CustomDrawerState extends State<CustomDrawer>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   @override
   void initState() {
@@ -598,18 +598,18 @@ class _CustomDrawerState extends State<CustomDrawer>
                 child: ListView(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   children: [
-                    _buildDrawerItem(
-                      context,
-                      index: 0,
-                      icon: Icons.home_rounded,
-                      title: 'Home',
-                      isDark: isDark,
-                      colorScheme: colorScheme,
-                      onTap: () {
-                        setState(() => _selectedIndex = 0);
-                        Navigator.pop(context);
-                      },
-                    ),
+                    // _buildDrawerItem(
+                    //   context,
+                    //   index: 0,
+                    //   icon: Icons.home_rounded,
+                    //   title: 'Home',
+                    //   isDark: isDark,
+                    //   colorScheme: colorScheme,
+                    //   onTap: () {
+                    //     setState(() => _selectedIndex = 0);
+                    //     Navigator.pop(context);
+                    //   },
+                    // ),
                     _buildDrawerItem(
                       context,
                       index: 1,
@@ -686,18 +686,18 @@ class _CustomDrawerState extends State<CustomDrawer>
                         );
                       },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      child: Divider(
-                        color: isDark
-                            ? Colors.grey.shade700
-                            : Colors.grey.shade300,
-                        thickness: 1,
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(
+                    //     horizontal: 10,
+                    //     vertical: 5,
+                    //   ),
+                    //   child: Divider(
+                    //     color: isDark
+                    //         ? Colors.grey.shade700
+                    //         : Colors.grey.shade300,
+                    //     thickness: 1,
+                    //   ),
+                    // ),
                     _buildDrawerItem(
                       context,
                       index: 5,
@@ -747,7 +747,7 @@ class _CustomDrawerState extends State<CustomDrawer>
   Widget _buildDrawerHeader(bool isDark, ColorScheme colorScheme) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(24, 60, 24, 24),
+      padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -790,17 +790,17 @@ class _CustomDrawerState extends State<CustomDrawer>
                 ],
               ),
               child: CircleAvatar(
-                radius: 42,
+                radius: 38,
                 backgroundColor: isDark ? colorScheme.surface : Colors.white,
                 child: CircleAvatar(
-                  radius: 38,
+                  radius: 34,
                   backgroundColor: isDark
                       ? colorScheme.primaryContainer
                       : colorScheme.primary.withOpacity(0.1),
                   child: Text(
                     _getInitials(),
                     style: TextStyle(
-                      fontSize: 32,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: colorScheme.primary,
                     ),
@@ -809,18 +809,18 @@ class _CustomDrawerState extends State<CustomDrawer>
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
           // User name with better typography
           Text(
             _getDisplayName(),
             style: TextStyle(
               color: isDark ? Colors.white : Colors.white,
-              fontSize: 24,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               letterSpacing: 0.5,
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           // Email with icon
           Row(
             children: [
@@ -829,7 +829,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                 size: 16,
                 color: Colors.white.withOpacity(0.9),
               ),
-              const SizedBox(width: 6),
+              const SizedBox(width: 4),
               Expanded(
                 child: Text(
                   FirebaseAuth.instance.currentUser?.email ?? '',
@@ -840,6 +840,12 @@ class _CustomDrawerState extends State<CustomDrawer>
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.home_rounded, color: Colors.white),
               ),
             ],
           ),
@@ -903,7 +909,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                     size: 24,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Text(
                     title,
@@ -977,7 +983,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                     size: 24,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 10),
                 Text(
                   'Logout',
                   style: TextStyle(
@@ -1018,7 +1024,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                 size: 24,
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 10),
             Text(
               'Logout',
               style: TextStyle(

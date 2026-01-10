@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final size = MediaQuery.of(context).size;
     final kHeight = size.height;
     final kWidth = size.width;
-    final double fontSize = 20;
+    final double fontSize = 18;
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       body: Stack(
@@ -71,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
             top: kHeight * 0.85,
             child: CustomText(
               text: 'قطاع التكنولوجيا والخدمات الرقمية',
-              fontSize: fontSize + 4,
+              fontSize: fontSize,
               fontWeight: FontWeight.bold,
               color: AppColors.blackColor,
             ),
@@ -83,7 +83,7 @@ class _SplashScreenState extends State<SplashScreen> {
             right: kWidth * 0.1,
             child: CustomText(
               text: 'إدارة البرامج وصيانتها',
-              fontSize: fontSize,
+              fontSize: fontSize - 2,
               textAlign: TextAlign.center,
               fontWeight: FontWeight.normal,
               color: AppColors.grayColor,

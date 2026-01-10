@@ -106,6 +106,13 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
     }
   }
 
+  void _handleCancel() {
+    // Call the onCancel callback if provided
+    widget.onCancel?.call();
+    // Close the bottom sheet
+    Navigator.pop(context);
+  }
+
   Widget _buildField(FieldConfig field, bool isDark, ColorScheme colorScheme) {
     if (field is TextFieldConfig) {
       return TextFormField(
@@ -304,9 +311,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                       Icons.close,
                       color: isDark ? Colors.grey[400] : Colors.grey[700],
                     ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                    onPressed: _handleCancel,
                   ),
                 ],
               ),
@@ -336,10 +341,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                 children: [
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: () {
-                        widget.onCancel?.call();
-                        Navigator.pop(context);
-                      },
+                      onPressed: _handleCancel,
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         side: BorderSide(

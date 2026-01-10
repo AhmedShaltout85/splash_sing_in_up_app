@@ -66,7 +66,6 @@ void showCustomBottomSheet({
           return null;
         },
       ),
-
       TextFieldConfig(
         key: 'assign-by',
         label: 'Assign By',
@@ -79,7 +78,6 @@ void showCustomBottomSheet({
           return null;
         },
       ),
-
       DropdownFieldConfig(
         key: 'assign-to',
         label: 'Assign To',
@@ -92,7 +90,6 @@ void showCustomBottomSheet({
           return null;
         },
       ),
-
       TextFieldConfig(
         key: 'visit-place',
         label: 'Visit Place',
@@ -117,7 +114,6 @@ void showCustomBottomSheet({
           return null;
         },
       ),
-
       MultiSelectDropdownFieldConfig(
         key: 'co-operator',
         label: 'Co-operator',
@@ -135,14 +131,7 @@ void showCustomBottomSheet({
         onChange: (values) {
           log('Selected co-operators: $values');
         },
-        // validator: (values) {
-        //   if (values == null || values.isEmpty) {
-        //     return 'Please select at least one co-operator';
-        //   }
-        //   return null;
-        // },
       ),
-
       TextFieldConfig(
         key: 'expected-completion-date',
         label: 'Expected Completion Date',
@@ -162,7 +151,6 @@ void showCustomBottomSheet({
         hint: 'Enter note',
         icon: Icons.note,
         maxLines: 3,
-
         keyboardType: TextInputType.multiline,
         validator: (value) {
           if (value == null || value.isEmpty) {
@@ -175,9 +163,7 @@ void showCustomBottomSheet({
     submitButtonText: 'Save',
     onSubmit: (values) async {
       log('Form submitted: $values');
-      // Handle the submitted values
       try {
-        // Don't set 'id' - let Firestore generate it
         await context.read<TaskProviders>().addTask({
           'id': DateTime.now().millisecondsSinceEpoch.toString(),
           'taskTitle': values['title'],
@@ -194,7 +180,6 @@ void showCustomBottomSheet({
               days: int.parse(values['expected-completion-date'] as String),
             ),
           ),
-          // Don't include createdAt/updatedAt - Firestore handles it
         });
         log('Task added successfully');
         ReusableToast.showToast(
@@ -214,8 +199,7 @@ void showCustomBottomSheet({
       }
     },
     onCancel: () {
-      // Handle the cancel action
-      Navigator.pop(context);
+      // Just log the cancellation, don't call Navigator.pop
       log('Bottom sheet cancelled');
     },
   );
