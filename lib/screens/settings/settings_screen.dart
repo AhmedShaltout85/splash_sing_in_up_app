@@ -269,12 +269,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         credential,
                                       );
                                       //update password with new password in firebase db
-                                      // await context
-                                      //     .read<UserProvider>()
-                                      //     .updateUser(user.uid, {
-                                      //       'password':
-                                      //           newPasswordController.text,
-                                      //     });
+
                                       await Provider.of<UserProvider>(
                                         context,
                                         listen: false,
