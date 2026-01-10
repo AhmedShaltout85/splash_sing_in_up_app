@@ -142,7 +142,12 @@ class _UserTaskScreenState extends State<UserTaskScreen> {
                 log(
                   'Building TaskItemCard for task ID: ${task.taskPriority} at index $index with title: ${task.taskTitle}',
                 );
-                return TaskItemCard(task: task);
+                return InkWell(
+                  child: TaskItemCard(task: task),
+                  onTap: () {
+                    //TODO:update task note
+                  },
+                );
               },
             ),
           );

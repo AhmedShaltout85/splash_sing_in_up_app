@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_app/common_widgets/custom_widgets/custom_button.dart';
@@ -151,12 +152,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           _passwordController.text ==
                               _confirmPasswordController.text) {
                         //create account on firebase by email and password
-                        FirebaseApiSAuthServices.createUserWithEmailAndPassword(
+                        await FirebaseApiSAuthServices.createUserWithEmailAndPassword(
                           emailAddress: _emailController.text.trim(),
                           password: _passwordController.text.trim(),
                         );
                         // Save user info to Firestore
                         await AddNewUserToDB.saveUser({
+                          'id': FirebaseAuth.instance.currentUser!.uid,
                           'firstName': _firstNameController.text.trim(),
                           'lastName': _lastNameController.text.trim(),
                           'displayName': _userNameController.text.trim(),

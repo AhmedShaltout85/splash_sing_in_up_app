@@ -74,6 +74,24 @@ class UserProvider with ChangeNotifier {
     }
   }
 
+  //update user password by email
+  Future<void> updateUserPasswordByEmail(
+    String email,
+    String newPassword,
+  ) async {
+    _setLoading(true);
+    try {
+      await UserFirestoreServices.updateUserPasswordByEmail(email, newPassword);
+      _error = null;
+      notifyListeners();
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+    } finally {
+      _setLoading(false);
+    }
+  }
+
   // Delete a user
   Future<void> deleteUser(String id) async {
     _setLoading(true);

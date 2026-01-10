@@ -9,6 +9,7 @@ import '../../common_widgets/custom_widgets/task_item_card.dart';
 import '../../common_widgets/resuable_widgets/resuable_widgets.dart';
 import '../../controller/app_name_provider.dart';
 import '../../controller/employee_name_provider.dart';
+import '../../controller/theme_provider.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({super.key});
@@ -21,40 +22,32 @@ class _TaskScreenState extends State<TaskScreen> {
   // Filter states
   String? selectedEmployee;
   String? selectedApp;
-  bool? isActiveFilter; // null = all, true = active only, false = inactive only
+  bool? isActiveFilter;
   bool showFilters = false;
 
   @override
   void initState() {
     super.initState();
-    // Fetch tasks on screen load
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Fetch tasks
       context.read<TaskProviders>().fetchTasks();
-      // Fetch app names and employee names List<String>
       context.read<EmployeeNameProvider>().fetchEmployeeNamesAsStrings();
-      //Fetch app names List<String>
       context.read<AppNameProvider>().fetchAppNamesAsStrings();
     });
   }
 
-  // Filter tasks based on selected filters
   List<dynamic> getFilteredTasks(List<dynamic> tasks) {
     return tasks.where((task) {
       try {
-        // Filter by employee (assignedTo)
         if (selectedEmployee != null && selectedEmployee!.isNotEmpty) {
           final taskEmployee = task.assignedTo?.toString() ?? '';
           if (taskEmployee != selectedEmployee) return false;
         }
 
-        // Filter by application (applicationName)
         if (selectedApp != null && selectedApp!.isNotEmpty) {
           final taskApp = task.applicationName?.toString() ?? '';
           if (taskApp != selectedApp) return false;
         }
 
-        // Filter by active status (taskStatus: true = active, false = inactive)
         if (isActiveFilter != null) {
           final taskActive = task.taskStatus ?? true;
           if (taskActive != isActiveFilter) return false;
@@ -63,12 +56,11 @@ class _TaskScreenState extends State<TaskScreen> {
         return true;
       } catch (e) {
         log('Error filtering task: $e');
-        return true; // Include task if there's an error
+        return true;
       }
     }).toList();
   }
 
-  // Reset all filters
   void resetFilters() {
     setState(() {
       selectedEmployee = null;
@@ -77,13 +69,15 @@ class _TaskScreenState extends State<TaskScreen> {
     });
   }
 
-  // Check if any filter is active
   bool get hasActiveFilters =>
       selectedEmployee != null || selectedApp != null || isActiveFilter != null;
 
   @override
   Widget build(BuildContext context) {
-    // Get unique employee names and app names to avoid dropdown duplicates
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDark = themeProvider.isDark;
+    final colorScheme = Theme.of(context).colorScheme;
+
     List<String> employeeNames = context
         .watch<EmployeeNameProvider>()
         .employeeNameStrings
@@ -103,21 +97,13 @@ class _TaskScreenState extends State<TaskScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Tasks',
-          // style: TextStyle(color: Colors.blue),
-        ),
-        // iconTheme: const IconThemeData(color: Colors.blue),
+        title: const Text('Tasks'),
         actions: [
-          // Filter toggle button
           Stack(
             children: [
               IconButton(
                 tooltip: 'Filters',
-                icon: const Icon(
-                  Icons.filter_list,
-                  // color: Colors.blue,
-                ),
+                icon: const Icon(Icons.filter_list),
                 onPressed: () {
                   setState(() {
                     showFilters = !showFilters;
@@ -142,10 +128,7 @@ class _TaskScreenState extends State<TaskScreen> {
           IconButton(
             tooltip: 'Add Task',
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            icon: const Icon(
-              Icons.add,
-              // color: Colors.blue
-            ),
+            icon: const Icon(Icons.add),
             onPressed: () {
               showCustomBottomSheet(
                 context: context,
@@ -154,7 +137,6 @@ class _TaskScreenState extends State<TaskScreen> {
                 employeeNamesWithoutNone: uniqueEmployeeNames
                     .where((name) => name != 'none')
                     .toList(),
-                // employeeNames: employeeNames,
               );
             },
           ),
@@ -170,10 +152,12 @@ class _TaskScreenState extends State<TaskScreen> {
                 ? Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.grey[100],
+                      color: isDark ? colorScheme.surface : Colors.grey[100],
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
+                          color: isDark
+                              ? Colors.black.withOpacity(0.3)
+                              : Colors.grey.withOpacity(0.3),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
@@ -185,48 +169,76 @@ class _TaskScreenState extends State<TaskScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
+                            Text(
                               'Filters',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
+                                color: isDark ? Colors.white : Colors.black87,
                               ),
                             ),
                             if (hasActiveFilters)
                               TextButton.icon(
                                 onPressed: resetFilters,
-                                icon: const Icon(Icons.clear_all, size: 18),
-                                label: const Text('Clear All'),
+                                icon: Icon(
+                                  Icons.clear_all,
+                                  size: 18,
+                                  color: colorScheme.primary,
+                                ),
+                                label: Text(
+                                  'Clear All',
+                                  style: TextStyle(color: colorScheme.primary),
+                                ),
                               ),
                           ],
                         ),
                         const SizedBox(height: 12),
                         Row(
                           children: [
-                            // Employee filter
                             Expanded(
                               child: DropdownButtonFormField<String>(
                                 initialValue: selectedEmployee,
                                 isExpanded: true,
+                                dropdownColor: isDark
+                                    ? colorScheme.surface
+                                    : Colors.white,
+                                style: TextStyle(
+                                  color: isDark ? Colors.white : Colors.black87,
+                                ),
                                 decoration: InputDecoration(
                                   labelText: 'Assigned To',
-                                  prefixIcon: const Icon(Icons.person),
+                                  labelStyle: TextStyle(
+                                    color: isDark
+                                        ? Colors.grey[400]
+                                        : Colors.grey[700],
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.person,
+                                    color: colorScheme.primary,
+                                  ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.white,
+                                  fillColor: isDark
+                                      ? colorScheme.surface.withOpacity(0.5)
+                                      : Colors.white,
                                   contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 12,
                                     vertical: 14,
                                   ),
                                 ),
                                 items: [
-                                  const DropdownMenuItem<String>(
+                                  DropdownMenuItem<String>(
                                     value: null,
                                     child: Text(
                                       'All Employees',
                                       overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: isDark
+                                            ? Colors.grey[300]
+                                            : Colors.black87,
+                                      ),
                                     ),
                                   ),
                                   ...employeeNames.map((name) {
@@ -235,6 +247,11 @@ class _TaskScreenState extends State<TaskScreen> {
                                       child: Text(
                                         name,
                                         overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: isDark
+                                              ? Colors.grey[300]
+                                              : Colors.black87,
+                                        ),
                                       ),
                                     );
                                   }),
@@ -247,31 +264,50 @@ class _TaskScreenState extends State<TaskScreen> {
                               ),
                             ),
                             const SizedBox(width: 5),
-
-                            // Application filter
                             Expanded(
                               child: DropdownButtonFormField<String>(
                                 initialValue: selectedApp,
                                 isExpanded: true,
+                                dropdownColor: isDark
+                                    ? colorScheme.surface
+                                    : Colors.white,
+                                style: TextStyle(
+                                  color: isDark ? Colors.white : Colors.black87,
+                                ),
                                 decoration: InputDecoration(
                                   labelText: 'Application',
-                                  prefixIcon: const Icon(Icons.apps),
+                                  labelStyle: TextStyle(
+                                    color: isDark
+                                        ? Colors.grey[400]
+                                        : Colors.grey[700],
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.apps,
+                                    color: colorScheme.primary,
+                                  ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.white,
+                                  fillColor: isDark
+                                      ? colorScheme.surface.withOpacity(0.5)
+                                      : Colors.white,
                                   contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 12,
                                     vertical: 14,
                                   ),
                                 ),
                                 items: [
-                                  const DropdownMenuItem<String>(
+                                  DropdownMenuItem<String>(
                                     value: null,
                                     child: Text(
                                       'All Apps',
                                       overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: isDark
+                                            ? Colors.grey[300]
+                                            : Colors.black87,
+                                      ),
                                     ),
                                   ),
                                   ...appNames.map((name) {
@@ -280,6 +316,11 @@ class _TaskScreenState extends State<TaskScreen> {
                                       child: Text(
                                         name,
                                         overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: isDark
+                                              ? Colors.grey[300]
+                                              : Colors.black87,
+                                        ),
                                       ),
                                     );
                                   }),
@@ -292,36 +333,55 @@ class _TaskScreenState extends State<TaskScreen> {
                               ),
                             ),
                             const SizedBox(width: 5),
-
-                            // Active status filter
                           ],
                         ),
-                        SizedBox(height: 12),
+                        const SizedBox(height: 12),
                         Row(
                           children: [
                             Expanded(
                               child: DropdownButtonFormField<bool?>(
                                 initialValue: isActiveFilter,
                                 isExpanded: true,
+                                dropdownColor: isDark
+                                    ? colorScheme.surface
+                                    : Colors.white,
+                                style: TextStyle(
+                                  color: isDark ? Colors.white : Colors.black87,
+                                ),
                                 decoration: InputDecoration(
                                   labelText: 'Status',
-                                  prefixIcon: const Icon(Icons.toggle_on),
+                                  labelStyle: TextStyle(
+                                    color: isDark
+                                        ? Colors.grey[400]
+                                        : Colors.grey[700],
+                                  ),
+                                  prefixIcon: Icon(
+                                    Icons.toggle_on,
+                                    color: colorScheme.primary,
+                                  ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.white,
+                                  fillColor: isDark
+                                      ? colorScheme.surface.withOpacity(0.5)
+                                      : Colors.white,
                                   contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 12,
                                     vertical: 14,
                                   ),
                                 ),
-                                items: const [
+                                items: [
                                   DropdownMenuItem<bool?>(
                                     value: null,
                                     child: Text(
                                       'All Status',
                                       overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: isDark
+                                            ? Colors.grey[300]
+                                            : Colors.black87,
+                                      ),
                                     ),
                                   ),
                                   DropdownMenuItem<bool?>(
@@ -329,6 +389,11 @@ class _TaskScreenState extends State<TaskScreen> {
                                     child: Text(
                                       'Active Only',
                                       overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: isDark
+                                            ? Colors.grey[300]
+                                            : Colors.black87,
+                                      ),
                                     ),
                                   ),
                                   DropdownMenuItem<bool?>(
@@ -336,6 +401,11 @@ class _TaskScreenState extends State<TaskScreen> {
                                     child: Text(
                                       'Inactive Only',
                                       overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: isDark
+                                            ? Colors.grey[300]
+                                            : Colors.black87,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -347,7 +417,7 @@ class _TaskScreenState extends State<TaskScreen> {
                               ),
                             ),
                             const SizedBox(width: 5),
-                            Expanded(child: SizedBox.shrink()),
+                            const Expanded(child: SizedBox.shrink()),
                           ],
                         ),
                       ],
@@ -361,7 +431,11 @@ class _TaskScreenState extends State<TaskScreen> {
             child: Consumer<TaskProviders>(
               builder: (context, provider, child) {
                 if (provider.isLoading && provider.tasks.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: colorScheme.primary,
+                    ),
+                  );
                 }
 
                 if (provider.error != null) {
@@ -369,16 +443,19 @@ class _TaskScreenState extends State<TaskScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.error_outline,
                           size: 64,
-                          color: Colors.red,
+                          color: colorScheme.error,
                         ),
                         const SizedBox(height: 16),
                         Text(
                           'Error: ${provider.error}',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 16),
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: isDark ? Colors.grey[300] : Colors.black87,
+                          ),
                         ),
                         const SizedBox(height: 16),
                         ElevatedButton(
@@ -393,27 +470,36 @@ class _TaskScreenState extends State<TaskScreen> {
                 }
 
                 if (provider.tasks.isEmpty) {
-                  return const Center(
+                  return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.task_outlined, size: 64, color: Colors.grey),
-                        SizedBox(height: 16),
+                        Icon(
+                          Icons.task_outlined,
+                          size: 64,
+                          color: isDark ? Colors.grey[600] : Colors.grey,
+                        ),
+                        const SizedBox(height: 16),
                         Text(
                           'No tasks found',
-                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: isDark ? Colors.grey[400] : Colors.grey,
+                          ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           'Tap + to add a new task',
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: isDark ? Colors.grey[500] : Colors.grey,
+                          ),
                         ),
                       ],
                     ),
                   );
                 }
 
-                // Apply filters
                 final filteredTasks = getFilteredTasks(provider.tasks);
 
                 if (filteredTasks.isEmpty && hasActiveFilters) {
@@ -421,15 +507,18 @@ class _TaskScreenState extends State<TaskScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.search_off,
                           size: 64,
-                          color: Colors.grey,
+                          color: isDark ? Colors.grey[600] : Colors.grey,
                         ),
                         const SizedBox(height: 16),
-                        const Text(
+                        Text(
                           'No tasks match your filters',
-                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: isDark ? Colors.grey[400] : Colors.grey,
+                          ),
                         ),
                         const SizedBox(height: 8),
                         TextButton.icon(
@@ -444,9 +533,9 @@ class _TaskScreenState extends State<TaskScreen> {
 
                 return RefreshIndicator(
                   onRefresh: () => provider.fetchTasks(),
+                  color: colorScheme.primary,
                   child: Column(
                     children: [
-                      // Filter summary chip
                       if (hasActiveFilters)
                         Container(
                           padding: const EdgeInsets.symmetric(
@@ -455,26 +544,24 @@ class _TaskScreenState extends State<TaskScreen> {
                           ),
                           child: Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.info_outline,
                                 size: 16,
-                                color: Colors.blue,
+                                color: colorScheme.primary,
                               ),
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text(
                                   'Showing ${filteredTasks.length} of ${provider.tasks.length} tasks',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14,
-                                    color: Colors.blue,
+                                    color: colorScheme.primary,
                                   ),
                                 ),
                               ),
                             ],
                           ),
                         ),
-
-                      // Task list
                       Expanded(
                         child: ListView.builder(
                           itemCount: filteredTasks.length,

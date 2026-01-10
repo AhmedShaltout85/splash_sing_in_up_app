@@ -89,6 +89,29 @@ class UserFirestoreServices {
     }
   }
 
+  //update user by email
+  static Future<void> updateUserPasswordByEmail(
+    String email,
+    String password,
+  ) async {
+    try {
+      QuerySnapshot snapshot = await db
+          .collection(_collectionName)
+          .where('email', isEqualTo: email)
+          .get();
+      if (snapshot.docs.isNotEmpty) {
+        String id = snapshot.docs.first.id;
+        await db.collection(_collectionName).doc(id).update({
+          'password': password,
+        });
+      } else {
+        throw Exception('User not found');
+      }
+    } catch (e) {
+      throw Exception('Error updating data: $e');
+    }
+  }
+
   // Delete a document
   static Future<void> deleteData(String id) async {
     try {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:task_app/utils/app_colors.dart';
+import 'package:provider/provider.dart';
+import 'package:task_app/controller/theme_provider.dart';
 import 'package:multiselect_dropdown_flutter/multiselect_dropdown_flutter.dart';
 
 /// A reusable bottom sheet component with multiple text fields, dropdowns, and multi-select dropdowns
@@ -86,19 +87,16 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
     if (_formKey.currentState?.validate() ?? false) {
       final values = <String, dynamic>{};
 
-      // Add text field values
       _controllers.forEach((key, controller) {
         values[key] = controller.text;
       });
 
-      // Add dropdown values
       _dropdownValues.forEach((key, value) {
         if (value != null) {
           values[key] = value;
         }
       });
 
-      // Add multi-select values
       _multiSelectValues.forEach((key, value) {
         values[key] = value;
       });
@@ -108,16 +106,38 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
     }
   }
 
-  Widget _buildField(FieldConfig field) {
+  Widget _buildField(FieldConfig field, bool isDark, ColorScheme colorScheme) {
     if (field is TextFieldConfig) {
       return TextFormField(
         controller: _controllers[field.key],
+        style: TextStyle(color: isDark ? Colors.white : Colors.black87),
         decoration: InputDecoration(
           labelText: field.label,
+          labelStyle: TextStyle(
+            color: isDark ? Colors.grey[400] : Colors.grey[700],
+          ),
           hintText: field.hint,
-          hintStyle: TextStyle(color: AppColors.hintColor),
-          prefixIcon: field.icon != null ? Icon(field.icon) : null,
+          hintStyle: TextStyle(
+            color: isDark ? Colors.grey[600] : Colors.grey[400],
+          ),
+          prefixIcon: field.icon != null
+              ? Icon(field.icon, color: colorScheme.primary)
+              : null,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: colorScheme.primary, width: 2),
+          ),
+          filled: true,
+          fillColor: isDark
+              ? colorScheme.surface.withOpacity(0.5)
+              : Colors.grey[50],
         ),
         keyboardType: field.keyboardType,
         maxLines: field.maxLines,
@@ -127,15 +147,46 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
     } else if (field is DropdownFieldConfig) {
       return DropdownButtonFormField<String>(
         initialValue: _dropdownValues[field.key],
+        dropdownColor: isDark ? colorScheme.surface : Colors.white,
+        style: TextStyle(color: isDark ? Colors.white : Colors.black87),
         decoration: InputDecoration(
           labelText: field.label,
+          labelStyle: TextStyle(
+            color: isDark ? Colors.grey[400] : Colors.grey[700],
+          ),
           hintText: field.hint,
-          hintStyle: TextStyle(color: AppColors.hintColor),
-          prefixIcon: field.icon != null ? Icon(field.icon) : null,
+          hintStyle: TextStyle(
+            color: isDark ? Colors.grey[600] : Colors.grey[400],
+          ),
+          prefixIcon: field.icon != null
+              ? Icon(field.icon, color: colorScheme.primary)
+              : null,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: colorScheme.primary, width: 2),
+          ),
+          filled: true,
+          fillColor: isDark
+              ? colorScheme.surface.withOpacity(0.5)
+              : Colors.grey[50],
         ),
         items: field.items.map((item) {
-          return DropdownMenuItem<String>(value: item, child: Text(item));
+          return DropdownMenuItem<String>(
+            value: item,
+            child: Text(
+              item,
+              style: TextStyle(
+                color: isDark ? Colors.grey[300] : Colors.black87,
+              ),
+            ),
+          );
         }).toList(),
         onChanged: (value) {
           setState(() {
@@ -153,9 +204,10 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Text(
                 field.label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
+                  color: isDark ? Colors.grey[300] : Colors.black87,
                 ),
               ),
             ),
@@ -174,8 +226,13 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
             boxDecoration:
                 field.boxDecoration ??
                 BoxDecoration(
+                  color: isDark
+                      ? colorScheme.surface.withOpacity(0.5)
+                      : Colors.grey[50],
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey),
+                  border: Border.all(
+                    color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
+                  ),
                 ),
           ),
           if (field.validator != null)
@@ -187,10 +244,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                     padding: const EdgeInsets.only(top: 8.0, left: 12.0),
                     child: Text(
                       error,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                        fontSize: 12,
-                      ),
+                      style: TextStyle(color: colorScheme.error, fontSize: 12),
                     ),
                   );
                 }
@@ -205,14 +259,18 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDark = themeProvider.isDark;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Padding(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        decoration: BoxDecoration(
+          color: isDark ? colorScheme.surface : Colors.white,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -223,7 +281,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: isDark ? Colors.grey[700] : Colors.grey[300],
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -235,14 +293,17 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                 children: [
                   Text(
                     widget.title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue,
+                      color: colorScheme.primary,
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close),
+                    icon: Icon(
+                      Icons.close,
+                      color: isDark ? Colors.grey[400] : Colors.grey[700],
+                    ),
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -250,7 +311,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                 ],
               ),
             ),
-            const Divider(),
+            Divider(color: isDark ? Colors.grey[800] : Colors.grey[300]),
             // Form fields
             Flexible(
               child: SingleChildScrollView(
@@ -260,7 +321,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                   child: Column(
                     children: [
                       for (var field in widget.fields) ...[
-                        _buildField(field),
+                        _buildField(field, isDark, colorScheme),
                         const SizedBox(height: 16),
                       ],
                     ],
@@ -281,6 +342,14 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                       },
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
+                        side: BorderSide(
+                          color: isDark
+                              ? Colors.grey[700]!
+                              : colorScheme.primary,
+                        ),
+                        foregroundColor: isDark
+                            ? Colors.grey[300]
+                            : colorScheme.primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -390,73 +459,3 @@ class MultiSelectDropdownFieldConfig extends FieldConfig {
     super.icon,
   });
 }
-
-/// Example usage:
-///
-/// CustomBottomSheet.show(
-///   context: context,
-///   title: 'Add User',
-///   fields: [
-///     TextFieldConfig(
-///       key: 'name',
-///       label: 'Name',
-///       hint: 'Enter your name',
-///       icon: Icons.person,
-///       validator: (value) {
-///         if (value == null || value.isEmpty) {
-///           return 'Please enter a name';
-///         }
-///         return null;
-///       },
-///     ),
-///     DropdownFieldConfig(
-///       key: 'country',
-///       label: 'Country',
-///       items: ['USA', 'Canada', 'UK', 'Australia'],
-///       icon: Icons.public,
-///       validator: (value) {
-///         if (value == null || value.isEmpty) {
-///           return 'Please select a country';
-///         }
-///         return null;
-///       },
-///     ),
-///     MultiSelectDropdownFieldConfig(
-///       key: 'pets',
-///       label: 'Select Pets',
-///       items: [
-///         'Dog',
-///         'Cat',
-///         'Horse',
-///         'Snake',
-///         'Mouse',
-///         'Rabbit',
-///         'Cow',
-///         'Sheep',
-///       ],
-///       initialValues: [],
-///       includeSearch: true,
-///       includeSelectAll: true,
-///       isLarge: true,
-///       boxDecoration: BoxDecoration(
-///         borderRadius: BorderRadius.circular(15),
-///         border: Border.all(color: Colors.grey),
-///       ),
-///       validator: (values) {
-///         if (values == null || values.isEmpty) {
-///           return 'Please select at least one pet';
-///         }
-///         return null;
-///       },
-///     ),
-///   ],
-///   onSubmit: (values) {
-///     print('Submitted values: $values');
-///     // values will contain:
-///     // {
-///     //   'name': 'John',
-///     //   'country': 'USA',
-///     //   'pets': ['Dog', 'Cat']
-///     // }
-///   },
-/// );

@@ -518,6 +518,7 @@ import 'package:task_app/common_widgets/resuable_widgets/reusable_toast.dart';
 import 'package:task_app/controller/theme_provider.dart';
 import 'package:task_app/newtork_repos/remote_repo/firestore_services/firebase_email_password_services/firebase_api_services.dart';
 import 'package:task_app/screens/report/report_screen.dart';
+import 'package:task_app/screens/settings/settings_screen.dart';
 import 'package:task_app/screens/user/manage_users.dart';
 import '../../screens/add_employee_app_name/add_employee_app_name.dart';
 
@@ -710,6 +711,24 @@ class _CustomDrawerState extends State<CustomDrawer>
                         setState(() => _selectedIndex = 5);
                         Navigator.pop(context);
                         themeProvider.toggleTheme();
+                      },
+                    ),
+                    _buildDrawerItem(
+                      context,
+                      index: 6,
+                      icon: Icons.settings_rounded,
+                      title: 'Settings',
+                      isDark: isDark,
+                      colorScheme: colorScheme,
+                      onTap: () {
+                        setState(() => _selectedIndex = 6);
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SettingsScreen(),
+                          ),
+                        );
                       },
                     ),
                   ],
