@@ -463,7 +463,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            user?.displayName ?? 'User',
+                            user!.email!.substring(0, user.email!.indexOf('@')),
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -472,7 +472,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            user?.email ?? 'No email',
+                            user.email ?? 'No email',
                             style: TextStyle(
                               fontSize: 14,
                               color: isDark
