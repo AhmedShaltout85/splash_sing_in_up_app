@@ -204,3 +204,53 @@ void showCustomBottomSheet({
     },
   );
 }
+
+//reset password function
+void showCustomUpdatePasswordDialog({
+  required BuildContext context,
+  required String title,
+  required String submitButtonText,
+  required void Function()? onPressed,
+  required TextEditingController email,
+  required TextEditingController password,
+}) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(title),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: email,
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                hintText: 'Enter email',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: password,
+              decoration: const InputDecoration(
+                labelText: 'Password',
+                hintText: 'Enter password',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(onPressed: onPressed, child: Text(submitButtonText)),
+        ],
+      );
+    },
+  );
+}

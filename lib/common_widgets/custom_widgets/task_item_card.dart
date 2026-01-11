@@ -8,8 +8,14 @@ import '../../models/task.dart';
 class TaskItemCard extends StatelessWidget {
   final Task task;
   final VoidCallback? onTap;
+  final bool isDeletedEnabled;
 
-  const TaskItemCard({super.key, required this.task, this.onTap});
+  const TaskItemCard({
+    super.key,
+    required this.task,
+    this.onTap,
+    required this.isDeletedEnabled,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -251,22 +257,25 @@ class TaskItemCard extends StatelessWidget {
                     const SizedBox(width: 8),
 
                     // Delete Button
-                    Material(
-                      color: Colors.red.shade600,
-                      borderRadius: BorderRadius.circular(12),
-                      child: InkWell(
-                        onTap: () => _showDeleteConfirmation(context, provider),
-                        borderRadius: BorderRadius.circular(12),
-                        child: const Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: Icon(
-                            Icons.delete_outline,
-                            color: Colors.white,
-                            size: 28,
-                          ),
-                        ),
-                      ),
-                    ),
+                    isDeletedEnabled
+                        ? Material(
+                            color: Colors.red.shade600,
+                            borderRadius: BorderRadius.circular(12),
+                            child: InkWell(
+                              onTap: () =>
+                                  _showDeleteConfirmation(context, provider),
+                              borderRadius: BorderRadius.circular(12),
+                              child: const Padding(
+                                padding: EdgeInsets.all(12.0),
+                                child: Icon(
+                                  Icons.delete_outline,
+                                  color: Colors.white,
+                                  size: 28,
+                                ),
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
                   ],
                 ),
               ],

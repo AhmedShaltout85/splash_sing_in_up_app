@@ -570,7 +570,10 @@ class _TaskScreenState extends State<TaskScreen> {
                             log(
                               'Building TaskItemCard for task ID: ${task.taskPriority} at index $index with title: ${task.taskTitle}',
                             );
-                            return TaskItemCard(task: task);
+                            return TaskItemCard(
+                              task: task,
+                              isDeletedEnabled: true,
+                            );
                           },
                         ),
                       ),
