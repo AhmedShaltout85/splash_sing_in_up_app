@@ -46,12 +46,13 @@ class _CustomUserDrawerState extends State<CustomUserDrawer>
   }
 
   String _getDisplayName() {
-    final email = FirebaseAuth.instance.currentUser?.email ?? '';
+    final email = FirebaseAuth.instance.currentUser?.displayName ?? '';
     if (email.isEmpty) return 'User';
-    final name = email.split('@').first;
-    return name.isNotEmpty
-        ? name[0].toUpperCase() + name.substring(1).toLowerCase()
-        : 'User';
+    // final name = email.split('@').first;
+    // return name.isNotEmpty
+    //     ? name[0].toUpperCase() + name.substring(1).toLowerCase()
+    //     : 'User';
+    return email;
   }
 
   @override

@@ -1,17 +1,244 @@
+// // import 'package:firebase_auth/firebase_auth.dart';
+// // import 'package:flutter/material.dart';
+// // import 'package:provider/provider.dart';
+// // import 'package:task_app/common_widgets/custom_widgets/custom_button.dart';
+// // import 'package:task_app/common_widgets/custom_widgets/custom_text.dart';
+// // import 'package:task_app/common_widgets/resuable_widgets/resuable_widgets.dart';
+// // import 'package:task_app/common_widgets/resuable_widgets/reusable_toast.dart';
+// // import 'package:task_app/controller/employee_name_provider.dart';
+// // import 'package:task_app/newtork_repos/remote_repo/firestore_services/firestore_db/add_new_user_to_db.dart';
+// // import 'package:task_app/newtork_repos/remote_repo/firestore_services/firebase_email_password_services/firebase_api_services.dart';
+// // import 'package:task_app/utils/app_assets.dart';
+// // import 'package:task_app/utils/app_colors.dart';
+
+// // import '../../common_widgets/custom_widgets/custom_textfield_signup.dart';
+// // import '../login/login_screen.dart';
+
+// // class SignUpScreen extends StatefulWidget {
+// //   const SignUpScreen({super.key});
+
+// //   @override
+// //   State<SignUpScreen> createState() => _SignUpScreenState();
+// // }
+
+// // class _SignUpScreenState extends State<SignUpScreen> {
+// //   final TextEditingController _firstNameController = TextEditingController();
+// //   final TextEditingController _lastNameController = TextEditingController();
+// //   final TextEditingController _userNameController = TextEditingController();
+// //   final TextEditingController _emailController = TextEditingController();
+// //   final TextEditingController _passwordController = TextEditingController();
+// //   final TextEditingController _confirmPasswordController =
+// //       TextEditingController();
+
+// //   @override
+// //   void dispose() {
+// //     _firstNameController.dispose();
+// //     _lastNameController.dispose();
+// //     _userNameController.dispose();
+// //     _emailController.dispose();
+// //     _passwordController.dispose();
+// //     _confirmPasswordController.dispose();
+// //     super.dispose();
+// //   }
+
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     final double iconWH = 24;
+// //     final double fontSize = 14;
+// //     return Scaffold(
+// //       backgroundColor: Color(0xFFFFFFFF),
+// //       body: SafeArea(
+// //         child: Center(
+// //           child: SingleChildScrollView(
+// //             child: Padding(
+// //               padding: const EdgeInsets.symmetric(
+// //                 horizontal: 30.0,
+// //                 vertical: 50.0,
+// //               ),
+// //               child: Column(
+// //                 mainAxisSize: MainAxisSize.min,
+// //                 children: [
+// //                   // Title
+// //                   CustomText(
+// //                     text: 'Let\'s Get Started!',
+// //                     fontSize: fontSize * 2,
+// //                     fontWeight: FontWeight.bold,
+// //                     color: AppColors.blackColor,
+// //                   ),
+
+// //                   gap(height: 8),
+
+// //                   // Subtitle
+// //                   CustomText(
+// //                     text: 'Create an account on MNZL to get all features',
+// //                     fontSize: fontSize,
+// //                     fontWeight: FontWeight.normal,
+// //                     color: AppColors.grayColor,
+// //                   ),
+
+// //                   gap(height: 35),
+
+// //                   // First Name field
+// //                   buildInputField(
+// //                     controller: _firstNameController,
+// //                     hintText: 'First Name',
+// //                     icon: Image.asset(AppAssets.user, width: iconWH),
+// //                   ),
+
+// //                   gap(height: 18),
+
+// //                   // Last Name field
+// //                   buildInputField(
+// //                     controller: _lastNameController,
+// //                     hintText: 'Last Name',
+// //                     icon: Image.asset(AppAssets.user, width: iconWH),
+// //                   ),
+
+// //                   gap(height: 18),
+
+// //                   // User Name field
+// //                   buildInputField(
+// //                     controller: _userNameController,
+// //                     hintText: 'User Name',
+// //                     icon: Image.asset(AppAssets.user, width: iconWH),
+// //                   ),
+
+// //                   gap(height: 18),
+
+// //                   // Email field
+// //                   buildInputField(
+// //                     controller: _emailController,
+// //                     hintText: 'Email',
+// //                     icon: Image.asset(AppAssets.mail, width: iconWH),
+// //                   ),
+
+// //                   gap(height: 18),
+
+// //                   // Password field
+// //                   buildInputField(
+// //                     controller: _passwordController,
+// //                     hintText: 'Password',
+// //                     icon: Image.asset(AppAssets.lock, width: iconWH),
+// //                     obscureText: true,
+// //                   ),
+
+// //                   gap(height: 18),
+
+// //                   // Confirm Password field
+// //                   buildInputField(
+// //                     controller: _confirmPasswordController,
+// //                     hintText: 'Confirm Password',
+// //                     icon: Image.asset(AppAssets.lock, width: iconWH),
+// //                     obscureText: true,
+// //                   ),
+
+// //                   gap(height: 35),
+
+// //                   // Create button
+// //                   CustomElevatedButton(
+// //                     text: 'CREATE',
+// //                     color: AppColors.primaryColor,
+// //                     textColor: AppColors.whiteColor,
+// //                     fontSize: fontSize + 2,
+// //                     height: 50,
+// //                     width: 200,
+// //                     onTap: () async {
+// //                       if (_firstNameController.text.isNotEmpty &&
+// //                           _lastNameController.text.isNotEmpty &&
+// //                           _userNameController.text.isNotEmpty &&
+// //                           _emailController.text.isNotEmpty &&
+// //                           _passwordController.text.isNotEmpty &&
+// //                           _confirmPasswordController.text.isNotEmpty &&
+// //                           _passwordController.text ==
+// //                               _confirmPasswordController.text) {
+// //                         //create account on firebase by email and password
+// //                         await FirebaseApiSAuthServices.createUserWithEmailAndPassword(
+// //                           emailAddress: _emailController.text.trim(),
+// //                           password: _passwordController.text.trim(),
+// //                         );
+// //                         // Save user info to Firestore
+// //                         await AddNewUserToDB.saveUser({
+// //                           'id': FirebaseAuth.instance.currentUser!.uid,
+// //                           'firstName': _firstNameController.text.trim(),
+// //                           'lastName': _lastNameController.text.trim(),
+// //                           'displayName': _userNameController.text.trim(),
+// //                           'email': _emailController.text.trim(),
+// //                           'password': _passwordController.text.trim(),
+// //                         });
+
+// //                         await context
+// //                             .read<EmployeeNameProvider>()
+// //                             .addEmployeeName(_userNameController.text.trim());
+// //                         ReusableToast.showToast(
+// //                           message: 'Account created successfully!',
+// //                           textColor: Colors.white,
+// //                           fontSize: 16,
+// //                           bgColor: Colors.green,
+// //                         );
+// //                         // Handle create account
+// //                         navigateTo(context, LoginScreen());
+// //                       } else {
+// //                         ReusableToast.showToast(
+// //                           message:
+// //                               'Please fill all fields correctly to create an account.',
+// //                           textColor: Colors.white,
+// //                           fontSize: 16,
+// //                           bgColor: Colors.red,
+// //                         );
+// //                       }
+// //                     },
+// //                   ),
+
+// //                   gap(height: 25),
+
+// //                   // Login link
+// //                   Row(
+// //                     mainAxisAlignment: MainAxisAlignment.center,
+// //                     children: [
+// //                       CustomText(
+// //                         text: 'Already have an account? ',
+// //                         fontSize: fontSize,
+// //                         fontWeight: FontWeight.normal,
+// //                         color: AppColors.grayColor,
+// //                       ),
+// //                       GestureDetector(
+// //                         onTap: () {
+// //                           // Handle login
+// //                           navigateTo(context, LoginScreen());
+// //                         },
+// //                         child: CustomText(
+// //                           text: 'Login here',
+// //                           fontSize: fontSize,
+// //                           fontWeight: FontWeight.bold,
+// //                           color: AppColors.blackColor,
+// //                         ),
+// //                       ),
+// //                     ],
+// //                   ),
+// //                 ],
+// //               ),
+// //             ),
+// //           ),
+// //         ),
+// //       ),
+// //     );
+// //   }
+// // }
+
+// import 'dart:developer';
+
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
-// import 'package:task_app/common_widgets/custom_widgets/custom_button.dart';
-// import 'package:task_app/common_widgets/custom_widgets/custom_text.dart';
 // import 'package:task_app/common_widgets/resuable_widgets/resuable_widgets.dart';
 // import 'package:task_app/common_widgets/resuable_widgets/reusable_toast.dart';
 // import 'package:task_app/controller/employee_name_provider.dart';
+// import 'package:task_app/controller/theme_provider.dart';
 // import 'package:task_app/newtork_repos/remote_repo/firestore_services/firestore_db/add_new_user_to_db.dart';
 // import 'package:task_app/newtork_repos/remote_repo/firestore_services/firebase_email_password_services/firebase_api_services.dart';
-// import 'package:task_app/utils/app_assets.dart';
+// import 'package:task_app/screens/auth/auth_wrapper.dart';
 // import 'package:task_app/utils/app_colors.dart';
 
-// import '../../common_widgets/custom_widgets/custom_textfield_signup.dart';
 // import '../login/login_screen.dart';
 
 // class SignUpScreen extends StatefulWidget {
@@ -29,6 +256,13 @@
 //   final TextEditingController _passwordController = TextEditingController();
 //   final TextEditingController _confirmPasswordController =
 //       TextEditingController();
+//   //make first letter capital
+//   String capitalizeFirstLetter(String text) {
+//     if (text.isEmpty) return text;
+//     return text[0].toUpperCase() + text.substring(1);
+//   }
+
+//   bool _isLoading = false;
 
 //   @override
 //   void dispose() {
@@ -43,10 +277,15 @@
 
 //   @override
 //   Widget build(BuildContext context) {
-//     final double iconWH = 24;
+//     final themeProvider = Provider.of<ThemeProvider>(context);
+//     final isDark = themeProvider.isDark;
+//     final colorScheme = Theme.of(context).colorScheme;
+
+//     // final double iconWH = 24;
 //     final double fontSize = 14;
+
 //     return Scaffold(
-//       backgroundColor: Color(0xFFFFFFFF),
+//       backgroundColor: isDark ? colorScheme.surface : const Color(0xFFFFFFFF),
 //       body: SafeArea(
 //         child: Center(
 //           child: SingleChildScrollView(
@@ -58,135 +297,447 @@
 //               child: Column(
 //                 mainAxisSize: MainAxisSize.min,
 //                 children: [
+//                   // Logo or Icon (optional)
+//                   Container(
+//                     padding: const EdgeInsets.all(20),
+//                     decoration: BoxDecoration(
+//                       color: colorScheme.primary.withOpacity(0.1),
+//                       shape: BoxShape.circle,
+//                     ),
+//                     child: Icon(
+//                       Icons.person_add_rounded,
+//                       size: 60,
+//                       color: colorScheme.primary,
+//                     ),
+//                   ),
+
+//                   gap(height: 24),
+
 //                   // Title
-//                   CustomText(
-//                     text: 'Let\'s Get Started!',
-//                     fontSize: fontSize * 2,
-//                     fontWeight: FontWeight.bold,
-//                     color: AppColors.blackColor,
+//                   Text(
+//                     'Let\'s Get Started!',
+//                     style: TextStyle(
+//                       fontSize: fontSize * 2,
+//                       fontWeight: FontWeight.bold,
+//                       color: isDark ? Colors.white : Colors.black87,
+//                     ),
 //                   ),
 
 //                   gap(height: 8),
 
 //                   // Subtitle
-//                   CustomText(
-//                     text: 'Create an account on MNZL to get all features',
-//                     fontSize: fontSize,
-//                     fontWeight: FontWeight.normal,
-//                     color: AppColors.grayColor,
+//                   Text(
+//                     'Create an account on TASKS to get all features',
+//                     style: TextStyle(
+//                       fontSize: fontSize,
+//                       fontWeight: FontWeight.normal,
+//                       color: isDark ? Colors.grey[400] : Colors.grey[600],
+//                     ),
+//                     textAlign: TextAlign.center,
 //                   ),
 
 //                   gap(height: 35),
 
 //                   // First Name field
-//                   buildInputField(
+//                   _buildThemedInputField(
+//                     keyboardType: TextInputType.text, // KeyboardType.,
+//                     textCapitalization: TextCapitalization.words,
 //                     controller: _firstNameController,
 //                     hintText: 'First Name',
-//                     icon: Image.asset(AppAssets.user, width: iconWH),
+//                     icon: Icons.person_outline,
+//                     isDark: isDark,
+//                     colorScheme: colorScheme,
 //                   ),
 
 //                   gap(height: 18),
 
 //                   // Last Name field
-//                   buildInputField(
+//                   _buildThemedInputField(
+//                     keyboardType: TextInputType.text,
+//                     textCapitalization: TextCapitalization.words,
 //                     controller: _lastNameController,
 //                     hintText: 'Last Name',
-//                     icon: Image.asset(AppAssets.user, width: iconWH),
+//                     icon: Icons.person_outline,
+//                     isDark: isDark,
+//                     colorScheme: colorScheme,
 //                   ),
 
 //                   gap(height: 18),
 
 //                   // User Name field
-//                   buildInputField(
+//                   _buildThemedInputField(
+//                     keyboardType: TextInputType.text,
+//                     textCapitalization: TextCapitalization.words,
 //                     controller: _userNameController,
 //                     hintText: 'User Name',
-//                     icon: Image.asset(AppAssets.user, width: iconWH),
+//                     icon: Icons.badge_outlined,
+//                     isDark: isDark,
+//                     colorScheme: colorScheme,
 //                   ),
 
 //                   gap(height: 18),
 
 //                   // Email field
-//                   buildInputField(
+//                   _buildThemedInputField(
 //                     controller: _emailController,
 //                     hintText: 'Email',
-//                     icon: Image.asset(AppAssets.mail, width: iconWH),
+//                     icon: Icons.email_outlined,
+//                     isDark: isDark,
+//                     colorScheme: colorScheme,
+//                     keyboardType: TextInputType.emailAddress,
 //                   ),
 
 //                   gap(height: 18),
 
 //                   // Password field
-//                   buildInputField(
+//                   _buildThemedInputField(
 //                     controller: _passwordController,
 //                     hintText: 'Password',
-//                     icon: Image.asset(AppAssets.lock, width: iconWH),
+//                     icon: Icons.lock_outline,
+//                     isDark: isDark,
+//                     colorScheme: colorScheme,
 //                     obscureText: true,
 //                   ),
 
 //                   gap(height: 18),
 
 //                   // Confirm Password field
-//                   buildInputField(
+//                   _buildThemedInputField(
 //                     controller: _confirmPasswordController,
 //                     hintText: 'Confirm Password',
-//                     icon: Image.asset(AppAssets.lock, width: iconWH),
+//                     icon: Icons.lock_outline,
+//                     isDark: isDark,
+//                     colorScheme: colorScheme,
 //                     obscureText: true,
 //                   ),
 
 //                   gap(height: 35),
 
 //                   // Create button
-//                   CustomElevatedButton(
-//                     text: 'CREATE',
-//                     color: AppColors.primaryColor,
-//                     textColor: AppColors.whiteColor,
-//                     fontSize: fontSize + 2,
-//                     height: 50,
-//                     width: 200,
-//                     onTap: () async {
-//                       if (_firstNameController.text.isNotEmpty &&
-//                           _lastNameController.text.isNotEmpty &&
-//                           _userNameController.text.isNotEmpty &&
-//                           _emailController.text.isNotEmpty &&
-//                           _passwordController.text.isNotEmpty &&
-//                           _confirmPasswordController.text.isNotEmpty &&
-//                           _passwordController.text ==
-//                               _confirmPasswordController.text) {
-//                         //create account on firebase by email and password
-//                         await FirebaseApiSAuthServices.createUserWithEmailAndPassword(
-//                           emailAddress: _emailController.text.trim(),
-//                           password: _passwordController.text.trim(),
-//                         );
-//                         // Save user info to Firestore
-//                         await AddNewUserToDB.saveUser({
-//                           'id': FirebaseAuth.instance.currentUser!.uid,
-//                           'firstName': _firstNameController.text.trim(),
-//                           'lastName': _lastNameController.text.trim(),
-//                           'displayName': _userNameController.text.trim(),
-//                           'email': _emailController.text.trim(),
-//                           'password': _passwordController.text.trim(),
-//                         });
+//                   SizedBox(
+//                     width: double.infinity,
+//                     height: 54,
+//                     // child: ElevatedButton(
+//                     //   onPressed: _isLoading
+//                     //       ? null
+//                     //       : () async {
+//                     //           if (_firstNameController.text.isNotEmpty &&
+//                     //               _lastNameController.text.isNotEmpty &&
+//                     //               _userNameController.text.isNotEmpty &&
+//                     //               _emailController.text.isNotEmpty &&
+//                     //               _passwordController.text.isNotEmpty &&
+//                     //               _confirmPasswordController.text.isNotEmpty &&
+//                     //               _passwordController.text ==
+//                     //                   _confirmPasswordController.text &&
+//                     //               _passwordController.text.length >= 6) {
+//                     //             setState(() => _isLoading = true);
 
-//                         await context
-//                             .read<EmployeeNameProvider>()
-//                             .addEmployeeName(_userNameController.text.trim());
-//                         ReusableToast.showToast(
-//                           message: 'Account created successfully!',
-//                           textColor: Colors.white,
-//                           fontSize: 16,
-//                           bgColor: Colors.green,
-//                         );
-//                         // Handle create account
-//                         navigateTo(context, LoginScreen());
-//                       } else {
-//                         ReusableToast.showToast(
-//                           message:
-//                               'Please fill all fields correctly to create an account.',
-//                           textColor: Colors.white,
-//                           fontSize: 16,
-//                           bgColor: Colors.red,
-//                         );
-//                       }
-//                     },
+//                     //             try {
+//                     //               // Create account on firebase
+//                     //               await FirebaseApiSAuthServices.createUserWithEmailAndPassword(
+//                     //                 emailAddress: _emailController.text.trim(),
+//                     //                 password: _passwordController.text.trim(),
+//                     //               );
+
+//                     //               // Save user info to Firestore
+//                     //               await AddNewUserToDB.saveUser({
+//                     //                 'id':
+//                     //                     FirebaseAuth.instance.currentUser!.uid,
+//                     //                 'firstName': capitalizeFirstLetter(
+//                     //                   _firstNameController.text.trim(),
+//                     //                 ),
+//                     //                 'lastName': capitalizeFirstLetter(
+//                     //                   _lastNameController.text.trim(),
+//                     //                 ),
+//                     //                 'displayName': capitalizeFirstLetter(
+//                     //                   _userNameController.text.trim(),
+//                     //                 ),
+//                     //                 'email': _emailController.text.trim(),
+//                     //                 'password': _passwordController.text.trim(),
+//                     //               });
+//                     //               //TODO: Save user info to Firestore
+//                     //               await FirebaseAuth.instance.currentUser!
+//                     //                   .updateDisplayName(
+//                     //                     capitalizeFirstLetter(
+//                     //                       _userNameController.text.trim(),
+//                     //                     ),
+//                     //                   );
+//                     //               log(
+//                     //                 "UPDATE DISPLAY NAME IN SIGNUP" +
+//                     //                     FirebaseAuth
+//                     //                         .instance
+//                     //                         .currentUser!
+//                     //                         .displayName
+//                     //                         .toString(),
+//                     //               );
+//                     //               // Save user name to
+//                     //               await context
+//                     //                   .read<EmployeeNameProvider>()
+//                     //                   .addEmployeeName(
+//                     //                     capitalizeFirstLetter(
+//                     //                       _userNameController.text.trim(),
+//                     //                     ),
+//                     //                   );
+
+//                     //               if (context.mounted) {
+//                     //                 ReusableToast.showToast(
+//                     //                   message: 'Account created successfully!',
+//                     //                   textColor: Colors.white,
+//                     //                   fontSize: 16,
+//                     //                   bgColor: Colors.green,
+//                     //                 );
+//                     //                 // Sign out the user so they need to login
+//                     //                 await FirebaseAuth.instance.signOut();
+//                     //                 // Navigate to login screen
+//                     //                 // navigateTo(context, const LoginScreen());
+//                     //                 Navigator.of(context).pushAndRemoveUntil(
+//                     //                   MaterialPageRoute(
+//                     //                     builder: (context) =>
+//                     //                         const LoginScreen(),
+//                     //                   ),
+//                     //                   (route) => false,
+//                     //                 );
+//                     //               }
+//                     //             } on FirebaseAuthException catch (e) {
+//                     //               String errorMessage;
+
+//                     //               switch (e.code) {
+//                     //                 case 'user-already exists':
+//                     //                   errorMessage = 'User already exists';
+//                     //                   break;
+//                     //                 case 'user-not-found':
+//                     //                   errorMessage =
+//                     //                       'No user found with this email';
+//                     //                   break;
+//                     //                 case 'wrong-password':
+//                     //                   errorMessage = 'Incorrect password';
+//                     //                   break;
+//                     //                 case 'invalid-email':
+//                     //                   errorMessage = 'Invalid email address';
+//                     //                   break;
+//                     //                 case 'user-disabled':
+//                     //                   errorMessage =
+//                     //                       'This account has been disabled';
+//                     //                   break;
+//                     //                 case 'too-many-requests':
+//                     //                   errorMessage =
+//                     //                       'Too many attempts. Please try again later';
+//                     //                   break;
+//                     //                 case 'invalid-credential':
+//                     //                   errorMessage =
+//                     //                       'Invalid email or password';
+//                     //                   break;
+//                     //                 case 'network-request-failed':
+//                     //                   errorMessage =
+//                     //                       'Network error. Please check your connection';
+//                     //                   break;
+//                     //                 default:
+//                     //                   errorMessage =
+//                     //                       'Login failed: ${e.message ?? "Unknown error"}';
+//                     //               }
+
+//                     //               if (mounted) {
+//                     //                 ReusableToast.showToast(
+//                     //                   message: errorMessage,
+//                     //                   bgColor: AppColors.redColor,
+//                     //                   textColor: AppColors.whiteColor,
+//                     //                   fontSize: 16,
+//                     //                 );
+//                     //               }
+
+//                     //               log('Login error: ${e.code} - ${e.message}');
+//                     //             } catch (e) {
+//                     //               if (context.mounted) {
+//                     //                 ReusableToast.showToast(
+//                     //                   message: 'Error: ${e.toString()}',
+//                     //                   textColor: Colors.white,
+//                     //                   fontSize: 16,
+//                     //                   bgColor: Colors.red,
+//                     //                 );
+//                     //               }
+//                     //             } finally {
+//                     //               if (mounted) {
+//                     //                 setState(() => _isLoading = false);
+//                     //               }
+//                     //             }
+//                     //           } else {
+//                     //             ReusableToast.showToast(
+//                     //               message:
+//                     //                   'Please fill all fields correctly to create an account.',
+//                     //               textColor: Colors.white,
+//                     //               fontSize: 16,
+//                     //               bgColor: Colors.red,
+//                     //             );
+//                     //           }
+//                     //         },
+//                     //   style: ElevatedButton.styleFrom(
+//                     //     backgroundColor: colorScheme.primary,
+//                     //     foregroundColor: isDark ? Colors.black87 : Colors.white,
+//                     //     shape: RoundedRectangleBorder(
+//                     //       borderRadius: BorderRadius.circular(12),
+//                     //     ),
+//                     //     elevation: 2,
+//                     //   ),
+//                     //   child: _isLoading
+//                     //       ? SizedBox(
+//                     //           width: 24,
+//                     //           height: 24,
+//                     //           child: CircularProgressIndicator(
+//                     //             strokeWidth: 2.5,
+//                     //             color: isDark ? Colors.black87 : Colors.white,
+//                     //           ),
+//                     //         )
+//                     //       : Text(
+//                     //           'CREATE ACCOUNT',
+//                     //           style: TextStyle(
+//                     //             fontSize: fontSize + 2,
+//                     //             fontWeight: FontWeight.bold,
+//                     //             letterSpacing: 0.5,
+//                     //           ),
+//                     //         ),
+//                     // ),
+//                     child: ElevatedButton(
+//                       // Replace your CREATE ACCOUNT button's entire onPressed handler with this:
+//                       onPressed: _isLoading
+//                           ? null
+//                           : () async {
+//                               if (_firstNameController.text.isNotEmpty &&
+//                                   _lastNameController.text.isNotEmpty &&
+//                                   _userNameController.text.isNotEmpty &&
+//                                   _emailController.text.isNotEmpty &&
+//                                   _passwordController.text.isNotEmpty &&
+//                                   _confirmPasswordController.text.isNotEmpty &&
+//                                   _passwordController.text ==
+//                                       _confirmPasswordController.text &&
+//                                   _passwordController.text.length >= 6) {
+//                                 setState(() => _isLoading = true);
+
+//                                 try {
+//                                   log('📝 Starting signup process...');
+
+//                                   // Create account on firebase
+//                                   await FirebaseApiSAuthServices.createUserWithEmailAndPassword(
+//                                     emailAddress: _emailController.text.trim(),
+//                                     password: _passwordController.text.trim(),
+//                                   );
+//                                   log('✅ Firebase account created');
+
+//                                   // Get the user ID before we do anything else
+//                                   final userId =
+//                                       FirebaseAuth.instance.currentUser!.uid;
+//                                   final displayName = capitalizeFirstLetter(
+//                                     _userNameController.text.trim(),
+//                                   );
+
+//                                   // Save user info to Firestore
+//                                   await AddNewUserToDB.saveUser({
+//                                     'id': userId,
+//                                     'firstName': capitalizeFirstLetter(
+//                                       _firstNameController.text.trim(),
+//                                     ),
+//                                     'lastName': capitalizeFirstLetter(
+//                                       _lastNameController.text.trim(),
+//                                     ),
+//                                     'displayName': displayName,
+//                                     'email': _emailController.text.trim(),
+//                                     'password': _passwordController.text.trim(),
+//                                   });
+//                                   log('✅ User saved to Firestore');
+
+//                                   // Update display name
+//                                   await FirebaseAuth.instance.currentUser!
+//                                       .updateDisplayName(displayName);
+//                                   log('✅ Display name updated');
+
+//                                   // Add to provider
+//                                   if (context.mounted) {
+//                                     await context
+//                                         .read<EmployeeNameProvider>()
+//                                         .addEmployeeName(displayName);
+//                                     log('✅ Employee name added to provider');
+//                                   }
+
+//                                   // CRITICAL: Sign out IMMEDIATELY before showing any UI
+//                                   log('🚪 Signing out user...');
+//                                   await FirebaseAuth.instance.signOut();
+//                                   log('✅ User signed out successfully');
+
+//                                   // Small delay to ensure auth state propagates
+//                                   await Future.delayed(
+//                                     const Duration(milliseconds: 300),
+//                                   );
+
+//                                   if (context.mounted) {
+//                                     // Show success message
+//                                     ReusableToast.showToast(
+//                                       message:
+//                                           'Account created successfully! Please log in.',
+//                                       textColor: Colors.white,
+//                                       fontSize: 16,
+//                                       bgColor: Colors.green,
+//                                     );
+
+//                                     // Navigate back to login - pop all routes back to root
+//                                     log('🧭 Navigating to LoginScreen...');
+//                                     Navigator.of(context).pushAndRemoveUntil(
+//                                       MaterialPageRoute(
+//                                         builder: (context) =>
+//                                             const AuthWrapper(),
+//                                       ),
+//                                       (route) => false,
+//                                     );
+//                                     log('✅ Navigation completed');
+//                                   }
+//                                 } catch (e) {
+//                                   log('❌ Signup error: $e');
+
+//                                   // If error occurs, sign out to clean up
+//                                   try {
+//                                     await FirebaseAuth.instance.signOut();
+//                                   } catch (_) {}
+
+//                                   if (context.mounted) {
+//                                     ReusableToast.showToast(
+//                                       message: 'Error: ${e.toString()}',
+//                                       textColor: Colors.white,
+//                                       fontSize: 16,
+//                                       bgColor: Colors.red,
+//                                     );
+//                                   }
+//                                 } finally {
+//                                   if (mounted) {
+//                                     setState(() => _isLoading = false);
+//                                   }
+//                                 }
+//                               } else {
+//                                 ReusableToast.showToast(
+//                                   message:
+//                                       'Please fill all fields correctly to create an account.',
+//                                   textColor: Colors.white,
+//                                   fontSize: 16,
+//                                   bgColor: Colors.red,
+//                                 );
+//                               }
+//                             },
+
+//                       child: _isLoading
+//                           ? SizedBox(
+//                               width: 24,
+//                               height: 24,
+//                               child: CircularProgressIndicator(
+//                                 strokeWidth: 2.5,
+//                                 color: isDark ? Colors.black87 : Colors.white,
+//                               ),
+//                             )
+//                           : Text(
+//                               'CREATE ACCOUNT',
+//                               style: TextStyle(
+//                                 fontSize: fontSize + 2,
+//                                 fontWeight: FontWeight.bold,
+//                                 letterSpacing: 0.5,
+//                               ),
+//                             ),
+//                     ),
 //                   ),
 
 //                   gap(height: 25),
@@ -195,22 +746,26 @@
 //                   Row(
 //                     mainAxisAlignment: MainAxisAlignment.center,
 //                     children: [
-//                       CustomText(
-//                         text: 'Already have an account? ',
-//                         fontSize: fontSize,
-//                         fontWeight: FontWeight.normal,
-//                         color: AppColors.grayColor,
+//                       Text(
+//                         'Already have an account? ',
+//                         style: TextStyle(
+//                           fontSize: fontSize,
+//                           fontWeight: FontWeight.normal,
+//                           color: isDark ? Colors.grey[400] : Colors.grey[600],
+//                         ),
 //                       ),
 //                       GestureDetector(
 //                         onTap: () {
-//                           // Handle login
-//                           navigateTo(context, LoginScreen());
+//                           navigateTo(context, const LoginScreen());
 //                         },
-//                         child: CustomText(
-//                           text: 'Login here',
-//                           fontSize: fontSize,
-//                           fontWeight: FontWeight.bold,
-//                           color: AppColors.blackColor,
+//                         child: Text(
+//                           'Login here',
+//                           style: TextStyle(
+//                             fontSize: fontSize,
+//                             fontWeight: FontWeight.bold,
+//                             color: colorScheme.primary,
+//                             decoration: TextDecoration.underline,
+//                           ),
 //                         ),
 //                       ),
 //                     ],
@@ -223,8 +778,76 @@
 //       ),
 //     );
 //   }
+
+//   Widget _buildThemedInputField({
+//     required TextEditingController controller,
+//     required String hintText,
+//     required IconData icon,
+//     required bool isDark,
+//     required ColorScheme colorScheme,
+//     bool obscureText = false,
+//     TextInputType? keyboardType,
+//     TextCapitalization? textCapitalization,
+//   }) {
+//     return Container(
+//       decoration: BoxDecoration(
+//         color: isDark ? colorScheme.surface : Colors.white,
+//         borderRadius: BorderRadius.circular(12),
+//         border: isDark
+//             ? Border.all(color: Colors.grey.shade800, width: 1)
+//             : null,
+//         boxShadow: isDark
+//             ? null
+//             : [
+//                 BoxShadow(
+//                   color: Colors.black.withOpacity(0.05),
+//                   blurRadius: 10,
+//                   offset: const Offset(0, 2),
+//                 ),
+//               ],
+//       ),
+//       child: TextField(
+//         textCapitalization: textCapitalization ?? TextCapitalization.none,
+//         controller: controller,
+//         obscureText: obscureText,
+//         keyboardType: keyboardType,
+//         style: TextStyle(
+//           color: isDark ? Colors.white : Colors.black87,
+//           fontSize: 16,
+//         ),
+//         decoration: InputDecoration(
+//           hintText: hintText,
+//           hintStyle: TextStyle(
+//             color: isDark ? Colors.grey[600] : Colors.grey[400],
+//           ),
+//           prefixIcon: Icon(icon, color: colorScheme.primary, size: 22),
+//           border: OutlineInputBorder(
+//             borderRadius: BorderRadius.circular(12),
+//             borderSide: BorderSide.none,
+//           ),
+//           enabledBorder: OutlineInputBorder(
+//             borderRadius: BorderRadius.circular(12),
+//             borderSide: BorderSide.none,
+//           ),
+//           focusedBorder: OutlineInputBorder(
+//             borderRadius: BorderRadius.circular(12),
+//             borderSide: BorderSide(color: colorScheme.primary, width: 2),
+//           ),
+//           filled: true,
+//           fillColor: isDark
+//               ? colorScheme.surface.withOpacity(0.5)
+//               : Colors.white,
+//           contentPadding: const EdgeInsets.symmetric(
+//             horizontal: 16,
+//             vertical: 16,
+//           ),
+//         ),
+//       ),
+//     );
+//   }
 // }
 
+import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -234,7 +857,8 @@ import 'package:task_app/controller/employee_name_provider.dart';
 import 'package:task_app/controller/theme_provider.dart';
 import 'package:task_app/newtork_repos/remote_repo/firestore_services/firestore_db/add_new_user_to_db.dart';
 import 'package:task_app/newtork_repos/remote_repo/firestore_services/firebase_email_password_services/firebase_api_services.dart';
-
+import 'package:task_app/screens/auth/auth_wrapper.dart';
+import 'package:task_app/utils/app_colors.dart';
 import '../login/login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -255,6 +879,225 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   bool _isLoading = false;
 
+  String capitalizeFirstLetter(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1);
+  }
+
+  /// Validates all input fields before signup
+  String? _validateInputs() {
+    if (_firstNameController.text.trim().isEmpty) {
+      return 'Please enter your first name';
+    }
+    if (_lastNameController.text.trim().isEmpty) {
+      return 'Please enter your last name';
+    }
+    if (_userNameController.text.trim().isEmpty) {
+      return 'Please enter a username';
+    }
+    if (_emailController.text.trim().isEmpty) {
+      return 'Please enter your email';
+    }
+    if (!_isValidEmail(_emailController.text.trim())) {
+      return 'Please enter a valid email address';
+    }
+    if (_passwordController.text.isEmpty) {
+      return 'Please enter a password';
+    }
+    if (_passwordController.text.length < 6) {
+      return 'Password must be at least 6 characters';
+    }
+    if (_confirmPasswordController.text.isEmpty) {
+      return 'Please confirm your password';
+    }
+    if (_passwordController.text != _confirmPasswordController.text) {
+      return 'Passwords do not match';
+    }
+    return null;
+  }
+
+  /// Email validation helper
+  bool _isValidEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+  }
+
+  /// Comprehensive Firebase Auth exception handler
+  String _handleFirebaseAuthException(FirebaseAuthException e) {
+    log('🔥 Firebase Auth Error: ${e.code} - ${e.message}');
+
+    switch (e.code) {
+      // Email-related errors
+      case 'email-already-in-use':
+        return 'This email is already registered. Please login or use a different email.';
+      case 'invalid-email':
+        return 'Invalid email address format. Please check and try again.';
+
+      // Password-related errors
+      case 'weak-password':
+        return 'Password is too weak. Please use a stronger password.';
+      case 'wrong-password':
+        return 'Incorrect password. Please try again.';
+
+      // Account-related errors
+      case 'user-not-found':
+        return 'No account found with this email.';
+      case 'user-disabled':
+        return 'This account has been disabled. Please contact support.';
+
+      // Operation errors
+      case 'operation-not-allowed':
+        return 'Email/password accounts are not enabled. Please contact support.';
+      case 'too-many-requests':
+        return 'Too many failed attempts. Please try again later.';
+
+      // Credential errors
+      case 'invalid-credential':
+        return 'Invalid credentials provided. Please check your information.';
+      case 'credential-already-in-use':
+        return 'This credential is already associated with a different account.';
+
+      // Network errors
+      case 'network-request-failed':
+        return 'Network error. Please check your internet connection and try again.';
+
+      // Token errors
+      case 'invalid-verification-code':
+        return 'Invalid verification code. Please try again.';
+      case 'invalid-verification-id':
+        return 'Invalid verification ID. Please restart the process.';
+
+      // Quota errors
+      case 'quota-exceeded':
+        return 'Quota exceeded. Please try again later.';
+
+      // Default case
+      default:
+        log('⚠️ Unhandled Firebase error code: ${e.code}');
+        return 'Signup failed: ${e.message ?? "An unexpected error occurred"}';
+    }
+  }
+
+  /// Handle the signup process
+  Future<void> _handleSignup() async {
+    // Validate inputs first
+    final validationError = _validateInputs();
+    if (validationError != null) {
+      _showErrorToast(validationError);
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      log('📝 Starting signup process...');
+
+      // Create Firebase account
+      await FirebaseApiSAuthServices.createUserWithEmailAndPassword(
+        emailAddress: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      log('✅ Firebase account created');
+
+      // Get user data
+      final userId = FirebaseAuth.instance.currentUser!.uid;
+      final displayName = capitalizeFirstLetter(
+        _userNameController.text.trim(),
+      );
+
+      // Save to Firestore
+      await AddNewUserToDB.saveUser({
+        'id': userId,
+        'firstName': capitalizeFirstLetter(_firstNameController.text.trim()),
+        'lastName': capitalizeFirstLetter(_lastNameController.text.trim()),
+        'displayName': displayName,
+        'email': _emailController.text.trim(),
+        'password': _passwordController.text.trim(),
+      });
+      log('✅ User saved to Firestore');
+
+      // Update display name
+      await FirebaseAuth.instance.currentUser!.updateDisplayName(displayName);
+      log('✅ Display name updated');
+
+      // Add to provider
+      if (context.mounted) {
+        await context.read<EmployeeNameProvider>().addEmployeeName(displayName);
+        log('✅ Employee name added to provider');
+      }
+
+      // Sign out immediately
+      log('🚪 Signing out user...');
+      await FirebaseAuth.instance.signOut();
+      log('✅ User signed out successfully');
+
+      // Small delay for auth state propagation
+      await Future.delayed(const Duration(milliseconds: 300));
+
+      if (context.mounted) {
+        _showSuccessToast('Account created successfully! Please log in.');
+
+        // Navigate to login
+        log('🧭 Navigating to AuthWrapper...');
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const AuthWrapper()),
+          (route) => false,
+        );
+        log('✅ Navigation completed');
+      }
+    } on FirebaseAuthException catch (e) {
+      // Handle Firebase-specific errors
+      final errorMessage = _handleFirebaseAuthException(e);
+
+      // Clean up: sign out if account was partially created
+      try {
+        await FirebaseAuth.instance.signOut();
+      } catch (_) {
+        log('⚠️ Could not sign out after error');
+      }
+
+      if (context.mounted) {
+        _showErrorToast(errorMessage);
+      }
+    } catch (e, stackTrace) {
+      // Handle any other errors
+      log('❌ Unexpected signup error: $e');
+      log('Stack trace: $stackTrace');
+
+      // Clean up
+      try {
+        await FirebaseAuth.instance.signOut();
+      } catch (_) {}
+
+      if (context.mounted) {
+        _showErrorToast('An unexpected error occurred. Please try again.');
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  /// Show error toast helper
+  void _showErrorToast(String message) {
+    ReusableToast.showToast(
+      message: message,
+      textColor: Colors.white,
+      fontSize: 16,
+      bgColor: Colors.red,
+    );
+  }
+
+  /// Show success toast helper
+  void _showSuccessToast(String message) {
+    ReusableToast.showToast(
+      message: message,
+      textColor: Colors.white,
+      fontSize: 16,
+      bgColor: Colors.green,
+    );
+  }
+
   @override
   void dispose() {
     _firstNameController.dispose();
@@ -271,8 +1114,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final isDark = themeProvider.isDark;
     final colorScheme = Theme.of(context).colorScheme;
-
-    // final double iconWH = 24;
     final double fontSize = 14;
 
     return Scaffold(
@@ -288,7 +1129,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Logo or Icon (optional)
+                  // Logo
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
@@ -318,7 +1159,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   // Subtitle
                   Text(
-                    'Create an account on MNZL to get all features',
+                    'Create an account on TASKS to get all features',
                     style: TextStyle(
                       fontSize: fontSize,
                       fontWeight: FontWeight.normal,
@@ -331,6 +1172,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   // First Name field
                   _buildThemedInputField(
+                    keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.words,
                     controller: _firstNameController,
                     hintText: 'First Name',
                     icon: Icons.person_outline,
@@ -342,6 +1185,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   // Last Name field
                   _buildThemedInputField(
+                    keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.words,
                     controller: _lastNameController,
                     hintText: 'Last Name',
                     icon: Icons.person_outline,
@@ -353,6 +1198,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   // User Name field
                   _buildThemedInputField(
+                    keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.words,
                     controller: _userNameController,
                     hintText: 'User Name',
                     icon: Icons.badge_outlined,
@@ -403,78 +1250,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     width: double.infinity,
                     height: 54,
                     child: ElevatedButton(
-                      onPressed: _isLoading
-                          ? null
-                          : () async {
-                              if (_firstNameController.text.isNotEmpty &&
-                                  _lastNameController.text.isNotEmpty &&
-                                  _userNameController.text.isNotEmpty &&
-                                  _emailController.text.isNotEmpty &&
-                                  _passwordController.text.isNotEmpty &&
-                                  _confirmPasswordController.text.isNotEmpty &&
-                                  _passwordController.text ==
-                                      _confirmPasswordController.text) {
-                                setState(() => _isLoading = true);
-
-                                try {
-                                  // Create account on firebase
-                                  await FirebaseApiSAuthServices.createUserWithEmailAndPassword(
-                                    emailAddress: _emailController.text.trim(),
-                                    password: _passwordController.text.trim(),
-                                  );
-
-                                  // Save user info to Firestore
-                                  await AddNewUserToDB.saveUser({
-                                    'id':
-                                        FirebaseAuth.instance.currentUser!.uid,
-                                    'firstName': _firstNameController.text
-                                        .trim(),
-                                    'lastName': _lastNameController.text.trim(),
-                                    'displayName': _userNameController.text
-                                        .trim(),
-                                    'email': _emailController.text.trim(),
-                                    'password': _passwordController.text.trim(),
-                                  });
-
-                                  await context
-                                      .read<EmployeeNameProvider>()
-                                      .addEmployeeName(
-                                        _userNameController.text.trim(),
-                                      );
-
-                                  if (context.mounted) {
-                                    ReusableToast.showToast(
-                                      message: 'Account created successfully!',
-                                      textColor: Colors.white,
-                                      fontSize: 16,
-                                      bgColor: Colors.green,
-                                    );
-                                    navigateTo(context, const LoginScreen());
-                                  }
-                                } catch (e) {
-                                  if (context.mounted) {
-                                    ReusableToast.showToast(
-                                      message: 'Error: ${e.toString()}',
-                                      textColor: Colors.white,
-                                      fontSize: 16,
-                                      bgColor: Colors.red,
-                                    );
-                                  }
-                                } finally {
-                                  if (mounted) {
-                                    setState(() => _isLoading = false);
-                                  }
-                                }
-                              } else {
-                                ReusableToast.showToast(
-                                  message:
-                                      'Please fill all fields correctly to create an account.',
-                                  textColor: Colors.white,
-                                  fontSize: 16,
-                                  bgColor: Colors.red,
-                                );
-                              }
-                            },
+                      onPressed: _isLoading ? null : _handleSignup,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: colorScheme.primary,
                         foregroundColor: isDark ? Colors.black87 : Colors.white,
@@ -550,6 +1326,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     required ColorScheme colorScheme,
     bool obscureText = false,
     TextInputType? keyboardType,
+    TextCapitalization? textCapitalization,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -569,6 +1346,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ],
       ),
       child: TextField(
+        textCapitalization: textCapitalization ?? TextCapitalization.none,
         controller: controller,
         obscureText: obscureText,
         keyboardType: keyboardType,

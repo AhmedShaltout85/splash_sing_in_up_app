@@ -88,7 +88,8 @@ class _UserTaskScreenState extends State<UserTaskScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Tasks Assigned to ${FirebaseAuth.instance.currentUser!.email?.substring(0, FirebaseAuth.instance.currentUser!.email!.indexOf('@'))}',
+          'Tasks Assigned to ${FirebaseAuth.instance.currentUser!.displayName}',
+          // 'Tasks Assigned to ${FirebaseAuth.instance.currentUser!.email?.substring(0, FirebaseAuth.instance.currentUser!.email!.indexOf('@'))}',
         ),
         actions: [
           Container(
@@ -149,11 +150,11 @@ class _UserTaskScreenState extends State<UserTaskScreen> {
                     'No tasks found',
                     style: TextStyle(fontSize: 18, color: Colors.grey),
                   ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Tap + to add a new task',
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
+                  // SizedBox(height: 8),
+                  // Text(
+                  //   'Tap + to add a new task',
+                  //   style: TextStyle(fontSize: 14, color: Colors.grey),
+                  // ),
                 ],
               ),
             );

@@ -1001,7 +1001,7 @@ class _UserListScreenState extends State<UserListScreen> {
                     ),
                     const SizedBox(width: 12),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (formKey.currentState!.validate()) {
                           final nameParts = displayNameController.text
                               .trim()
@@ -1022,10 +1022,22 @@ class _UserListScreenState extends State<UserListScreen> {
                             emailAddress: emailController.text.trim(),
                             password: '123456',
                           );
+                          //update firebase auth user display name
+                          //TODO: update firebase auth user display name
+                          String capitalizeFirstLetter(String text) {
+                            if (text.isEmpty) return text;
+                            return text[0].toUpperCase() + text.substring(1);
+                          }
+
+                          await FirebaseAuth.instance.currentUser!
+                              .updateDisplayName(
+                                capitalizeFirstLetter(
+                                  displayNameController.text.trim(),
+                                ),
+                              );
                           context.read<EmployeeNameProvider>().addEmployeeName(
-                            displayNameController.text.trim().replaceAll(
-                              ' ',
-                              '.',
+                            capitalizeFirstLetter(
+                              displayNameController.text.trim(),
                             ),
                           );
                           context.read<UserProvider>().fetchUsers();

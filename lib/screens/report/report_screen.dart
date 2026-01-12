@@ -200,7 +200,9 @@ class _ReportScreenState extends State<ReportScreen>
       body: Consumer3<TaskProviders, EmployeeNameProvider, AppNameProvider>(
         builder: (context, taskProvider, employeeProvider, appProvider, child) {
           final tasks = taskProvider.tasks;
-          final employeeNames = employeeProvider.employeeNameStrings;
+          final employeeNames =
+              employeeProvider.employeeNameStrings.toSet().toList()
+                ..removeWhere((element) => element.contains('system.admin'));
           final appNames = appProvider.appNameStrings;
           final filteredData = getFilteredData(tasks);
           final assigneeList = ['All', ...employeeNames];

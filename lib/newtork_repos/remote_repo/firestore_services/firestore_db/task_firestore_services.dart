@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:task_app/newtork_repos/remote_repo/firestore_services/firestore_db/user_firestore_services.dart';
 
 import '../../../../models/task.dart';
 
@@ -33,11 +36,11 @@ class TaskFirestoreServices {
           .where('taskStatus', isEqualTo: status)
           .where(
             'assignedTo',
-            // isEqualTo: 'husieen',
-            isEqualTo: FirebaseAuth.instance.currentUser!.email?.substring(
-              0,
-              FirebaseAuth.instance.currentUser!.email!.indexOf('@'),
-            ),
+            // isEqualTo: FirebaseAuth.instance.currentUser!.email?.substring(
+            //   0,
+            //   FirebaseAuth.instance.currentUser!.email!.indexOf('@'),
+            // ),
+            isEqualTo: FirebaseAuth.instance.currentUser!.displayName,
           )
           .get();
 

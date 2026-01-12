@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
             AppRoute.loginRouteName: (context) => const LoginScreen(),
             AppRoute.signupRouteName: (context) => const SignUpScreen(),
             AppRoute.taskRouteName: (context) => const TaskScreen(),
-            AppRoute.userTaskRouteName: (context) => const UserTaskScreen(),
+            AppRoute.userTaskRouteName: (context) => UserTaskScreen(),
             AppRoute.homeRouteName: (context) => const HomeScreen(),
             AppRoute.authWrapperRouteName: (context) => const AuthWrapper(),
           },

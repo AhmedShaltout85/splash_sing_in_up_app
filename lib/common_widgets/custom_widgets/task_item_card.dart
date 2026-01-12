@@ -440,7 +440,9 @@ class TaskItemCard extends StatelessWidget {
   ) async {
     try {
       await provider.updateTask(task.id, {'taskStatus': !task.taskStatus});
-      provider.fetchTasks();
+      isDeletedEnabled
+          ? await provider.fetchTasks()
+          : provider.fetchTasksByStatus(true);
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
