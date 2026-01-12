@@ -699,74 +699,20 @@ class _LoginScreenState extends State<LoginScreen> {
     return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 
-  Future<void> _handleLogin() async {
-    String email = _emailController.text.trim();
-    String password = _passwordController.text.trim();
-    try {
-      log('🔐 Attempting login with email: $email');
-
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-
-      User? user = userCredential.user;
-      log('✅ Login successful');
-      log('✅ User email: ${user?.email}');
-      log('✅ User UID: ${user?.uid}');
-      log('✅ User displayName: ${user?.displayName}');
-
-      if (user == null) {
-        throw Exception('User authentication failed');
-      }
-
-      if (mounted) {
-        ReusableToast.showToast(
-          message: 'Login successful',
-          bgColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16,
-        );
-        log('✅ Login toast shown - AuthWrapper should handle navigation now');
-      }
-
-      // DON'T ADD ANY NAVIGATION HERE!
-    } on FirebaseAuthException catch (e) {
-      log('❌ Login error: ${e.code} - ${e.message}');
-      // ... rest of your error handling
-    }
-  }
   // Future<void> _handleLogin() async {
   //   String email = _emailController.text.trim();
   //   String password = _passwordController.text.trim();
-
-  //   if (email.isEmpty || password.isEmpty) {
-  //     ReusableToast.showToast(
-  //       message: 'Please enter both email and password',
-  //       bgColor: AppColors.redColor,
-  //       textColor: AppColors.whiteColor,
-  //       fontSize: 16,
-  //     );
-  //     return;
-  //   }
-
-  //   if (!_isValidEmail(email)) {
-  //     ReusableToast.showToast(
-  //       message: 'Please enter a valid email address',
-  //       bgColor: AppColors.redColor,
-  //       textColor: AppColors.whiteColor,
-  //       fontSize: 16,
-  //     );
-  //     return;
-  //   }
-
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-
   //   try {
+  //     log('🔐 Attempting login with email: $email');
+
   //     UserCredential userCredential = await FirebaseAuth.instance
   //         .signInWithEmailAndPassword(email: email, password: password);
 
   //     User? user = userCredential.user;
+  //     log('✅ Login successful');
+  //     log('✅ User email: ${user?.email}');
+  //     log('✅ User UID: ${user?.uid}');
+  //     log('✅ User displayName: ${user?.displayName}');
 
   //     if (user == null) {
   //       throw Exception('User authentication failed');
@@ -779,65 +725,119 @@ class _LoginScreenState extends State<LoginScreen> {
   //         textColor: Colors.white,
   //         fontSize: 16,
   //       );
+  //       log('✅ Login toast shown - AuthWrapper should handle navigation now');
   //     }
+
+  //     // DON'T ADD ANY NAVIGATION HERE!
   //   } on FirebaseAuthException catch (e) {
-  //     String errorMessage;
-
-  //     switch (e.code) {
-  //       case 'user-not-found':
-  //         errorMessage = 'No user found with this email';
-  //         break;
-  //       case 'wrong-password':
-  //         errorMessage = 'Incorrect password';
-  //         break;
-  //       case 'invalid-email':
-  //         errorMessage = 'Invalid email address';
-  //         break;
-  //       case 'user-disabled':
-  //         errorMessage = 'This account has been disabled';
-  //         break;
-  //       case 'too-many-requests':
-  //         errorMessage = 'Too many attempts. Please try again later';
-  //         break;
-  //       case 'invalid-credential':
-  //         errorMessage = 'Invalid email or password';
-  //         break;
-  //       case 'network-request-failed':
-  //         errorMessage = 'Network error. Please check your connection';
-  //         break;
-  //       default:
-  //         errorMessage = 'Login failed: ${e.message ?? "Unknown error"}';
-  //     }
-
-  //     if (mounted) {
-  //       ReusableToast.showToast(
-  //         message: errorMessage,
-  //         bgColor: AppColors.redColor,
-  //         textColor: AppColors.whiteColor,
-  //         fontSize: 16,
-  //       );
-  //     }
-
-  //     log('Login error: ${e.code} - ${e.message}');
-  //   } catch (e) {
-  //     if (mounted) {
-  //       ReusableToast.showToast(
-  //         message: 'An unexpected error occurred. Please try again.',
-  //         bgColor: AppColors.redColor,
-  //         textColor: AppColors.whiteColor,
-  //         fontSize: 16,
-  //       );
-  //     }
-
-  //     log('Unexpected error during login: $e');
-  //   } finally {
-  //     if (mounted) {
-  //       setState(() {
-  //         _isLoading = false;
-  //       });
-  //     }
+  //     log('❌ Login error: ${e.code} - ${e.message}');
+  //     // ... rest of your error handling
   //   }
   // }
+  Future<void> _handleLogin() async {
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      ReusableToast.showToast(
+        message: 'Please enter both email and password',
+        bgColor: AppColors.redColor,
+        textColor: AppColors.whiteColor,
+        fontSize: 16,
+      );
+      return;
+    }
+
+    if (!_isValidEmail(email)) {
+      ReusableToast.showToast(
+        message: 'Please enter a valid email address',
+        bgColor: AppColors.redColor,
+        textColor: AppColors.whiteColor,
+        fontSize: 16,
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+
+      User? user = userCredential.user;
+
+      if (user == null) {
+        throw Exception('User authentication failed');
+      }
+
+      if (mounted) {
+        ReusableToast.showToast(
+          message: 'Login successful',
+          bgColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16,
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+
+      switch (e.code) {
+        case 'user-not-found':
+          errorMessage = 'No user found with this email';
+          break;
+        case 'wrong-password':
+          errorMessage = 'Incorrect password';
+          break;
+        case 'invalid-email':
+          errorMessage = 'Invalid email address';
+          break;
+        case 'user-disabled':
+          errorMessage = 'This account has been disabled';
+          break;
+        case 'too-many-requests':
+          errorMessage = 'Too many attempts. Please try again later';
+          break;
+        case 'invalid-credential':
+          errorMessage = 'Invalid email or password';
+          break;
+        case 'network-request-failed':
+          errorMessage = 'Network error. Please check your connection';
+          break;
+        default:
+          errorMessage = 'Login failed: ${e.message ?? "Unknown error"}';
+      }
+
+      if (mounted) {
+        ReusableToast.showToast(
+          message: errorMessage,
+          bgColor: AppColors.redColor,
+          textColor: AppColors.whiteColor,
+          fontSize: 16,
+        );
+      }
+
+      log('Login error: ${e.code} - ${e.message}');
+    } catch (e) {
+      if (mounted) {
+        ReusableToast.showToast(
+          message: 'An unexpected error occurred. Please try again.',
+          bgColor: AppColors.redColor,
+          textColor: AppColors.whiteColor,
+          fontSize: 16,
+        );
+      }
+
+      log('Unexpected error during login: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
