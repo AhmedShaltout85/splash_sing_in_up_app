@@ -699,41 +699,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 
-  // Future<void> _handleLogin() async {
-  //   String email = _emailController.text.trim();
-  //   String password = _passwordController.text.trim();
-  //   try {
-  //     log('🔐 Attempting login with email: $email');
-
-  //     UserCredential userCredential = await FirebaseAuth.instance
-  //         .signInWithEmailAndPassword(email: email, password: password);
-
-  //     User? user = userCredential.user;
-  //     log('✅ Login successful');
-  //     log('✅ User email: ${user?.email}');
-  //     log('✅ User UID: ${user?.uid}');
-  //     log('✅ User displayName: ${user?.displayName}');
-
-  //     if (user == null) {
-  //       throw Exception('User authentication failed');
-  //     }
-
-  //     if (mounted) {
-  //       ReusableToast.showToast(
-  //         message: 'Login successful',
-  //         bgColor: Colors.green,
-  //         textColor: Colors.white,
-  //         fontSize: 16,
-  //       );
-  //       log('✅ Login toast shown - AuthWrapper should handle navigation now');
-  //     }
-
-  //     // DON'T ADD ANY NAVIGATION HERE!
-  //   } on FirebaseAuthException catch (e) {
-  //     log('❌ Login error: ${e.code} - ${e.message}');
-  //     // ... rest of your error handling
-  //   }
-  // }
   Future<void> _handleLogin() async {
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
