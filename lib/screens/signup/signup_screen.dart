@@ -501,7 +501,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 30.0,
-                vertical: 50.0,
+                vertical: 10.0,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
